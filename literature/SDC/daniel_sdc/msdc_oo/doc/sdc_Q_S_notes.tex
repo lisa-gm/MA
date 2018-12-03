@@ -1,0 +1,213 @@
+%%This is a very basic article template.
+%%There is just one section and two subsections.
+\documentclass[11pt]{article}
+
+\usepackage{rs_notes}
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\newcommand{\Tt}[1]{\mathbf{#1}}
+\newtheorem{remark}{Remark}
+\newtheorem{lemma}{Lemma}
+
+\begin{document}
+%
+\section{The matrices $\Tt{S}$ and $\Tt{Q}$ in SDC}
+Assume we have a given time-interval $[T_0, T_1]$ and a set of collocation nodes $\tau_m$, $m=0, \ldots, M$ with
+\begin{equation}
+	T_0 \leq \tau_0 < \ldots < \tau_M \leq T_1
+\end{equation}
+For Gauss-Lobatto quadrature, $\tau_0$ and $\tau_M$ will coincide with $T_0$ and $T_1$, for Gauss-Legendre quadrature they won't.
+
+\subsection{Quadrature over the full interval}
+For a set of given nodes $(\tau_j)_{j=0,\ldots,M}$, there is a unique set of weights $q_m$, $m=0,\ldots,M$ such that the corresponding quadrature rule yields an approximation
+of the integral over $[T_0, T_1]$ with maximum order $2M-2$ for Gauss-Lobatto, $2M$ for Gauss-Legendre and $2M-1$ for Gauss-Radau. That is with
+\begin{equation}
+	\Tt{q} := \left( q_0, \ldots, q_M \right) \in \mathbb{R}^{M+1}
+\end{equation}
+we have
+\begin{equation}
+	\label{eq:def_I}
+	\int_{T_0}^{T_1} u(\tau) \ d\tau \approx \sum_{m=0}^{M} q_{m} u_{m} = \Tt{q}^{\rm T} \cdot \Tt{u} =: \Tt{I}(\Tt{u})
+\end{equation}
+for
+\begin{equation}
+	\Tt{u} := \left( u_0 \ldots, u_M \right) \in \mathbb{R}^{M+1} \ \text{with} \ u_j \approx u(\tau_j), \ j=0,\ldots,M.
+\end{equation}
+Denoting by $l_m$, $m=0, \ldots M$,  the Lagrangian polynomials with roots $\tau_m$, the weights $q_m$ are given as
+\begin{equation}
+	q_m = \int_{T_0}^{T_1} l_m(\tau) \ d\tau
+\end{equation}
+
+\subsection{Quadrature from left endpoint to a collocation node -- $\Tt{Q}$}
+The Picard formula on which SDC is based reads for a point $t$ in $[T_0, T_1]$
+\begin{equation}
+	u(t) = u(T_0) + \int_{T_0}^{t} f(u(\tau), \tau) \ d\tau.
+\end{equation}
+Thus, the solution at some collocation node $\tau_m$ is given by
+\begin{equation}
+	u(\tau_m) = u(T_0) + \int_{T_0}^{\tau_m} f(u(\tau), \tau) \ d\tau.
+\end{equation}
+To obtain a discrete version, we now define operators $\Tt{I}_{0}^{m}$ that provide an approximation of the integral over a part of the time interval $[T_0, T_1]$, namely
+\begin{equation}
+	\Tt{I}^{m}(\Tt{u}) := \Tt{q}_{m}^{\rm T} \cdot \Tt{u} = \sum_{j=0}^{M} q_{m, j} u(\tau_{j}) \approx \int_{T_0}^{\tau_{m}} u(\tau) \ d\tau, \quad m=0,\ldots,M.
+\end{equation}
+\begin{remark}
+If the left endpoint $T_0$ coincides with the first collocation node $\tau_0$, we get $\Tt{I}_{0}^{0} \equiv 0$.
+\end{remark}
+\begin{remark}
+If the right endpoint $T_1$ coincides with the last collocation node $\tau_{M}$, we have $\Tt{I} = \Tt{I}_{0}^{M}$, cf.~\eqref{eq:def_I}, but otherwise the two operators are different.
+\end{remark}
+The weights for the $\Tt{I}_{0}^{m}$ can be computed from the following consideration: Let $p$ denote the uniquely determined interpolation polynomial through the points $(\tau_m, u_m)$, so that
+\begin{equation}
+	p(\tau) = \sum_{m=0}^{M} u_m l_m(\tau)
+\end{equation}
+where $l_m$ are the Lagrangian polynomials as introduced above. Then, approximating
+\begin{equation}
+	\int_{T_0}^{\tau_m} u(\tau) d\tau \approx \int_{T_0}^{\tau_m} p(\tau) \ d\tau
+\end{equation}
+leads to weights
+\begin{equation}
+	\label{eq:def_q}
+	q_{m,j} := \int_{T_0}^{\tau_m} l_j(\tau) \ d\tau.
+\end{equation}
+\begin{remark}
+Because the $l_j$ are polynomials of order $M$ , the weights $q_{m,j}$ can be exactly computed using a quadrature rule of order $M+1$. 
+\end{remark}
+The matrix $\Tt{Q}$ is now defined as 
+\begin{equation}
+	\Tt{Q} := \begin{bmatrix} \Tt{q}_{0} \\ \Tt{q}_{1} \\ \vdots \\ \Tt{q}_{M} \end{bmatrix} \in \mathbb{R}^{M+1, M+1}
+\end{equation}
+so that 
+\begin{equation}
+	\Tt{Q} \Tt{u} = \begin{pmatrix} \Tt{I}^{0}(\Tt{u}) \\  \Tt{I}^{1}(\Tt{u}) \\ \vdots \\  \Tt{I}^{M}(\Tt{u}) \end{pmatrix} \in \mathbb{R}^{M+1}
+\end{equation}
+\begin{remark}\label{rem:picard}
+The iteration
+\begin{equation}
+	\label{eq:picard}
+	\Tt{u}^{k+1} = u(T_0) \Tt{1} + \Tt{Q} f(\Tt{u}^{k})
+\end{equation}
+corresponds to a component wise iteration
+\begin{equation}
+	\label{eq:picard_component}
+	u^{k}_{m} = u(T_0) + \Tt{I}^{m}(f(\Tt{u}^{k}))  \approx u(T_0) + \int_{T_0}^{\tau_{j}} f(u^{k}(\tau), \tau) \ d\tau, \quad m=0,\ldots,M
+\end{equation}
+and thus to a discrete version of the Picard iteration. 
+\end{remark}
+\begin{remark}
+For $\tau_{M} < T_{1}$, an approximation for $u(T_{1})$ can easily be obtained in every iteration by computing
+\begin{equation}
+	u = u(T_0) + \Tt{I}(f(\Tt{u}^{k})) = u(T_0) + \Tt{q}^{\rm T} \cdot f(\Tt{u}^{k}) \approx u(T_0) + \int_{T_0}^{T_1} f(u(\tau), \tau) \ d\tau.
+\end{equation}
+\end{remark}
+\begin{remark}
+If $T_0 = \tau_0$, it is $\Tt{I}^0 \equiv 0$ and thus the first row in $\Tt{Q}$ consists of zeros. Iteration~\eqref{eq:picard} thus never changes the first entry in $\Tt{u}$, leading to
+\begin{equation}
+	u^{k+1}_{0} = u(T_0)
+\end{equation}
+for all $k \geq 0$.
+\end{remark}
+
+\subsection{Quadrature between two consecutive collocation nodes -- $\Tt{S}$}
+For use within the sweeps of SDC, we also need approximations to the integral between two consecutive nodes, i.e. an operator
+\begin{equation}
+	\Tt{I}_{m-1}^{m}(\Tt{u}) =: \Tt{s}_{m} \cdot \Tt{u} = \sum_{j=0}^{M} s_{m,j} u(\tau_j) \approx \int_{\tau_{m-1}}^{\tau_{m}} u(\tau) \ d\tau, \quad m=1,\ldots,M
+\end{equation}
+As before, the weights can be computed as integrals over the Lagrangian polynomials $l_j$, that is
+\begin{equation}
+	\label{eq:def_s}
+	s_{m, j} = \int_{\tau_{m-1}}^{\tau_{m}} l_{j}(\tau) \ d\tau
+\end{equation}
+Note that from~\eqref{eq:def_q} and~\eqref{eq:def_s} we immediately obtain the following identity 
+\begin{equation}
+	q_{m, j} =  q_{0, j} + \sum_{j=1}^{m} s_{m,j} \Leftrightarrow \int_{T_0}^{\tau_{m}} l_j(\tau) \ d\tau = \int_{T_0}^{\tau_{0}} l_{j}(\tau) \ d\tau + \sum_{k=1}^{m} \int_{\tau_{k-1}}^{\tau_{k}} l_j(\tau)\ d\tau
+\end{equation}
+and thus
+\begin{equation}
+	\Tt{q}_{m} = \Tt{q}_{0} + \sum_{j=1}^{m} \Tt{s}_{j}
+\end{equation}
+For $\Tt{q}_{m}$, $m=0,\ldots, M$ given, we can thus compute the weights $\Tt{s}_{m}$, $m=1,\ldots,M$ from
+\begin{align}
+	\Tt{s}_{0} &:= \Tt{q}_{0} \\
+	\Tt{s}_{1} &= \Tt{q}_{1} - \Tt{q}_{0} \\
+	\Tt{s}_{2} &= \Tt{q}_{2} - \Tt{q}_{0} - \Tt{s}_{1} = \Tt{q}_{2} - \Tt{q}_{1} \\
+	\Tt{s}_{3} &= \Tt{q}_{3} - \Tt{q}_{0} - \Tt{s}_{1} - \Tt{s}_{2} = \Tt{q}_{3} - \Tt{q}_{2} \\
+	 	&\vdots
+\end{align}
+where the definition of $\Tt{s}_{0} := \Tt{q}_{1}$ is for convenience. This allow to immediately state the following identity
+\begin{lemma}\label{lemma:Isummed}
+For any $1 \leq m \leq M$ it holds that
+\begin{equation}
+	\Tt{I}^{0} + \sum_{j=0}^{m-1} \Tt{I}_{j}^{j+1}(\Tt{u}) = \Tt{I}^{m}(\Tt{u})
+\end{equation}
+\end{lemma}
+\begin{proof}
+Use the identity $q_{j} = s_{j} + q_{j-1}$ shown above and compute
+\begin{align}
+	\Tt{I}^{m}(\Tt{u}) &= \Tt{q}_{m}^{\rm T} \cdot \Tt{u} \\
+				 &= \left( \Tt{s}_{m} + \Tt{q}_{m-1} \right)^{\rm T} \cdot \Tt{u} \\
+				 &= \left( \Tt{s}_{m} + \Tt{s}_{m-1} + \Tt{q}_{m-2} \right)^{\rm T} \cdot \Tt{u} \\
+				 &= \ldots \\
+				 &= \left( \Tt{s}_{m} + \ldots + \Tt{s}_{1} + \Tt{s}_{0} \right)^{\rm T} \cdot \Tt{u} \\
+				 &= \Tt{s}_{m}^{\rm T} \cdot \Tt{u} + \ldots + \Tt{s}_{1}^{\rm T} \cdot \Tt{u} + \Tt{s}_{0}^{\rm T} \cdot \Tt{u} \\
+				 &= \Tt{I}_{m-1}^{m}(\Tt{u}) + \ldots + \Tt{I}_{0}^{1}(\Tt{u}) + \Tt{I}^{0}(\Tt{u}).
+\end{align}
+\end{proof}
+The matrix $\Tt{S}$ is now defined as
+\begin{equation}
+	\Tt{S} := \begin{bmatrix} \Tt{s}_{0} \\ \Tt{s}_{1} \\ \vdots \\ \Tt{s}_{M} \end{bmatrix} \in \mathbb{R}^{M+1, M+1}
+\end{equation}
+so that
+\begin{equation}
+	\Tt{S} \Tt{u} = \begin{pmatrix} \Tt{I}^{0} \\ \Tt{I}_{0}^{1} \\ \Tt{I}_{1}^{2} \\ \vdots \\ \Tt{I}_{M-1}^{M} \end{pmatrix} \in \mathbb{R}^{M+1}
+\end{equation}
+when defining
+\begin{equation}
+	\Tt{I}_{j-1}^{j}(\Tt{u}) := \Tt{s}_{j}^{\rm T} \cdot \Tt{u}, \ j=1,\ldots,M \ \text{and} \ \Tt{I}^{0}(\Tt{u}) := \Tt{s}_{0}^{\rm T} \cdot \Tt{u}.
+\end{equation}
+
+\section{Picard iteration}
+As shown in Remark~\ref{rem:picard}, the matrix $\Tt{Q}$ can be used to define a discrete Picard iteration. The iteration can be equivalently formulated as a "sweep" over the nodes.
+\begin{lemma}\label{lemma:node_by_node_picard}
+The node-by-node sweep
+\begin{equation}
+	\label{eq:picard_sweep}
+	u^{k+1}_{m} = u^{k+1}_{m-1} + \Tt{I}^{m}_{m-1}(f(\Tt{u}^{k})), \ m=1,\ldots,M
+\end{equation}
+with initialization
+\begin{equation}
+	\label{eq:picard_init}
+	u^{k+1}_{0} := u(T_0) + \Tt{I}^{0}(f(\Tt{u}^{k}))
+\end{equation}
+is equivalent to the full-system iteration~\eqref{eq:picard}.
+\end{lemma}
+\begin{proof}
+For a $0 \leq m \leq M$, compute
+\begin{align}
+	u^{k+1}_{m} &= u^{k+1}_{m-1} + \Tt{I}_{m-1}^{m}(f(\Tt{u}^{k})) \\
+			    &= u^{k+1}_{m-2} + \Tt{I}_{m-2}^{m-1}(f(\Tt{u}^{k})) + \Tt{I}_{m-1}^{m}(f(\Tt{u}^{k})) \\
+			    &= \ldots \\
+			    &= u^{k+1}_{0} + \sum_{j=0}^{m-1} \Tt{I}_{j}^{j+1}(f(\Tt{u}^{k})) \\
+			    &= u(T_0) + \Tt{I}^{0}(f(\Tt{u}^{k})) + \sum_{j=0}^{m-1} \Tt{I}_{j}^{j+1}(f(\Tt{u}^{k})) \\
+			    &= u(T_0) + \Tt{I}^{m}(f(\Tt{u}^{k}))
+\end{align}
+where the last identity used Lemma~\ref{lemma:Isummed}. This is now exactly the component-wise Picard iteration~\eqref{eq:picard_component}.
+\end{proof}
+\begin{remark}
+Note that if the first node coincides with the left boundary, i.e. $\tau_0 = T_0$, then $\Tt{I}^{0} \equiv 0$ and the initialization~\eqref{eq:picard_init} simply sets $u^{k+1}_0 = u(T_0)$.
+\end{remark}
+\begin{remark}
+The product $\Tt{I}_{m-1}^{m}(f(\Tt{u}^{k}))$ in~\eqref{eq:picard_sweep} corresponds to the scalar product
+\begin{equation}
+	\Tt{s}_{m}^{\rm T} \cdot f(\Tt{u}^{k}) = \sum_{j=0}^{M} s_{j} f(u^{k}_{j})
+\end{equation}
+In the object oriented implementation, this scalar product can be evaluated using the sum and scalar multiplication routine of the solution object, provided that if $u$ is a solution object, so is $f(u)$.
+\end{remark}
+\section{SDC sweeps}
+
+
+\bibliographystyle{rs_bibtex}
+\bibliography{Pint,Pint_Self}
+
+\end{document}

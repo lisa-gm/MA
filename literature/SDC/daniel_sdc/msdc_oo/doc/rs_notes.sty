@@ -1,0 +1,40 @@
+\ProvidesPackage{rs_notes}
+
+\usepackage{mdwlist} %itemize* compact lists
+
+% Math and tools
+\usepackage{amssymb,amsmath}
+%\usepackage{nath}
+\usepackage{nicefrac}
+
+% Graphics and figures
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+% Typesetting and fonts
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage{times}
+
+% Layout
+\usepackage[margin=1in]{geometry}
+\parindent=0pt
+\renewcommand{\normalsize}{\fontsize{10}{\baselineskip}\selectfont}
+
+% Custom commands
+\newcommand{\mytitle}[1]{{\bf\Large #1}\vspace{1.5\baselineskip}} 
+\newcommand{\coloneq}{\mathrel{\mathop:}=}
+\newcommand{\eqcolon}{=\mathrel{\mathop:}}
+\renewcommand{\refname}{}
+\newcommand{\todo}[1]{\textcolor{red}{[TODO -- #1]}}
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+\newcommand{\tvect}[1]{{\bf #1}}
+%\newcommand{\svect}[1]{\vec{#1}}
+\newcommand{\inv}[1]{{#1}^{-1}}
+\newcommand{\dt}{\Delta t}
+
+
+

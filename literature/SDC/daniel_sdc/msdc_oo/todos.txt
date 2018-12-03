@@ -1,0 +1,3 @@
+1. Get Picard iteration to run again
+2. Include SDC sweep
+3. Further individualize test suite: Make each test its own function and let class test automatically find and call all individual tests. Probably make sure that there is at least one test for each class function?
