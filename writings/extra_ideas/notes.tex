@@ -1,0 +1,286 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
+\usepackage{lipsum} %This package just generates Lorem Ipsum filler text. 
+\usepackage{fullpage} % changes the margin
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\setlength\parindent{0pt}
+\begin{document}
+\section*{A few remarks on what I have done so far}
+
+\subsection*{\underline{Overview of Matlab Code --- 17.05}} 
+
+\underline{\textbf{Heat Equation}}, ie. $ \frac{\partial u}{\partial t} - \Delta(u) = f$ with Dirichlet boundary conditions
+
+\begin{itemize}
+	\item \textbf{parareal implementation}
+	\item \textbf{sequential FD} implementation: "heat\_eqn\_seq\_FD.m" solves the following approximation sequentially:
+	\begin{align*}
+	(I + \Delta t L_h) u_{i,j+1} = \Delta t f_{i,j+1} + u_{i,j} 
+	\end{align*}
+	\item \textbf{sequential FEM} implementation: "heat\_eqn\_seq\_FEM.m" uses $L_h$ and $M_h$, and implicit Euler, solves LS either directly or using multigrid, i.e.
+	\begin{align*}
+	(M_h + \Delta t L_h) u_{i,j+1} = \Delta t M_h f_{i,j+1} + M_h u_{i,j} 
+	\end{align*}
+	\item \textbf{space--time FD:} simplified Ganda \& Neumueller using implicit Euler, all in big matrix
+	\item \textbf{space--time FEM:} according to Ganda \& Neumueller (really or not actually?) using implicit Euler, all in big matrix
+
+\end{itemize}
+	
+\underline{\textbf{Wave Equation}}, ie. $\frac{\partial^2 u}{\partial t^2} - c^2 \frac{\partial^2 u}{\partial x^2}  = f$
+\begin{itemize}
+	\item \textbf{sequential solver} 
+	\item fully parallelised matrix form using 2nd order stencil in both time and space, needs solution for end time: "wave\_eqn\_parallel\_1D.m" because we have entries on the upper triangular matrix, ie. boundary conditions needed
+	\item matrix form using backward difference stencil of type $[1, -2, 1]$ for time derivative, "wave\_eqn\_like\_NM.m", unfortunately DOES NOT seem to work, loses energy over time, not sure why
+	\item version where I also use [1, -2, 1] with the first set of 1's (times scalar) on diagonal, on lower diagonal block I then have a tridiagonals from the space stencil, for both cases need not only $u_0(x)$ but also next time step, can be obtained through $u'_0(x)$ though (which corresponds to matrix form of the sequential solver?!)
+\end{itemize}
+
+\underline{\textbf{Functions to do set ups}} \\
+
+\underline{1D:}
+\begin{itemize}
+\item 2nd order finite difference stencil to approximate $\Delta(u)$: "set\_up\_L\_h\_FD.m"
+\item 2nd FEM stencil to approximate $\Delta(u)$: "set\_up\_L\_h\_FEM.m"
+\item FEM mass matrix, computes $\int \phi_i \cdot \phi_j dx$: "set\_up\_M\_h\_FEM.m"
+
+\item \underline{\textbf{for Wave Equation:}} matrices K\_h that act as if time was another space direction with special factor $-c^2$ in front, here I have "set\_up\_K\_h.m" which is the equivalent to a 5 point stencil in 2D, I also have 'set\_up\_K\_h\_backDiff.m" which uses a backward Differences of the form [1 -2 1] where the first entry corresponds to the space entries we are solving for
+
+\item backward Euler
+\item V,W cycle multigrid, uses "mg\_set\_up.m" and above functions: "V\_cycle.m", "W\_cycle.m"
+
+\end{itemize}
+
+\subsection*{Open Questions}
+\begin{itemize}
+	\item Compare to Neumueller paper, where are the differences? Why does this seem to work fine in this setting? Difference heat, wave equation? 
+\end{itemize}
+
+\subsection*{May 7th, 2018}
+
+I have mostly been writing little matlab programs, dealing either with the \textbf{Poisson, Heat} \textbf{Wave equation}.
+\begin{itemize}
+	\item small parareal implementation of simple ODE
+	\item parareal implementation of heat equation
+	\item for wave equation, normal sequential solver, one simply pretending time was another dimension, problem here, need boundary conditions at the end, otherwise it does not work, so not very useful ....?
+	\item most promising seeming one, 3 point stencil in space, backward difference in time, problem: system loses energy, when using a higher order stencil (I've been using 1st and 2nd order) then the system looses energy and slowly converges to zero (wave amplitude goes down ....) when decreasing time step size it gets better, but always seems to happen
+	\item higher order stencil helps a bit but then we need 3 initial conditions, which is a problem as well (for first order stencil it is fine to just use $u_0$ twice but not for second order)
+	\item what works best so far is simply the matrix version of the sequential solver implementation, does not seem to have the problem of losing energy, so this issue must arise from how the points in time and space are put together 
+\end{itemize}
+
+
+\subsection*{June 15th, 2018}
+
+\underline{\textbf{Characteristics ... }}
+
+\begin{itemize}
+	\item thinking about level set method where the level sets are the characteristics of the pde
+	\item what exactly are characteristics?
+	\item so far LINEAR ADVECTION equation $\frac{\partial{u}}{\partial{t}} + a\frac{\partial{u}}{\partial{x}} = 0$, I rewrote it such that we consider it along its characteristics $v_t$ and vector orthogonal to that $v_n$, then consider simple finite difference scheme in this new basis, used the following scheme to compute it
+	
+	\item and in comparison used this upwind scheme, that is apparently the most suitable one for $a > 0$, if I use $i$ instead of $i-1$ I get a lot of diffusion:
+	\begin{align*}
+	\frac{u_{i,j+1} - u_{i,j}}{h_t} + a \frac{u_{i,j}- u_{i-1,j}}{h_x} = 0
+	\end{align*}
+	\item the shape of $u_0$ seems to be mainted pretty well but for the computation along the axis the solution seems to be growing over time, question of stepsize or still a bug in the code?
+	\item in normal scheme check for CFL condition, ie. $a \frac{\Delta t}{\Delta x} \leq 1$
+\end{itemize}
+
+\subsection*{July 23rd, 2018}
+
+\underline{\textbf{Constructing an AMG solver for monodomain model}}
+
+I'm considering the following equation in 2D for now
+
+\begin{align}
+\partial_t V - \nabla \cdot (D(x) \nabla V) = I_{ion}(V) + I_{ext}
+\end{align}
+
+where $I_{ion} = V \cdot (a-V) \cdot (V - 1), 0 < a , 1$ and assume for now that $D(x) = I$, hence we get 
+
+\begin{align}
+\partial_t V - \Delta(V) = I_{ion}(V) + I_{ext}
+\end{align}
+
+which corresponds to a heat equation with a non-linear right hand side.
+
+General questions to deal with:
+\begin{itemize}
+	\item what is a realistic $I_{ext}$ ?
+\end{itemize}
+
+Reformulate so that we get its weak formulation (taken from slides, just result now)
+
+Notation: $E^m = [t_m, t_{m+1}] x \Omega$
+
+\begin{align}
+- \int_{E^m} V \partial_t U \ dt dx + \int_{\Omega} [V U ]_{t_m}^{t_{m+1}} \ dx + \int_{E^m} \nabla V \cdot \nabla U \ dt dx = \int_{E^m} f U \ dt dx
+\end{align}
+
+Here $f$ not yet dependent on solution. What changes then? 
+
+Use Ganda \& Neumueller approach to do space-time, we need to set up the different stencils and matrices, put them together with tensorproducts. Note that we are assuming that our basis and test functions are seperable in time and space in the sense that $ V_h^m(x,t) = \sum_l \sum_k v_{l,k}^m \psi_l(x) \phi_k(t) $ when we insert them in the weak formulation. Overall we then get
+
+\begin{align*}
+A &= K_t \otimes M_h + M_t \otimes K_h \\
+B &= - N_t \otimes M_h
+\end{align*}
+
+Build them with the help of Pietros matlab code and assemble them in the following way:
+
+\begin{align*}
+\begin{bmatrix}
+A & & & \\
+B & A & & \\
+& ... & ... & \\
+& & B & A 
+\end{bmatrix}  \cdot
+\begin{bmatrix}
+u_{t_1} \\
+ ... \\
+ ... \\
+ u_{t_n}
+\end{bmatrix} = 
+\begin{bmatrix}
+f_{t_1} \\
+... \\
+... \\
+f_{t_n} 
+\end{bmatrix}
+\end{align*}
+
+How do my different stencils look like? Local mass matrix:
+
+\begin{align*}
+M_h = \frac{h^2}{24} \begin{bmatrix}
+2 & 1 & 1 \\
+1 & 2 & 1 \\
+1 & 1 & 2
+\end{bmatrix} \qquad
+L_h = \frac{1}{h^2} \begin{bmatrix}
+4 & -1 & 1 \\
+1 & 2 & 1 \\
+1 & 1 & 2
+\end{bmatrix} ....?!
+\end{align*}
+
+How does AMG work now: 
+\smallskip
+\\
+\textbf{STEP I:} do $\xi_1$ smoothing steps \\
+\textbf{STEP II:} compute fine grid residual $r^h = f^h - A^hv^h$ and restrict to coarse grid $r^{2h} = I_h^{2h}r^h$ 
+
+
+INTERPOLATION OPERATOR $I_h^2h$ \\
+
+notion of strong dependence ... 
+
+\begin{align*}
+(I_{2h}^h e )_i =
+\begin{cases}
+e_i  & \text{if } i \in C \\
+\sum w_{ij} e_j               & \text{if } i \in F
+\end{cases}
+\end{align*}
+
+
+\subsection*{Continuation Monodomain --- 01.08.18}
+
+\underline{\textbf{Implementation 1D MATLAB}}
+
+\begin{itemize}
+	\item general approach to solving this: LHS becomes one big space-time matrix $M_{st}$, RHS: write $U$ and $f$ in terms of basis functions, can restate as $(M_t \otimes M_h) \cdot (f \otimes [1, 1])$ or something like that
+	\item how do we deal with $f(u)$, ie. $f$ depending on $u$? Just consider as pointwise evaluations?! use $f(u_k)$ as vector and keep the rest, linearised right hand side? 
+	\item let $M_{th} = (M_t \otimes M_h)$, $ \hat{f} = (f \otimes [1, 1])$ and describe system as $M_{st} u =  M_{th} \hat{f}(u)$
+	\item solve for $u$ using Newton: 
+	\begin{align*}
+	&J(u) = M_{th} \hat{f}(u) - M_{st} u \\
+	&H(u) = J'(u) = M_{th} diag(\hat{f'}(u)) - M_{st} \\
+	&u_{k+1} = u_k - (H(u_k))^{-1}J(u_k)
+	\end{align*} 
+	\item next step would then be to not invert directly but instead to use AMG or whatever I come up with to solve 
+		\begin{align*}
+	&H(u_k)u_{k+1} = H(u_k) u_k - J(u_k) \\
+	&p (u_k) = H(u_k) u_k - J(u_k) \\
+	\\
+	&\mathbf{H(u_k)u_{k+1} = p (u_k)}
+	\end{align*} 
+	\item or instead solve for the error instead of having $u_k$ in equation again:
+	\begin{align*}
+	&H(u_k)(u_{k+1} - u_k) = J(u_k)	\\
+	& e_{k} = u_{k+1}- u_k \\
+	\\
+	&\mathbf{H(u_k)e_{k} = J(u_k)} \\
+	&u_{k+1} = u_k + e_{k}
+	\end{align*} 
+	
+	Hence the matrix I'm really interested in is $H(u_k)$
+	
+	\item Otherwise if I'm doing smoothing steps I have the following iteration, let $H_k = H(u_k), J_k = J(u_k)$:
+	
+		\begin{align*}
+	& e_{k+1} = e_k + B^{-1}(J_k - H_k e_k)	\\
+	\\
+	& e_{k+1} = (I - B^{-1}H_k) e_k + B^{-1}J_k
+	\end{align*} 
+	Therefore we have the iteration matrix $ \mathbf{(I - B^{-1}H_k)}$, might want to look at that one as well? What to use as preconditioner ... 
+	
+	\item How to handle initial conditions? $\hat{f}(u)(1:2Nx) = u_0 \cdot sth$ but what to do now for $\hat{f'}(u)(1:2Nx)$ ?!
+	\end{itemize}
+
+\subsection*{Looking at Eigenvalues and Eigenvectors of H -- 08.08.18}
+
+\begin{itemize}
+\item check booklet for more theoretical analysis 
+\item I have considered submatrices, in the sense that I chose certain points on the grid, for now I used the information that I already have about what is going on where ... 
+\item GOAL: find differences between wavefront area and "flat" areas
+\item so I chose certain grid points (that give connected rectangles) and extracted the corresponding $x_i-$ indices in $H$ in time and space, I then get a list of indices in $H$, eg. $ l = [15 ,16 ,17, 25, 26, 27, 35, 36, 37]$ for a $3 \times 3$ subdomain of a grid with 5 space components (get 10 because of $-$ and $+$ for all inner time points, would correspond to space indices $\{1,2,3\}$ and time indices $\{3,4,5\}$
+\item then exctract all values from $H$ with $H(i,j), \ i \in l, j \in l$, hence we get a $9 \times 9 $ matrix, which means 9 eigenvalues and vectors
+\item -- current understanding -09.08.- eigenvalues of one and zero zone always seem to come in pairs of 4 when there is 4 entries in time, and then there is 5 of those sets, which is the number of entries in space
+\end{itemize}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[scale=0.5]{pictures/evalues_first_set}
+\end{figure}
+
+Questions: For the one and zero zone we have always have sets which have the size of the number of points taken in time, ie. algebraic multiplicity of an eigenvalue corresponds to points taken in time, now look at what the corresponding eigenvectors look like:
+
+\begin{itemize}
+	\item we can see that they correspond to one eigenfunction that is being shifted across the grid in time direction 
+	\item sometimes the sign is changed
+	\item up until now the eigenvalues with the larger absolute value had eigenfunctions of lower frequency (as far as one can tell)
+	\item if all eigenfunctions are some sort of sine or cosine combination, how would I find them explicitly?
+	\item at first sight it seems like zero and one zone eigenfunctions are much more symmetric, whereas the wavefront ones seem to have non-symmetric sets
+	\item since we only have so few gridpoints in there though, hard to estimate 
+	
+\end{itemize}
+
+\subsection*{AMG --- 20/08/18}
+
+\begin{itemize}
+	\item set up of AMG, for first identity matrix used for Dirichlet boundary conditions, we have strong dependence on every other entry since $max \ a_{ij} = 0$, in this case could make sense to simply define these nodes because don't depend on any other node, but then we also have no error that needs to be corrected because we already have exact solution here (probably only case where this can happen because if it didn't depend on anything and we didn't have solution how would we compute this value?), hence in this case it is appropriate that it is a fine grid node, but not appropriate that it depends on all other nodes
+	\item What happens if we assign whole row to be zero, do we get a problem if S is singular? No, because S could be singular anyway 
+	\item but then i get a problem in assigning coarse and fine grid points, this point does not depend on anyting, doesn't get assigned to fine grid points, should change that?! weird to implement but try it anyway to potentially get increase in speed
+	\item potentially doesnt make sense, want these values in there for error correction, ie. might want them in coarse grid!?
+	\item seem to have similar computational costs
+	\item in case of grid of size 6 x 5 (6 pts in space, 5 in time) the support of the eigenfunction is over the entire space domain (actually seems cut off) and in time only one row of nonzero values, all other values zero
+\end{itemize}
+
+\subsection*{Looking at full submatrices of H, including double DG grid points --- 30.09.18}
+
+\begin{itemize}
+	\item when we don't look at $x_+, x_-$ but only one of them then then the matrices are symmetric and there is no coupling between the timesteps ... but that is obvioulsy not what we want, hence look at both entries
+	\item problem: matrices not symmetric anymore: therefore no orthonormal basis of eigenvectors, we get complex eigenvalues and eigenvectors
+	\item how do we plot them in a good way? one dimension too few (got space \& time) as well as real and imaginary part 
+	\item and then how do we analyse them? \\
+	\textbf{Observations so far: } 
+	\item there do not seem to be any non-zero entries in lower part of grid, why is that? but according to matlab give full rank, so entries probably just very small
+	\item did I organise them correctly? vectors that come out are in matrix $V$, where each column is an eigenfunction, first entry corresponds to lower left corner of the grid, want to write it into matrix, where does the entry $a_{11}$ get plotted? --> gets plotted at $x(1), y(1)$, therefore should work alright
+	\item eigenvectors of constant areas seem very similar, I subtracted the different columns from each other and compared their norms, in a 40 by 40 system 32 of them have a "partner" in the other constant area, with a norm differnence of $< 10^(-4)$ however some of the eigenfunctions are also incredibly similar to each other ... 
+	\item now compared 2 areas from constant zero zone, if I use a tolerance of $10^{-3}$ and check whether eigenfunction just multiplied by -1 then they all have a partner in the other set
+	\item in comparison with a wave front set there are 0
+	\item so now question would be: how early in iterative process can you see this? do constant 1 and constant 0 need to be treated differently somehow? how are your test grid patches set up? and what happens if they are half on wavefront half on constant area? probably not going to hit it straight in the middle? and then maybe most importantly, how do I decide which eigenvectors on wavefront are the ones I should choose? which ones are the most important ones in shaping the solution? also how do I deal with real and imaginary part?
+\end{itemize}
+\end{document}

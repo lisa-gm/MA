@@ -1,0 +1,48 @@
+\documentclass[a4paper, 11pt]{report}
+\usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
+\usepackage{lipsum} %This package just generates Lorem Ipsum filler text. 
+\usepackage{fullpage} % changes the margin
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{framed}
+\usepackage{url}
+
+\setlength\parindent{0pt}
+\begin{document}
+
+\chapter{Prologue}	
+
+\begin{itemize}
+\item in discussion/beginning least-squares better than DG because ...
+\end{itemize}
+
+\chapter{Heart}
+some pictures if needed: 
+\url{https://en.wikiversity.org/wiki/WikiJournal_of_Medicine/Medical_gallery_of_Blausen_Medical_2014}
+
+\chapter{Random Collection}
+
+\section{LSFEM}
+\begin{itemize}
+	\item FEM completely determined by specifying the variational principle and approximation subspace, approximate solutions characterized as (quasi) projections (through Hilbert space inner product) of the exact weak solution onto the closed subspace (preface p.1 LSFEM book) \\
+	\item Q: for any given linear or nonlinear PDE problem, can one constrcut an unconstrained minimisation problem whose minimisers coincide with the solutions of the PDE and con those solutions be approximated by solving a sequence of unconstrained problems with convex quadratic functionals? \\
+	$\Rightarrow$ YES, due to residual minimisation, which has the potential to define a true inner product projection or a sequence of such projections that recover the solution (LSFEM book p.49)
+	\item Because the inner-product property of the linearized formulation is not affected by the order in which one takes the residual minimisation and linearisation steps, it is clear (....?!) that the recovery of a Rayleigh-Ritz-type setting for any PDE rests on our ability to do so for linear problem 
+
+	 
+\end{itemize}
+	
+\chapter{Epilogue}
+
+\underline{\textbf{Potential Ingredients}}
+
+\begin{itemize}
+	\item many thanks go out to Gabriele, who helped me so much pushing through mathematical and mental walls, I'm so sorry you couldn't be listed anywhere as a co-advisor, but I hope putting you first here can begin to make up for
+	\item I would like to apologize for those who I yelled at because they told me a master thesis of only 60-pages cannot be that much work. I definitely still think you are wrong. No let me correct myself, I experienced myself that you were wrong but I could have told you that by the means of non-violent communication.
+\end{itemize}
+	
+
+	
+\end{document}

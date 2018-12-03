@@ -1,0 +1,23 @@
+\begin{thebibliography}{1}
+
+\bibitem{franzone2014mathematical}
+P.~C. Franzone, L.~F. Pavarino, and S.~Scacchi, {\em Mathematical cardiac
+  electrophysiology}, vol.~13.
+\newblock Springer, 2014.
+
+\bibitem{cardiosmart}
+A.~C. of~Cardiology, ``cardiosmart, how the heart works,'' Oct. 2018.
+
+\bibitem{potse2006comparison}
+M.~Potse, B.~Dub{\'e}, J.~Richer, A.~Vinet, and R.~M. Gulrajani, ``A comparison
+  of monodomain and bidomain reaction-diffusion models for action potential
+  propagation in the human heart,'' {\em IEEE Transactions on Biomedical
+  Engineering}, vol.~53, no.~12, pp.~2425--2435, 2006.
+
+\bibitem{colli2004parallel}
+P.~Colli~Franzone and L.~F. Pavarino, ``A parallel solver for
+  reaction--diffusion systems in computational electrocardiology,'' {\em
+  Mathematical models and methods in applied sciences}, vol.~14, no.~06,
+  pp.~883--911, 2004.
+
+\end{thebibliography}

@@ -1,0 +1,111 @@
+\documentclass[../draft_1.tex]{subfiles}
+
+\begin{document}
+
+\chapter{Multigrid Methods}
+
+\section{General Idea}
+%%% MAINLY TAKEN FROM BRIGGS CHAPTER 3
+"lose notation again, not associated anymore with .... " \\
+Multigrid Methods is an important class of algorithms to iteratively solve/approximate linear systems of equations of the form $Au = f$ where $A \in \mathbb{R}^n$ is a (sparse) symmetric positive definite matrix.  \\
+
+It incorporates a variety of ideas that make use of 
+Core concept : \\
+Due to the structure of $A$ its eigenvectors form an orthonormal basis of $\mathbb{R}^n$. 
+
+
+
+which allows us to consider the solution $u$, the approximate solution $w$ as well as the difference between the two, the error $ e = u - w$ as a linear combination of this basis. Furthermore ... frequency ... eigenfunctions ... eigenvectors. Therefore it is possible to differentiate between high and low frequency error where one generally assumes ... (further discussion of what high and low frequency is later ... physical connection to solution, AMG $ \iff $ GMG )
+
+Standard iterative solvers like Jacobi, Gauss-Seidel, ... (need reference here) are generally known to reduce the high frequency error quite well. (Intuitively) this makes sense since the operator the matrix $A$ stems from/represents/is consists of local connections. sparsity of it. Local communication \\
+$\Rightarrow$ property of A not exactly of smoother ? \\ Hence this type of solvers are usually refered to as smoothers or relaxation schemes. 
+So if we therefore assume that they reduce the high frequency error quite efficiently it is seems natural to look for a way to effectively minimise the low frequency error. \\ 
+some pictures? \\
+\\
+If we suppose we were to project the low frequency error onto a coarse grid it would suddenly be of higher frequency compared to the grid. Obtain correction
+
+
+
+nested meshes
+
+elliptic problems
+
+
+In geometric multigrid we have a predefined sequence of nested meshes of specific coarsening factors (that can vary in different directions (and on different levels)). The coarse level spaces still represent the original problem just with a lower resolution. 
+
+Algebraic multigrid on the other hand does not have predefined coarse level spaces but instead they are chosen according to a given rule, that takes the values of $A$ (or other known properties of the problem) into account. This is favorable if .... but also more expensive to compute. 
+
+
+\section{Basic Algorithm} 
+
+%%%% ALSO BRIGGS P. 40, made more general 
+
+As mentioned before there is unique way to construct the ideal operators necessary. 
+
+Below we can see a multigrid V-cycle iteration scheme. Where we assume that $J, J-1, ..., 0$ denotes the grid levels from finest to coarsest.
+
+\begin{framed}
+	\underline{\textbf{Multigrid V-cycle}} 
+	\smallskip 
+	\\
+	Let $w^J$ be the initial guess (on the finest grid level). Then repeat the following until convergence criterium is met or number of iterations exceeds a certain threshold:
+	
+	\begin{itemize}
+		\item do $\nu_{J_a}$ smoothing steps on $A^J u^J = f^J$ with initial guess $w^J$
+		\item compute $f^{J-1} = I_{J}^{J-1} r^J$
+		\item do $\nu_{J-1_a}$ smoothing steps on $A^{J-1} u^{J-1} = f^{J-1}$ with initial guess $w^{J-1} = 0$ (vector)
+		\item compute $f^{J-2} = I_{J-1}^{J-2} r^{J-1}$
+		\item do $\nu_{J-2_a}$ smoothing steps on $A^{J-2} u^{J-2} = f^{J-2}$ with initial guess $w^{J-2} = 0$ (vector)
+		\item compute $f^{J-3} = I_{J-2}^{J-3} r^{J-2}$
+		
+		... \\
+		...
+		
+		\item solve $A^0 u^0 = f^0$
+		
+		... \\
+		...
+		
+		\item correct $w^{J-2} = w^{J-2} + I_{J-3}^{J-2} w^{J-3}$
+		\item do $\nu_{J-2_b}$ smoothing steps on $A^{J-2} u^{J-2} = f^{J-2}$ with initial guess $w^{J-2}$
+		\item correct $w^{J-1} = w^{J-1} + I_{J-2}^{J-1} w^{J-2}$
+		\item do $\nu_{{J-1}_b}$ smoothing steps on $A^{J-1} u^{J-1} = f^{J-1}$ with initial guess $w^{J-1}$		
+		\item correct $w^{J} = w^{J} + I_{J-1}^{J} w^{J-1}$
+		\item do $\nu_{J_b}$ smoothing steps on $A^{J} u^{J} = f^{J}$ with initial guess $w^{J}$
+	\end{itemize}	
+\end{framed}
+
+
+picture V-cycle?
+
+
+
+\section{Convergence Properties and Complexity}
+
+strengthened Cauchy - Schwarz necessary?
+
+
+\begin{Theorem}
+	Convergence.
+\end{Theorem}
+
+\section{Algebraic Multigrid}
+
+\subsection{Essential Concepts}
+
+
+\begin{Definition}
+	Strong dependence.
+\end{Definition}
+
+As briefly mentioned before 
+
+Concept of strong dependence. Different ways to define this, most commonly ...? 
+
+This is where later on the adaption to the monodomain equation is made because here we can take specific knowledge about the equation into consideration. 
+
+\subsection{Coarse Space Construction, Eigenvectors, ...}
+
+\section{Non-Linear Multigrid}
+
+\end{document}

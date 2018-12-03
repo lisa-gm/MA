@@ -1,0 +1,256 @@
+\documentclass[../draft_1.tex]{subfiles}
+
+\begin{document}
+
+
+\chapter{Problem Formulation}
+\section{Set Up}
+
+In this chapter we would like to tie the beforementioned concepts together to derive a problem formulation that can subsequently be turned into an algorithm solving partial differential equations of the type introduced in the prologue and will be formulated more precisely. In order to do so we will firstly set the ground for the overall framework we are looking at. We consider a space-time domain 
+\begin{ceqn}
+\begin{equation}
+\Omega = \mathcal{S} \times \mathcal{T}, \quad \mathcal{T} = (0,T), \ T>0 \text{ and }  \mathcal{S} \subset \mathbb{R}^N
+\end{equation} 
+\end{ceqn}
+where $\mathcal{T} $ represents the time domain and $ \mathcal{S}$ is the domain in space which we require to be Lipschitz regular. We may have a mixture of Dirichlet and Neumann boundary conditions on the boundary of $\Omega$ which we will denote by $\Gamma$ and are labeled as $\Gamma_D, \Gamma_N \subset \Gamma$ respectively. We further assume them to be such that the problem is well posed. The class of partial differential equations introduced in the prologue that we would like to solve for then reads as the following:
+\begin{ceqn}
+\begin{align}
+\begin{aligned}
+u_t - \nabla \cdot (D(x) \nabla u) &= f(u) \qquad \  (x,t) \in \Omega \\
+u &= g_D \quad \qquad (x,t)  \in \Gamma_D \\
+\nabla u \cdot n &= g_N \quad \qquad (x,t) \in \Gamma_N
+\end{aligned}
+\end{align}
+\end{ceqn}
+It describes a parabolic partial differential equation with a non-linear right hand side. Typically we will have that $u(x,0) = u_0 = g_D$ for all $ x \in \mathcal{S}$ and Neumann boundary conditions on the boundary of $\mathcal{S}$ for $t \in (0,T)$. 
+\smallskip
+\\
+The next step will be to derive an equivalent optimisation problem whose solution therefore then coincides with the solution of (4.2) at least in a weak sense (see for a further discussion of this ... ). While we saw in the previous section that it is possible to derive a least squares formulation that recovers the properties of the Rayleigh- Ritz setting without requiring too many assumptions, this does not mean that the resulting formulation will necessarily also be practical, where practical means that the discretisation is relatively easy to implement, efficient and robust while still maintaining a sufficient level of accuracy. Therefore to make the methodology of LSFEMs competitive compared to other approaches like Galerkin approximations further considerations need to be taken into account. One hindrance one often encounters is the beforementioned higher order operator arising in (3.25), that would require a higher regularity on the function space $X$. When considering a simple Poisson equation with Dirichlet boundary conditions this would for example imply that we would require the solution $u$ to be from $H_0^2$, instead of $H_0^1$ for which does not only limit the set of admissible solutions much more but for which is much harder to construct appropriate finite dimensional subspaces and therefore impractical to use. In order to succomb this obstacle we will recast (4.2) as a system of coupled of equations only containing first order derivatives
+
+\begin{ceqn}
+\begin{equation}
+\begin{aligned}
+u_t - div(\sigma) \ =& \ f(u) \qquad \qquad (x,t) \in \Omega \\
+\sigma \ =& \ D(x)  \nabla u \ \qquad (x,t) \in \Omega  \\
+u \ =& \ g_D  \ \ \qquad  \qquad (x,t) \in \Gamma_D \\
+\nabla u \cdot n \ =& \ g_N  \ \ \qquad \qquad (x,t) \in \Gamma_N
+\end{aligned}
+\end{equation}
+\end{ceqn}
+Hence we can apply the methodologies introduced in section (3.4) at the price of introducing an additional variable. This way we can hopefully avoid having to use Sobolev spaces of order higher than one for our trial space, that is we can use $(\sigma, u) \in X = H_{div}^1(\Omega) \times H^1$, where $H_{div}^1(\Omega)$ is defined as the following
+\begin{ceqn}
+	\begin{equation}
+	H_{div}^1(\Omega) = \{\sigma \in L^2(\Omega) | }
+	\end{equation}
+\end{ceqn}
+
+At the same time we would also like to stay away from Sobolev spaces of negative or fractional powers in the definition of the functional because they also complicate the computations. Nevertheless it is still not clear how indeed we can then choose the spaces appropriately. In order for theorem 2 (from the previous section, p. ...) to hold we require norm-equivalence, which can sometimes conflict with the aim for practicality and is a reoccuring problem in LSFEM. For further discussions we refer for example to chapter 2 of \cite{bochev2009least} and assume in this thesis that we have $f \in L^2(\Omega)$ which makes $Y = L^2(\Omega)$ a promising candidate for the definition of the least-squres functional. There are different ways to treat the boundary conditions in least-squares formulations. One possibility is to also include them in the functional as an additional term while another one would be to directly include them in the discretised system of the space. The former can lead to yet further complications when it comes to the computations because we also need to define an appropriate norm here as well as requiring the treatment of an additional term. Therefore we will assume here that the boundary is sufficiently regular and that the appropriate conditions can directly be imposed as part of the discretised system which will be discussed in more detail in the implementation section. Hence it now seems that we can define the functional $J$ in the following way
+\begin{align}
+\min_{ \substack{\sigma \in H_{div}^1(\Omega) \\ u \in H^1(\Omega)}} J(\sigma, u) = \frac{1}{2} c_1 || u_t - div(\sigma) - f(u) ||_{L^2(\Omega)} + \frac{1}{2} c_2 || \sigma - D(x) \cdot \nabla u || _{L^2(\Omega)} 
+\end{align}
+We can see that we additionally have scaling parameters. The factors of one half are introduced so that the derivatives of $J$ that we will be considering do not have an additional factor of two and the constants $c_1$ and $c_2$ can be used to give different weightings to the two terms without changing the actual minimiser at zero. This can ... It is also worth noting that in contrast to the example in section (3.4) $f = f(u)$ generally making the problem nonlinear. As mentioned in the prologue we consider an iterative approach to solve this problem and will therefore consider linearisations of the problem. But before going into more detail about that, let us consider the variational formulation of the coupled reaction-diffusion system (4.3)
+\\
+The associated bilinear form that we obtain looks as follows (what about $c_1, c_2$?)
+\begin{ceqn}
+\begin{equation}
+\begin{aligned}
+\mathcal{B} ([\sigma, u], [\tau, v]) = \left( \begin{pmatrix} 
+ I & - D \nabla \\
+-div & \frac{\partial}{\partial t}
+\end{pmatrix} 
+\begin{pmatrix}
+\sigma \\
+u
+\end{pmatrix}, 
+\begin{pmatrix}
+ I & - D \nabla \\
+-div & \frac{\partial}{\partial t}
+\end{pmatrix}
+\begin{pmatrix}
+\tau \\
+v
+\end{pmatrix} \right)
+\end{aligned}
+\end{equation}
+\end{ceqn}
+We can see that $\mathcal{B}$ is symmetric in the sense that $\mathcal{B}([\sigma, u], [\tau, v]) = \mathcal{B}([\tau, v], [\sigma, u])$. If we assume Dirichlet boundary conditions we also have that $\mathcal{B}$ is coercive.  \\
+TODO: discussion functions spaces
+
+approximate by finite dimensional subspace
+
+
+\section{Least Squares in Space - Time}
+
+
+
+\section{Linearisation}
+
+
+QUESTION OF WHERE TO LINEARISE ...
+
+
+
+So then we do actually end up with a system where we have, for $x = (\sigma, u)$, $w = (\tau, v) : \mathcal{A}(x, w) = \mathcal{F}_k(w)$ variational equation in each step?! 
+
+As we have seen in the above considerations, we have that $A$ is symmetric positive definite. And we can then consider 
+\begin{align*}
+\min_{x \in X} J_k(x, F_k) = || A x - F_k ||^2
+\end{align*}
+
+
+\section{Overall Problem}
+
+"In particular, for linear PDEs, residual minimization can lead to unconstrained optimization problems for convex quadratic functionals even if the original equations were not at all associated with optimiza- tion. If the PDE problem is nonlinear, then properly executed residual minimization leads to unconstrained minimization problems whose linearization22 gives rise to unconstrained minimization problems with convex quadratic functionals." (LSFEM book p.50)
+ 
+
+
+
+
+. Now we/I
+formulate as an optimisation problem where we would like to find the minimum over all admissible $u \in X$ where the function space $ X$ has to be defined appropriately such that the solution to the above equation corresponds to 
+
+
+
+Hence we have that a minimiser to the above formulation is at the same time a solution to our original problem. One can easily see that we have $J(\sigma, u) \geq 0$ for all $(\sigma, u) \in X_1 \times X_2$. Hence if $J(\sigma, u) = 0$ we must be at a minimum. The general strategy for solving these type of optimisation problems is more broad though, the idea is to find a pair $(\sigma, u) \in X_1 \times X_2$ for which $\nabla J(\sigma,u) = 0$  and $\nabla^2 J(\sigma, u)$ is positive definite which must consequently mean that $(\sigma, u)$ is a minimiser. \\
+Something like: We have seen above that every solution to the original problem is a solution to the minimisation problem and therefore if the solution to the original problem exists and is unique this one must be as well. Subsequently we proceed by determining the gradient and hessian of $J$ and as we will see later are at the same time deriving a weak formulation that we will attempt to solve. 
+
+In the following I will denote $|| \cdot ||_{L^2(\Omega \times (0,T))}$ by $|| \cdot ||_2$ for brevity. 
+choice of norms, why is this equivalent
+
+
+\section{Derivation of the Derivatives}
+
+In this section we will derive the first and second order directional partial derivatives of $J$ with respect to its two variables in order to then set them to zero. The problem at hand is more complicated than in the standard case because we also have to take into account that the right hand side $f$ is dependent on $u$ and will therefore also appear in the differentiation. We can generally assume that the first and second order derivatives of $J$ exist and are continuous almost everywhere since $|| \cdot ||_2$ is "continuouly differentiable" and $\sigma \in H_{div}^1(\Omega)$ and $u \in H^1(\Omega)$. Something no second order derivatives. In the following we will be determining the Gateaux derivatives of $J$, where we will be splitting the functional in three different terms that will be considered separately for greater clarity dividing it into the linear and nonlinear terms which is possible due to the linearity of the inner product. 
+
+The following notation will be used subsequently $ || x ||_2^2 = \langle x , x \rangle$ and $ x = (\sigma, u)$, $h = (\tau, v)$, $k = (\rho, w)$. So let us consider the following 
+\begin{equation}
+\begin{aligned}
+J_1(\sigma, u) &= \frac{1}{2}c_1\langle u_t - div(\sigma), u_t - div(\sigma) \rangle \\
+J_2(\sigma, u) &= \frac{1}{2} c_1 \langle 2 u_t - 2 div(\sigma) - f(u), - f(u) \rangle \\
+J_3(\sigma, u) &= \frac{1}{2} c_2\langle \sigma - \beta \nabla u, \sigma  - \beta \nabla u \rangle
+\end{aligned}
+\end{equation}
+where we can see that $J(\sigma, u) = J_1(\sigma, u) + J_2(\sigma, u) + J_3(\sigma, u)$. Now taking the partial directional derivatives we obtain, again taking the linearity of the inner product as well as its symmetry into account that
+\begin{equation}
+\begin{aligned}
+\frac{\partial J_1}{\partial \sigma} &= \lim_{\epsilon \rightarrow 0} \frac{J_1(\sigma + \epsilon \tau, u) - J_1(\sigma, u)}{\epsilon}  \\ 
+&= \lim_{\epsilon \rightarrow 0} \frac{c_1}{2 \epsilon} (\langle u_t - div(\sigma + \epsilon \tau), u_t - div(\sigma + \epsilon \tau) \rangle - \langle u_t - div(\sigma), u_t - div(\sigma) \rangle) \\
+&=  \lim_{\epsilon \rightarrow 0} \frac{c_1}{2 \epsilon} (\langle u_t, u_t \rangle - \langle u_t, div(\sigma) \rangle - \epsilon \langle u_t, div(\tau) \rangle - \langle div(\sigma), u_t \rangle + \langle div(\sigma), div(\sigma) \rangle \\ &+ \epsilon \langle div(\sigma), div(\tau) \rangle - \epsilon \langle div(\tau), u_t \rangle + \epsilon \langle div(\tau), div(\sigma) \rangle + \epsilon^2 \langle div(\tau), div(\tau) \rangle \\
+& - \langle u_t, u_t \rangle + \langle u_t, div(\sigma) \rangle + \langle div(\sigma), u_t \rangle - \langle div(\sigma), div(\sigma) \rangle) \\
+&= \lim_{\epsilon \rightarrow 0} \frac{c_1}{2 \epsilon} (- 2 \epsilon \langle u_t, div(\tau) \rangle + 2 \epsilon \langle div(\sigma), div(\tau) \rangle + \epsilon^2 \langle div(\tau), div(\tau) \rangle )
+\\
+\\
+&= - c_1 \langle u_t, div(\tau) \rangle + c_1 \langle div(\sigma), div(\tau) \rangle
+\end{aligned}
+\end{equation}
+We can see that the terms only containing $\sigma$ or $u$ cancel. We end up with a number of mixed terms as well as the terms containing purely $\tau$ and $v$. Due to the factor of $\frac{1}{2}$ in front of the inner products in $J$ and the symmetry of the inner product, the mixed terms add up 1 or $-1$ respectively. Again because of the bilinearity of the inner product we can write $\epsilon$ in front of the individual terms, often they will cancel with the factor of $\frac{1}{\epsilon}$ in front. If we now take the limit with respect to $\epsilon$ going to zero all terms with an $\epsilon$ in both arguments will tend to zero which gives us the remaining result. By proceeding analogously for equation $J_2$ and $J_3$ we obtain in these cases: 
+\begin{equation}
+\begin{aligned}
+\frac{\partial J_2}{\partial \sigma} &= c_1 \langle div(\tau), f(u) \rangle \\
+\\
+\frac{\partial J_3}{\partial \sigma} &= c_2 \langle \sigma, \tau \rangle - c_2 \beta \langle \tau, \nabla u \rangle
+\end{aligned}
+\end{equation}
+
+Let us now turn to the partial derivatives with respect to $u$. Here we obtain the following for $J_1$ and $J_3$:
+
+\begin{equation}
+\begin{aligned}
+\frac{\partial J_1}{\partial u} &=   \lim_{\epsilon \rightarrow 0} \frac{J_1(\sigma, u + \epsilon v) - J_1(\sigma, u)}{\epsilon}  \\
+&= \lim_{\epsilon \rightarrow 0} \frac{c_1}{2 \epsilon} (\langle (u + \epsilon v)_t - div(\sigma), (u + \epsilon v)_t - div(\sigma) \rangle - \langle u_t - div(\sigma), u_t - div(\sigma) \rangle) \\
+&= c_1 \langle u_t, v_t \rangle - c_1 \langle v_t, div(\sigma) \rangle \\
+\\
+\frac{\partial J_3}{\partial u} &= - c_2 \beta \langle \sigma, \nabla v \rangle + c_2 \beta^2 \langle \nabla u, \nabla v \rangle
+\end{aligned}
+\end{equation}
+In the case of $J_2$, we have to take the non-linearity of $f$ into account. If we assume that $f$ sufficiently smooth (what do we need exactly?!) that is $  \lim_{\epsilon \rightarrow 0} f(u + \epsilon v) = f(u) $ and $  \lim_{\epsilon \rightarrow 0} \langle f(u+ \epsilon v), f(u + \epsilon v) \rangle - \langle f(u), f(u) \rangle = \langle f'(u) \cdot v, f(u) \rangle + \langle f(u), f'(u) \cdot v \rangle$ which can be added due to symmetry.
+
+\begin{equation}
+\begin{aligned}
+\frac{\partial J_2}{\partial u} &= \lim_{\epsilon \rightarrow 0} \frac{J_2(\sigma, u + \epsilon v) - J_2(\sigma, u)}{\epsilon}  \\
+&= \lim_{\epsilon \rightarrow 0} \frac{c_1}{2 \epsilon} (\langle 2(u+ \epsilon v)_t - 2 div(\sigma) - f(u + \epsilon v), - f(u + \epsilon v) \rangle - \langle 2u_t - 2 div(\sigma) - f(u), -f(u) \rangle) \\
+&= \lim_{\epsilon \rightarrow 0} \frac{c_1}{2 \epsilon}  (-2 \langle u_t, f(u+ \epsilon v) \rangle + 2 \langle u_t, f(u) \rangle \\
+& - 2 \epsilon \langle v_t, f(u+ \epsilon v) \rangle \\
+&+ 2 \langle div(\sigma), f(u + \epsilon v \rangle - 2 \langle div(\sigma), f(u) \rangle \\
+&+ \langle f(u+ \epsilon v), f(u + \epsilon v) \rangle - \langle f(u), f(u) \rangle) \\
+\\
+&= - c_1 \langle u_t, f'(u) \cdot v \rangle - c_1 \langle v_t, f(u) \rangle + c_1 \langle div(\sigma), f'(u) \cdot v \rangle + c_1 \langle f(u), f'(u) \cdot v \rangle
+\end{aligned}
+\end{equation}
+
+Hence we obtain the following partial first order directional derivatives. 
+
+\begin{equation}
+\begin{aligned}
+J_{\sigma}[\tau] = \frac{\partial}{\partial \sigma}J(\sigma, u)[\tau] =& c_2 \langle \sigma, \tau \rangle + c_1 \langle div(\sigma), div(\tau) \rangle - c_2 \beta \langle \nabla u, \tau \rangle - c_1 \langle u_t, div(\tau) \rangle - c_1 \langle f(u), div(\tau) \rangle
+\end{aligned}
+\end{equation}
+\begin{equation}
+\begin{aligned}
+J_{u} [v]= \frac{\partial}{\partial u} J(\sigma, u)[v] =&  c_1 \langle u_t, v_t \rangle - c_1 \langle v_t, div(\sigma) \rangle - c_2 \beta \langle \sigma, \nabla v \rangle + c_2 \langle \nabla u, \nabla v \rangle  \\  
+&- c_1 \langle u_t, f'(u) \cdot v \rangle  - c_1 \langle v_t, f(u) \rangle  - c_1 \langle div(\sigma), f'(u) \cdot v \rangle + c_1 \langle f(u), f'(u) \cdot v \rangle 
+\end{aligned}
+\end{equation}
+Following the same principles one can determine the second order partial derivatives whose derivation will only be briefly outlined here for the most difficult terms which are those including $f$.  
+
+\begin{equation}
+\begin{aligned}
+\frac{\partial^2}{\partial \sigma^2} J [\tau] [\rho] =& c_2 \langle \rho, \tau \rangle + c_1 \langle div(\rho), div(\tau) \rangle  \\
+\end{aligned}
+\end{equation}
+\begin{equation}
+\begin{aligned}
+\frac{\partial^2}{\partial \sigma \partial u} [v][\tau] = \frac{\partial^2 }{\partial u \partial \sigma} [\tau] [v]=& - \langle \tau, \nabla v \rangle - \langle v_t, div(\tau) \rangle - \langle div(\tau), f'(u) v \rangle \\
+\end{aligned}
+\end{equation}
+
+\begin{equation}
+\begin{aligned}
+\frac{\partial^2 J}{\partial u^2} [v][w]&= \lim_{\epsilon \rightarrow 0} \frac{1}{\epsilon} (J_u(\sigma, u+ \epsilon w)[v] - J_u(\sigma, u)[v]) \\
+&= \lim_{\epsilon \rightarrow 0} \frac{1}{\epsilon} ( c_1 \langle (u + \epsilon w)_t, v_t \rangle + c_2 \langle \nabla (u + \epsilon w), \nabla v \rangle - c_1 \langle (u + \epsilon w)_t, f'(u + \epsilon w) \cdot v \rangle \\
+&- c_1 \langle v_t, f(u + \epsilon w) \rangle - c_1 \langle div(\sigma), f'(u + \epsilon w) \cdot v \rangle + c_1 \langle f(u + \epsilon w), f'(u + \epsilon w) \cdot v \rangle  \\
+&- J_u(\sigma, u)[v]) \\
+&= c_1 \langle w_t, v_t \rangle + c_2 \langle \nabla w, \nabla v \rangle \\
+&+ \lim_{\epsilon \rightarrow 0} \frac{1}{\epsilon}  (c_1 \langle u_t, f'(u+ \epsilon w) \cdot v \rangle - c_1  \langle u_t, f'(u) \cdot v \rangle \\
+&- \epsilon \cdot c_1 \langle w_t,  f'(u + \epsilon w) \cdot v \rangle \\
+&- c_1 \langle v_t, f(u + \epsilon w) \rangle + c_1 \langle v_t, f(u) \rangle \\
+& - c_1 \langle div(\sigma), f'(u + \epsilon w) \cdot v \rangle +  c_1 \langle div(\sigma), f'(u) \cdot v \rangle \\
+& +  c_1 \langle f(u + \epsilon w), f'(u + \epsilon w) \cdot v \rangle - c_1 \langle f(u), f'(u) \cdot v \rangle) \\
+\\
+\frac{\partial^2 J}{\partial u^2} [v][w] &= c_1 \langle w_t, v_t \rangle + c_2 \langle \nabla w, \nabla v \rangle + c_1 \langle u_t, w^T f''(u) v \rangle - c_1 \langle w_t, f'(u) \cdot v \rangle - c_1 \langle v_t, f'(u) \cdot w \rangle \\
+& - c_1 \langle div(\sigma), w^T f''(u) v \rangle + c_1 \langle f(u), w^T f''(u) v \rangle + \langle f'(u) \cdot w, f'(u) \cdot v \rangle 
+\end{aligned}
+\end{equation}
+
+Talk about "derivatives in direction" 
+
+Then the whole Gateaux derivative thing and I still need a good explanation how the directional derivatives which in this case are functions become the basis or test functions. 
+\smallskip
+\\
+We can reorganise the terms using the linearity of the differential operators as well as of the inner product. 
+
+Using the continuity of the .... If we also assume that $f$ is Gateaux diff / cts / ... on measurable sets ... more specifics ... 
+Only considering the terms containing $f$ we can see that ... 
+\\ 
+In order to obtain the variational formulation of our problem 
+\\
+Least Squares space time, end up with a large system, makes sense to allow for parallelisation (?) \\
+
+
+
+
+
+
+what is X?
+\bigskip
+\\
+show somehow that Thm 2.5 holds. \\
+
+In my case .... \\
+
+
+\section{Overall Assembly}
+
+
+
+\end{document}

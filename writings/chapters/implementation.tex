@@ -1,0 +1,115 @@
+
+\documentclass[../draft_1.tex]{subfiles}
+
+\begin{document}
+
+\chapter{Implementation and Numerical Results}
+
+
+Whole one dimensional thing therefore $H^1$ and $H^{div}$ the same and hence $\nabla(u) = div(u) = \frac{\partial u}{\partial x}$
+s 
+
+The Hessian that arises from the minimisation problem is not simply the discretisation of one differential operator as one would for example obtain when solving a Poisson equation. Instead it is a combination of the Laplacian operator in space, the first order advection in time and the linearised (and adapted) first and second order derivatives of $f(u)$.
+
+Therefore it is complicated/not really possibly to relate to physical things .... ? 
+\\
+What is the idea? \\
+\\ 
+
+The Newton iteration at hand looks as follows:
+\begin{equation}
+y_{k+1} = y_k - H_J^{-1}(y_k) (\nabla J(y_k))
+\end{equation}
+
+where $y_k = (\sigma_k, u_k)^T$ and the hessian $H_J$ is defined as $H_J(y_k) = D^2J(\sigma_k, u_k)$. 
+\\
+Written in matrix notation one obtains the following system which is split up in the linear and non-linear part:
+
+
+\begin{equation}
+\begin{aligned}
+\nabla J(y_k) = 
+\begin{bmatrix}
+- \langle u_t, div(\tau) \rangle + \langle \sigma_k, \tau \rangle + \langle div(\sigma_k), div(\tau)  - \langle \nabla u_k, \tau \rangle  \\
+\langle u_t, v_t \rangle - \langle v_t, div(\sigma_k)+ \langle \nabla u, \nabla v \rangle - \langle \sigma_k, \nabla v \rangle
+\end{bmatrix} \\
++ \begin{bmatrix}
++ \langle f(u_k), div(\tau) \rangle \\
+\langle div(\sigma_k), f'(u_k) v \rangle + \langle f(u_k), f'(u_k)v \rangle - \langle (u_k)_t, f'(u_k) v \rangle - \langle v_t, f(u) \rangle 
+\end{bmatrix}
+\end{aligned}
+\end{equation}
+
+\begin{equation}
+\begin{aligned}
+H_J(y_k) = \begin{bmatrix}
+\langle \tau, \rho \rangle + \langle div(\tau), div(\rho) \rangle & - \langle \rho, \nabla v \rangle - \langle v_t, div(\rho) \rangle  \\
+- \langle \tau, \nabla w \rangle - \langle w_t, div(\tau)& \langle v_t, v_t \rangle + \langle \nabla v, \nabla w \rangle 
+\end{bmatrix} \\
++ \begin{bmatrix}
+0 & - \langle div(\tau), f'(u_k) \cdot w \rangle \\
+- \langle div(\rho), f'(u_k) v \rangle & -\langle (u_k)_t, w^T f''(u_k) v \rangle + \langle div(\sigma_k), w^T f''(u_k) v \rangle + \langle f'(u_k)w , f'(u_k) w \rangle +... \\ &... + \langle f(u_k), w^T f''(u_k) v \rangle - \langle w_t, f'(u_k) v \rangle - \langle v_t, f'(u_k) w \rangle
+\end{bmatrix}
+\end{aligned}
+\end{equation}
+
+Using basis and test functions of the type .... P1. Approximate the integrals using Gaussian quadrature of degree three, therfore computing integrals of polynomials of degree one, which includes our basis functions, however not exact for $f$ which is represented as ... 
+The system one obtains from the first \\
+$u$ as a sum of basis functions, $\sigma$ as well \\
+
+
+reorganise these terms to set up the Newton iteration  
+how does my newton iteration look like exactly? 
+
+write that up ....
+
+
+put in additional terms for equation, for now $u_p$ is $u$ from previous iteration. 3rd line will go on rhs, last line as well, 2nd line on the left
+\begin{align*}
+\begin{bmatrix}
+A_{\sigma \sigma} &  \\
+& A_{uu}
+\end{bmatrix} \cdot
+\begin{bmatrix}
+\sigma \\
+u
+\end{bmatrix} + 
+\begin{bmatrix}
+0 & 0 \\
+diag(M_t \times G_h \cdot (f'(u) \cdot v)) & - diag(G_t \times M_h) \cdot 
+\end{bmatrix}
+= 
+\begin{bmatrix}
+- \langle div(\tau), f(u_p) \rangle \\
+\langle v_t, f(u_p) \rangle 
+\end{bmatrix}
+\end{align*}
+
+%\begin{align*}
+
+%\end{align*}
+Then leave it at the continuous problem formulation though.
+
+Next thing that we need is the space-time discretisation. 
+
+what changes between Dirichlet and Neumann boundary conditions? 
+
+Boundary conditions are directly enforced. How to get symmetry back? 
+
+Some sort of convergence test? 
+
+Eventually come to multigrid implementation. 
+
+The chosen basis function are from $Q_1$, that is the space of 
+For each basis function we have that  and  
+\begin{equation}
+\phi_{ij}(x_k, t_l) = \begin{cases} 1 \quad \text{if } (k,l) = (i,j)  \\ 0 \quad \text{otherwise} \end{cases}
+\end{equation}
+
+\section{Newton Implementation}
+
+how to make this better ....? line search requires gradient evaluations in inner loop
+
+
+
+\end{document}

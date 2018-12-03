@@ -1,0 +1,41 @@
+\documentclass[fleqn, a4paper, 11pt, bibliography=totoc]{report}
+\usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
+\usepackage{lipsum} %This package just generates Lorem Ipsum filler text. 
+\usepackage{fullpage} % changes the margin
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{framed}
+\usepackage{tikz}
+\usepackage{nccmath}
+\usepackage{subfiles}
+
+
+\setlength\parindent{0pt}
+
+\begin{document}
+\setlength{\mathindent}{0pt}
+\newtheorem{Definition}{Definition}
+\newtheorem{Theorem}{Theorem}
+
+\title{Adaptive Multigrid Solvers for Space-Time Discretisations} 
+\author{Lisa Gaedke-Merzh\"auser}
+	
+\maketitle 
+\tableofcontents
+	
+\subfile{chapters/prologue}
+\subfile{chapters/electrophysiology}
+\subfile{chapters/mathematical_ingredients}
+\subfile{chapters/problem_formulation}
+\subfile{chapters/multigrid_methods}
+\subfile{chapters/implementation}
+\subfile{chapters/conclusions}
+\subfile{chapters/epilogue}
+
+
+\bibliographystyle{ieeetr}
+\bibliography{bibfile}
+	
+\end{document}

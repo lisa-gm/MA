@@ -1,0 +1,72 @@
+\documentclass[../draft_1.tex]{subfiles}
+
+\begin{document}
+
+\chapter{Prologue}
+Find a way to go from very broad title to heart ....
+\bigskip
+\\
+I okay in Prologue / Epilogue ? 
+\bigskip
+\\
+structure of the thesis \\
+At the beginning of each chapter I will give an overview of its content and purpose as well as intuitive explanations of the core concepts and ideas it entails. \\
+\\
+specific versus how this can be generalised ...  \\
+\\ 
+non exhaustive overview cardiac electrophysiology, more details can be found ...
+\smallskip
+\\
+
+\begin{framed}
+	\underline{\textbf{Fahrplan -- how to tackle this}} 
+	
+	\begin{itemize}
+		\item  We reformulate it as a mimimisation problem $J$ whose solution coincides with the one of the original equation. 
+		\item Then we use a Newton iteration of the following form to solve this non-linear functional --- where do we linearise ...?
+		\item  That is we set up a linearised space-time Least Square Formulation in each iteration which gives rise to system of equations of the form $Au = f$.
+		\item  And then solve this using a multigrid method. 
+		\item we get an updated solution for our Newton iteration and can repeat the process
+	\end{itemize}	
+\end{framed}
+
+
+In order to obtain a meaningful solution for $u$ we need a number of properties to be fulfilled. In each Newton step the multigrid solver has to converge to the solution of the linearised least squares minimisation problem which mimics the corresponding linearisation of the original PDE. In the outer iteration we need the Newton method to converge to the minimum of our non-linear functional whose solution as mentioned above is supposed to correspond to the solution of the original problem.
+
+Our hearts are absolutely vital for our survival. While it normally functions with an incredible reliability and accuracy that does not even let us begin comprehend the complexity of the mechanisms involved, cardiovascular diseases are estimated to make up for more than 30\% of all world wide's death \cite{WHO_statistics}. Often this is related to abnormal heart contractions and thus understanding the processes involved in governing our heart beats is crucial to explain heart failues.  
+
+
+Traditionally partially differential equations are solved by recursively computing an approximation for all space-elements or nodes at a certain time $t_n$ and then using those results to compute the approximate solution at the next time step $t_{n+1}$. This seems like the natural way to perform operations, for one because this is how move through time, sequentially, and second because for any real life system the previous time steps often give a good approximation for the next one, so why not use that information. Computationally this has a large drawback 
+
+In times where we can no longer (easily or significantly) speed up sequential operations but can only increase the number of parallel tasks being 
+
+Picture: what does wavefront look like? 
+
+As we can see there are two (almost) constant regions, the activated and not-activated areas. 
+Wavefront where things are happening. 
+
+Would like to find a way to take this into account so that less computational resources are lost on the constant areas that but maintaining a high resolution at the wavefront. 
+\smallskip
+\\
+The aim is to achieve this through an adapted algebraic multigrid formulation (rule, ...?) that takes the specific behavior into account, that is 
+\smallskip
+\\
+The reason for us to consider a least squares formulation is due to the fact that the differential operator arising through the partial derivative in time is not symmetric. This can be seen by looking at the asymmetry of the primary variatinal formulation of the original problem. 
+\smallskip
+\\
+This would not be an issue if we were to solve the equation sequentially since our set up would then be a different one, where the differential operator would only consist of the diffusion term in space. However in the space-time setting that will be introduced in more detail later the first order derivative is part of the "differential FEM operator". By using a least squares finite element formulation we give rise to a symmetric system. How this is achieved will be explained in the follwoing sections.   
+\\
+this thesis tries to tie together a variety of ideas to obtain an efficient solver for ... Attempting to make use to the favourable attributes of each i... while trying to avoid the pitfalls. 
+\bigskip
+\\
+We would like to solve a parabolic reaction diffusion equation with a nonlinear forcing term, examples where these occur. here we focus on electrophysiology. \\
+The main ingredients are Newton iteration, formulate problem as two coupled first order system which are turned into a space-time lsfem system using a galerkin (?) approach? in each iteration we solve a linearisation of the the problem using a multigrid method with a ... smoother and a (something about coarsening strategy)
+\bigskip
+\\
+therefore for the reader not to get lost in one of the many intermediate steps leading to our overall set up I (is that okay?) will try also keep reminding ourselves where we are in the bigger picture in each individual section. 
+\\ 
+in the following chapter each of the individual puzzle pieces will be briefly introduced, important ideas, underlying concepts or different ways of how they work. Then we will slowly be starting to put the pieces together. That is forming a space-time least squares element setting for a non-linear equation which is then put into a Newton iteration where in each step a multigrid solve is required. 
+
+Short intro: Since we are dealing with a non-linear equation we cannot simply try to find to set up a linear it is necesary to employ . The usual approach is to try to set up a set up system of equations, 
+
+\end{document}

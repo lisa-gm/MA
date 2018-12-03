@@ -1,0 +1,369 @@
+\documentclass[../draft_1.tex]{subfiles}
+
+\begin{document}
+
+\chapter{Mathematical Ingredients}
+\section{Space-Time Solvers}
+
+Usually the time direction in partial differential equations is not used for parallelisation. But with increasingly complex models, especially when many small steps in time are required and the rise of massively parallel computers, the idea of a parallelisation of the time axis has experienced a growing interest. Once parallelisation in space saturates it only seems natural to consider this remaining axis for parallelisation, after all time is just another dimension. However evolution over time behaves differently from the spatial dimensions, in the sense that it follows the causality principle. Meaning that the solution at later times is determined through earlier times whereas the opposite does not hold. This is not the case in the spatial domain. 
+\smallskip
+\\ 
+The earliest papers on time parallelisation go back more than 50 years now to the 1960's, where it was mostly a theoretical consideration, before receiving an increasingly growing interest in the past two decades due to its computational need and feasibility. As mentioned in \cite{gander201550}, on which this section is mainly based on and can be referred to for further details, time parallel methods can be classified into 4 different approaches, methods based on multiple shooting, domain decomposition and waveform relaxation, space-time multigrid and direct time parallel methods. Below a very brief overview of the main ideas behind these methods through some examples before taking a closer look at the strategy employed in this thesis. 
+\smallskip
+\\
+\textbf{Shooting type time parallel methods} use a decomposition of the space-time domain into time slabs $\Omega_j$, that is if $\Omega = \mathcal{S} \times [0, T]$ then $ \Omega_j =  \mathcal{S} \times [t_{j-1}, t_j]$ with $0 = t_0 < t_1 < .... < t_m = T$. Then there is usually an outer procedure that gives an approximated solution $y_j$ for all $ x \in \mathcal{S}$ at $t_j$, with $y_j = y(x, t_j)$, where $y$ denotes solution (careful with approximation and solution...) which are then used to compute solutions in the time subdomains $\Omega_j$ independently and in parallel and give rise to an overall solution. One important example of how this can be done was given by Lions, Maday and Turinici in 2001, with an algorithm called parareal. A generalized version of it for a nonlinear problem of the form
+\begin{equation*}
+y' = f(y), \quad y(t_0) = y_0
+\end{equation*}
+can be formulated as follows using two propagation operators:
+\begin{enumerate}
+	\item $G(t_j, t_{j-1}, y_{j-1})$ is a coarse approximation of $y(t_j)$ with initial condition $y(t_{j-1}) = y_{j-1} $
+	\item $F(t_j, t_{j-1}, y_{j-1})$ is a more accurate approximation of $y(t_j)$ with the initial condition $y(t_{j-1}) = y_{j-1}$.
+\end{enumerate}
+Starting with a coarse approximation $Y_j^0$ for all points in time $t_j$ using $G$, the algorithm computes a correction iteration 
+\begin{equation*}
+Y_{j}^{k} = F(t_j, t_{j-1}, Y_{j-1}^{k-1}) + G(t_j, t_{j-1}, Y_{j-1}^{k}) - G(t_j, t_{j-1}, Y_{j-1}^{k-1})
+\end{equation*}
+Convergence? Extra work? General?
+\smallskip
+\\
+In \textbf{space-time domain decomposition methods} the idea is to divide the domain $\Omega$ into space slabs, that is $\Omega_i = \mathcal{S}_i \times [0,T]$ where $\mathcal{S} = \cup_{i=1}^n \mathcal{S}_i$. Then again an iteration or some other method is used to compute a solution on the local subdomains which can be done in parallel. A major challenge here is how to adequately deal with the values arising on the interfaces of the domain. 
+\smallskip
+\\
+\textbf{Direct Solvers in Space-Time}. Here varying techniques are emplyed, one example is a method introduced in 2012 by S. G\"uttel called ParaExp, it is only applicable to linear initial value problems and most suitable for hyperbolic equations, where other time parallel solvers often have difficulties. To understand the underlying idea let us consider the following problem:
+\begin{equation}
+y'(t) = Ay(t) + g(t), \quad t \in [0,T], \quad u(0) = u_0
+\end{equation}
+One then considers an overlapping decomposition of the time interval $0 < T_1 < T_2 < .... < T_m = T$ into subintervals $[0, T_m], [T_1, T_m], [T_2, T_m], ..., [T_{m-1}, T_m]$. Now there are two steps to be performed. First solves a homogenous problem for the initial parts of each subdomain, that is $[0,T_1], [T_1, T_2], ... , [T_{m-1}, T_m]$, which is non-overlapping and can therefore be done in parallel:
+\begin{equation}
+v_j'(t) = A v_j(t) + g(t), \quad v_j(T_{j-1}) = 0 \quad t \in [T_{j-1}, T_j]
+\end{equation}
+and afterwards the overlapping homogeneous problem is solved:
+\begin{equation}
+w_j'(t) = A w_j(t), \quad w_j(T_{j-1}) = v_{j-1}(T_{j-1}), \quad t \in [T_{j-1}, T]
+\end{equation}
+Due to linearity the overall solution can be obtained through summation
+\begin{equation}
+y(t) = v_k(t) + \sum_{j=1}^{k}w_j(t) \quad \text{with } k \text{ s.t. } t \in [T_{k-1}, T_k]
+\end{equation}
+This way we obtain the general solution over the whole time interval. At first it is not clear why this approach gives a speed up since there is great redundency in the overlapping domains of the homogeneous problems which also need to be computed over big time intervals. The reason behind this is that the homogeneous problems can be computed very cheaply. They consist of matrix exponentials for which methods of near optimal approximations are known [\cite{}]. 
+\smallskip
+\\
+In \textbf{space-time multigrid methods}, the parallelity comes from the discretisation of the space-time domain, that is considered as one, as mentioned before in the section on [FEM discretisation]. As a rather recent example of this type we will consider an approach by M. Gander and M. Neum\"uller \cite{gander2016analysis}. Suppose we are considering a simple heat equation of the form $u_t - \Delta u = f $ and discretise it in a space - time setting using an implicit method like Backward Euler in time and another method, for example a discontinuous Galerkin approach in space. One then obtains a block triangular system of the following form
+\begin{equation}
+\begin{aligned}
+\begin{bmatrix}
+A_1 & & & & \\
+B_2 & A_2 & & & \\
+& B_3 & A_3 & & \\
+& & ... & ... & \\
+& & & B_m A_m 
+\end{bmatrix}
+\begin{bmatrix}
+u_1 \\
+u_2 \\
+u_3 \\
+... \\
+u_m 
+\end{bmatrix}
+= \begin{bmatrix}
+f_1 \\
+f_2 \\
+f_3 \\
+... \\
+f_m 
+\end{bmatrix}
+\end{aligned}
+\end{equation}
+For the multigrid iteration they apply a block Jacobi smoother inverting each of the space blocks $A_j$ before using a standard restriction operators in space - time to jump to a coarser grid, which is then being applied recursively. Choosing the right parameters one can achieve excellent scaling results for large systems. 
+\smallskip
+\\
+Some solution approaches in space - time can be categorized in multiple approaches, for example is a 2 - level multigrid method starting with an initial guess obtained from the coarse grid and using an upwind (?) smoother the same as a simple parareal appraoch \cite{}  
+\smallskip
+\\
+In this thesis we will consider a space-time multigrid approach but not of the previous type for the beforementioned symmetry reason (see section [...]) but instead go for a more straight forward space-time finite element assembly in addition to a first order least squares formulation that will be introduced in the following sections. For now we will only have a more detailed look at the space-time formulation that differs from a common finite element approach in the sense that our basis functions $\{\phi_1, ..., \phi_z\}$ which were introduced in section [...] are functions of time and space, i.e. $\phi_i = \phi_i(x,t)$. Hence it is possible to assemble one big system of equations that covers the entire space - time domain which can then be solved using a multigrid approach and differs from (2.15) in the sense that there are symmetric upper and lower off-diagonal blocks. 
+\bigskip
+\\
+future influencing the past? upwind scheme?
+\bigskip
+\\
+The discretisation of the domain can be visualised as shown in figure [...].
+\begin{figure}[ht!]
+	\centering
+	
+	\begin{tikzpicture}
+	% Draw the grid
+	\tikzset{help lines/.style={color=black}}
+	\draw[thin,step=0.5cm,help lines] (0,0) grid (4.5,4.5);
+	
+	% draw little line to indicate 
+	\foreach \x in {2} {     % for x-axis
+		\draw [thick] (\x,0) -- (\x,-0.2);
+	}
+	\foreach \y in {3} {   %% for y-axis
+		\draw [thick] (0,\y) -- (-0.2,\y);
+	}
+	% draw label
+	\foreach \x in {2} { \node [anchor=north] at (\x,-0.2) {$x_k$}; }
+	\foreach \y in {3} { \node [anchor=east] at (-0.2,\y) {$t_l$}; }
+	
+	%\foreach \x in {0} { \node [anchor=north] at (\x,-0.2) {$(x_0, 0)$}; }
+	\foreach \x in {4.6} { \node [anchor=north] at (\x,5.1) {$\mathbf{\Omega}$}; }
+	
+	% Draw axes
+	\draw[ultra thick,-latex] (0,0) -- (5,0) node[below] {space};
+	\draw[ultra thick,-latex] (0,0) -- (0,5) node[right]{time};
+	% the co-ordinates -- major
+	
+	% the co-ordinates -- minor
+	\end{tikzpicture}
+	
+\end{figure}
+
+Where one has $n+1$ points in space and $m+1$ points in time. The points $(x_k, t_l)$ are then organized in the following manner, the $i$-th entry references $i = (n+1) \cdot l + k$. That is we first run through all elements of a certain time step before moving on to the next time step which will then be assembled into one overall system. Details of how this is done will follow in the multigrid section. For simplicity we will only consider equidistant grids in each direction, where $h_t$ denotes the size (better word?) of a mesh cell in time direction and $h_{x_i}$ denote the size in the respective space dimension. 
+\bigskip
+\\
+--------- short transition ----------- different ways to discretise the eqn on the mesh -------- one class of possibilities FEM -----
+
+\section{Newton's Method}
+\subsection{Derivation}
+[source Briggs] One of the most well-known and most commonly used method to solve a non-linear problem is Newton's method which we will also be employed here and which we will derive in the following section and briefly discuss its advantages and disadvantages. So suppose we have an equation
+$F : \Omega \rightarrow \mathbb{R}^n$, with $F(x) = [0, 0, ..., 0]^T$, $x \in \mathbb{R}^n$, and $F \in C^1$, where we would like to determine the unknown root $x$. We consider a Taylor series expansion for an initial guess $x$:
+\begin{equation}
+\begin{aligned}
+F(x + h) = F(x) + \nabla F(x) \cdot h + o(||h||^2) \quad x \in \Omega.
+\end{aligned}
+\end{equation}
+If we now neglect the higher order terms, setting $F(x+h) = 0$ and replacing it by its first order Taylor approximation $F(x) + \nabla F(x) \cdot h$, which we can then solve for $h$, assuming that $\nabla F(x)$ is non-singular and use the result to update our initial guess $x$ we obtain 
+\begin{equation}
+\begin{aligned}
+x = x - [\nabla F(x)]^{-1} F(x). 
+\end{aligned}
+\end{equation}
+(maybe better to write as an iteration)
+
+\subsection{Convergence}
+
+The convergence of Newton's method under certain conditions in the one dimensional case is established and proven relatively easily, however it requires much more work to establish the existence of and convergence to a root in the multidimensional case. There are different ways to do so, requiring (slightly) varying assumptions and hence obtaining (slighlty) different results. Here we will restrict ourselves to a classical version which was first shown by L. Kantorovich in 1940 and states the following:
+
+\begin{Theorem}{Newton-Kantorovich.} \\
+	State here? Not too extensive? 
+\end{Theorem}
+
+While this theoretically establishes conditions for convergence, it is in practice ususally impossible to know if the necessary criteria are met. What we can however say, is that the likelyhood of converging at all and maybe even to the desired solution usually increases drastically if our initial guess is relatively close to the solution, assuming that "close" is defined in a meaningful way. Therefore one often solves a simplified related problem, commonly some sort of linearisation of the original problem which hopefully admits a similar solution that can then serve as a first initial guess. We will see in the following sections that the same idea will be applied here. 
+\bigskip
+\\
+\textit{Or better something from Deuflhard here?!}
+\bigskip
+\\
+
+LINE SEARCH, globalisation, hackbusch, trust region \\
+\\
+--- short transition section --- So in each Newton step we consider a linearisation of our problem over the entire space - time domain, that we would like to be able to tackle at once and not solve for each time step consecutively. The following section gives an insight of how this can be done and explain why this might be a good idea -----
+
+\section{Finite Element Methods}
+
+In order to find a numerical estimate to the solution of our partial differential equation we need a way to approximate the operators involved. And while there are many different ideas of how to do so the one we have chosen to use here is a finite element approach. They have shown to be a very powerful ... and are based on ... [source ?] 
+
+Gunzberger, LSFEM, preface : "since their emergence in the early 1950s, fem have become one of the most versatile and powerful methodologies for the approsimate numercial solutioooon of pdes."
+
+"a fem is first and foremost a quasi-projection scheme. ... approximate solutions are then characterized as quasi-projections of the exact (weak) solutions onto the closed subspace.
+
+FEM: do not directly deal with directly deal differential operators but through weak formulations leads to functional approximation as opposed to operator approximation
+
+\subsection{General Setting}
+
+The purpose of the subsequent section is not to establish the whole finite element framework from scratch but rather to provide the introduction of a unified notation that will be referred to throughout this thesis, a recollection of the most important properties needed. The foundation of every finite element formulation is finding an appropriate weak formulation which includes the choice of suitable trial and solution spaces. This is especially applicable in the case of a least squares approach and will be discussed in further detail in section [...]. 
+
+Given Banach spaces $X$ and $Y$, a bounded linear operator $\mathcal{A} : X \rightarrow Y$, $f \in Y$, we consider the problem:
+\begin{ceqn}
+\begin{align}
+\text{Find } u \in X \text{ such that } \quad \mathcal{A} u = f \text{ in } Y.
+\end{align}
+\end{ceqn}
+
+(when do we have existence and uniqueness of solutions ...?!) We are interested in the case where $\mathcal{A}$ represents a partial differential operator. As mentioned before the process of discretisation begins with turning (3.6) into a suitable variational equation which is defined in terms of two Hilbert spaces $V$ and $W$, a continuous bilinear form $a(\cdot, \cdot): V \times W \rightarrow \mathbb{R}$, and a bounded linear functional $L_f(\cdot): W \rightarrow \mathbb{R}$ and is given by
+\begin{equation}
+\begin{aligned}
+\text{Find } u \text{ in } V \text{ such that:  } a(u, v) = L_f(v) \quad \forall v \in V
+\end{aligned}
+\end{equation}
+An operator equation such as (3.6) may be reformulated into several different variational equations. We can see that we were originally seeking for a solution $u$ in the space $X$ whereas in the weak formulation one attempts to find a solution in the space $V$, that is generally not defined in $X$, and therefore often referred to as a weak solution. Hence the relationship between the spaces $X, Y$ and $V, W$, and the operator $\mathcal{A}$ and the bilinear form $a(\cdot, \cdot)$ are of great importance, and while one generally wants the solution of the variational formulation (3.7) to be a "good" representation of the solution of the original problem (3.6), the definition of what that exactly means varies and usually depends on the nature of the problem and often some practicality issues. One possibility could be ... or too much? Therefore we have denoted them by the same letter but to be precise the solution $u$ appearing in the subsequent paragraphs will always be referring to $u \in V$, because our aim now is to solve the variational formulation.
+
+So let us assume for now that we have found a suitable weak formulation of the operator equation where trial and test space are equal, that is $V = W$. In addition to $a(\cdot, \cdot)$ being linear and bounded, which is equivalent to the continuity, we will also require it to be symmetric, hence we have more specifically that
+\bigskip
+\\
+$a(v_1, v_2) = a(v_2, v_1)$ for all  $v_1, v_2 \in V$ (symmetry) \\
+$a(v_1, v_2) \leq \beta ||v_1||_V \cdot ||v_2||_V $, for all $v_1, v_2 \in V$ and $\beta > 0$ (boundedness) \\ $a(v_1, v_1) \geq \alpha ||v_1||_V^2$, for all $v_1 \in V$ and $\alpha > 0$ (coercivity)
+\bigskip
+\\
+and $f \in V^*$, the dual space of $V$. Furthermore let us have homogeneous Dirichlet boundary conditions, that is $u = v = 0$ on $\partial \Omega$. Then by \textit{Riesz representation theorem/Lax-Milgram} we obtain that there exists a unique solution $u \in V$ that solves (2.2). And additionally the existence of an operator $\tilde{\mathcal{A}} : V \rightarrow V^*$ given by
+\begin{align}
+\mathcal{A}(u,v) = \langle \tilde{\mathcal{A}} u, v \rangle_{V^*, V} \quad \forall u, v \in V
+\end{align}
+where $\langle \cdot, \cdot \rangle$ denotes the duality pairing (more...) between $V$ and its dual space $V*$. Likewise we obtain for $L_f(\cdot)$ the existence of an unique (!) element $\tilde{f}$ through the relation
+\begin{align}
+L_f(v) = \langle \tilde{f}, v \rangle_{V^*, V} \quad \forall v \in V
+\end{align} 
+The variational formulation is therefore equivalent to the problem 
+
+\begin{align}
+\text{Find } u \in V \text{ such that } \quad \tilde{\mathcal{A}} u = \tilde{f} \quad  \text{in } W^*
+\end{align}
+
+In the special case that $X = U$ and $Y = W^*$ we have that $ \mathcal{A} = \tilde{\mathcal{A}}$ and $ f = \tilde{f}$ but this is generally not the case. 
+
+\subsection{Discretisation}
+A key element to actually finding a good approximation $u^h$ of $u$ is to choose a suitable finite dimensional (sub)space $V_h$ where we search for the solution. We will consider a \textit{Galerkin approach}, where we indeed have $V_h \subset V$, which itself is again a Hilbert space and therefore the projected finite dimensional problem called Galerkin equation looks as follows
+\begin{equation}
+\begin{aligned}
+\text{Find } u_h \text{ in } V_h \text{ such that:  } a(u_h, v_h) = L_f(v_h) \quad \forall v_h \in V_h
+\end{aligned}
+\end{equation}
+and has a unique solution itself. Since (2.2) holds for all $v \in V$ it also holds for all $v \in V_h$, and hence $a(u-u_h, v_h) = 0$, a key property known as Galerkin orthogonality. With respect to the energy norm induced by $a(\cdot, \cdot)$, $u_h$ is a best approximation to $u$, in the sense that 
+\begin{equation}
+\begin{aligned}
+|| u - u_h ||_a^2 =& \ a(u-u_h, u-u_h) = a(u-u_h, u) + a(u-u_h, v_h) \\
+\leq& \ ||u - u_h ||_a \cdot || u - v_h ||_a \quad \forall v_h \in V_h.
+\end{aligned}
+\end{equation}
+We derive the third term from the second by using the Galerkin orthogonality. If we now divide both sides by $|| u - u_h||_a$, we obtain that $|| u - u_h ||_a \leq || u -v_h||_a$ for all $v_h \in V_h$. We also have an estimate on $u - u_h$ in terms of the  norm $|| \cdot ||_V$. Using the coercivity constant $\alpha$ and the bound from above $\beta$, we see that
+\begin{equation}
+\begin{aligned}
+\alpha || u - u_h ||_V^2 \leq& \ a(u-u_h, u-u_h) = a(u-u_h, u- u_h) = a(u-u_h, u +v_h - v_h - u_h ) \\
+=& \ a(u-u_h, u - v_h) + a(u - u_h, v_h - u_h) = a(u-u_h, u - v_h) \\
+\leq& \ \beta || u - u_h ||_V \cdot || u - v_h||_V  \quad \forall v_h \in V_h.
+\end{aligned}
+\end{equation}
+Dividing by $\alpha || u - u_h || $ we have shown \textit{C\'{e}a's lemma}, which states that (accuracy ... constant thing):
+\begin{equation}
+\begin{aligned}
+|| u - u_h ||_V \leq \inf_{v_h \in V_h} \frac{\beta}{\alpha} || u - v_h ||_V, \quad u \in V, u_h \in V_h
+\end{aligned}
+\end{equation}
+where $u$ is the solution to (2.2) and $u_h$ to the corresponding finite dimensional problem (2.3). Hence accuracy of our approximation depends in this case on the constants $\alpha$ and $\beta$. 
+\bigskip
+\\ 
+If we assume that we have a discretisation $\Omega_h$ of our domain $\Omega$, where $h > 0$ is a parameter depending on the mesh size.  We furthemore want to assume that as $h$ tends to zero this implies that $dim(V_h) \Rightarrow \infty$. Additionally let $\{V_h : h > 0\}$ denote a family of finite dimensional subspaces of V, for which we assume that
+\begin{equation}
+\begin{aligned}
+\forall v \in V : \quad \inf_{v_h \in V_h} || v - v_h||_V \rightarrow 0 \ \text{as } h \rightarrow 0.
+\end{aligned}
+\end{equation}
+That is with a mesh size tending to zero there exist increasingly precise approximations for every $v \in V$, whose infimum tends to zero as the mesh size does. But then we can also conclude by  the beforementioned properties (3.24) and (3.25) that $|| u - u_h||_V \rightarrow 0 \text{ as } h \rightarrow 0$. Hence our approximate solution $u_h$ will converge to the weak solution $u$. 
+
+\subsection{Matrix Formulation}
+After establishing these theoretical properties our aim is now to construct a linear system of equations that can be solved efficiently. Since $V_h$ is a finite dimensional Hilbertspace, it has a countable basis $\{\phi_1, \phi_2, ..., \phi_n \}$ and we can write every element in $V_h$ as a linear combination of such, that is we also have $u_h = \sum_{j=1}^{n} u_j \phi_j$, where $u_1, ..., u_n$ are constant coefficients. Writing (3.21) in terms of the basis we obtain by linearity
+\begin{equation}
+\begin{aligned}
+a(\sum_{j=1}^{n} u_j \phi_j, \phi_i) = \sum_{j=1}^{n} u_j a(\phi_j, \phi_i) = L_f(\phi_i) \quad \forall \phi_i, \ i = 1, 2, ..., n 
+\end{aligned}
+\end{equation}
+
+If we now write this as a system of the form $A_h U_h = L_h$ with entries entries $(A_h)_{ij} = a(\phi_j, \phi_i)$, $(L_h)_i = L_f(\phi_i)$, 
+enough for basis
+Therefore each matrix entry represents the evaluation of an integral expression. 
+\bigskip
+\\
+The question of how to choose favorable subspaces $V_h$, and a suitable basis for it has no trivial answer and depends on many factors and goes hand in hand with the question of how to best discretise the domain. Generally it seems like a sensible aim to opt for easily computable integrals giving rise to a linear system that is in turn as easy as possible to solve. Hence one objective might be to choose the basis $\{\phi_1, ..., \phi_n \}$ such that $supp(\phi_i) \cap supp(\phi_j) = \emptyset$ for as many pairs $(i,j)$ as possible. Since this would ideally give rise to a sparse system of equations. It is also worth noting that due to the symmetry of $a(\cdot, \cdot)$, we have that $a_{ij} = a_{ji}$. 
+\bigskip
+\\
+Already be more concrete here or wait until least squares section? ---
+If one considers $V = H_0^1(\Omega)$, subspaces of polynomials, requirements on $f$ ... 
+
+\section{Least Squares Finite Element Methods}
+
+In this section which is based on (\cite{bochev2009least}, mainly ch. 2.1) we would like to introduce least squares finite element methods (LSFEMs), a class of methods for finding the numerical solution of partial differential equations that incorporates two main ideas concepts; the concept of finite elements and optimisation problems. They are based on the minimisation of functionals which are constructed from residual equations. Historically finite element methods were first developed and analysed for problems like linear elasticity whose solutions describe minimisers for convex, quadratic functionals over infinite dimensional Hilbert spaces and therefore actually emerged in an optimisation setting. A Rayleigh-Ritz approximation of solutions of such problems is then found by minimising the functional over a family of finite dimensional subspaces. For these classical problems the Rayleigh-Ritz setting gives rise to formulations that have a variety of favourable features and therefore have been and continue being highly successful.  Among those are that:
+
+\begin{enumerate}
+	\item \textit{general regions} and boundary conditions can be treated in a systematic way relatively easily
+	\item conforming finite element spaces are sufficient to guarantee stability and optimal accuracy of the approximate solutions
+	\item all variables can be approximated using the same finite element space, e.g. the space of degree $n$ piecewise polynomials on a particular grid
+	\item the arising linear systems are 
+	\subitem (i) sparse
+	\subitem (ii) symmetric
+	\subitem (iii) positive definite
+\end{enumerate}
+
+Hence finite element methods originally emerged in the environment of an optimisation setting but have since then been extended to much broader classes of problems that are not necessarily associated to a minimisation problem anymore and generally lose the desirable features of the Rayleigh-Ritz setting except for 1 and 4 (iii). Least squares finite element methods can be seen as a new attempt to re-establishing as many advantageous aspects of the Rayleigh-Ritz setting as possible if not all for more general classes of problems. In the following section we will have a look at a classical straightforward Rayleigh-Ritz setting to familiarise ourselves with the set up before extending it to the more complicated class of problems introduced in [...]. 
+\smallskip
+\\
+We will consider a similar set up as in the finite element section (3.3.1) but with $X$ and $Y$ being Hilbert spaces, $f \in Y$ and a bounded, coercive linear operator $\mathcal{A}: X \rightarrow Y$, that is for some  $\alpha, \beta > 0$:
+\begin{ceqn}
+\begin{align}
+\quad \alpha || u ||_X^2 \leq || \mathcal{A} u ||_Y^2 \leq \beta || u ||_X^2 \quad \forall u \in Y
+\end{align} 
+\end{ceqn}
+we consider the problem and the least squares functional:
+\begin{ceqn}
+\begin{align}
+ \text{Find } u \in X  \text{ such that} \ \mathcal{A} u = f \text{ in } Y	
+\end{align}
+
+\begin{align}
+J(u; f) = || \mathcal{A} u - f ||_Y^2
+\end{align}
+\end{ceqn}
+which poses the minimisation problem:
+ \begin{ceqn}
+\begin{align}
+\min_{u \in X} J(u; f)
+\end{align}
+\end{ceqn}
+where we can see that the least squares functional (3.21) measures the residual of (3.20) in the norm of $Y$ while seeking in for a solution in the space $X$. It follows that if a solution of the the problem (3.20) exists it will also be a solution of the minimisation problem. And a solution of the minimisation problem due to the definition of a norm will be a solution to (3.20) if the minimum is zero. If we consider $f = 0$, and using (3.19) we obtain that 
+\begin{ceqn}
+	\begin{align}
+	\quad \alpha^2 || u ||_X^2 \leq J(u; 0)  ||_Y^2 \leq \beta^2 || v ||_X^2 \quad \forall u \in X
+	\end{align} 
+\end{ceqn}
+a property of $J(\cdot, \cdot)$ which we will call norm equivalence, which is an important property when defining least squares functionals. We can derive a candidate for a variational formulation of the following form 
+\begin{ceqn}
+\begin{align}
+a(u,v) = (\mathcal{A}u, \mathcal{A}v)_Y \text{ and } L_f(v) = (\mathcal{A}v, f)_Y \quad \forall u,v \in X
+\end{align}
+\end{ceqn}
+where $(\cdot, \cdot)_Y$ again denotes the innerproduct on $Y$, which will turn out to have all the desired properties. The operator form of (3.21) in the least squares setting is equivalent to the normal equations
+\begin{ceqn}
+\begin{align}
+\mathcal{A}^* \mathcal{A} u = \mathcal{A}^* f \quad \text{in } X
+\end{align}
+\end{ceqn}
+and corresponds to equation (3.9), with $\tilde{\mathcal{A}} = \mathcal{A}^* \mathcal{A}$, $\tilde{f} = \mathcal{A}^* f $ and $\mathcal{A}^*$ being the adjoint operator of $\mathcal{A}$. We can then move on to limiting our problem to a finite dimensional setting, where we choose a family of finite element subspaces $X^h \subset X$, parametrised by $h$ tending to zero and restricting the minimisation problem to the subspaces. The LSFEM approximation $u^h \in X^h$ to the solution $x \in X$ of the infinite dimensional problem is the solution of the discrete minimisation problem 
+\begin{ceqn}
+\begin{align}
+\min_{u^h \in X^h} J(u^h; f)
+\end{align}
+\end{ceqn}
+which is due to the fact that $X^h$ is again a Hilbert space and therefore the same properties hold. Similarly to section (3.3.3) we can choose a basis $\{\phi_1, ..., \phi_n\}$ of $X^h$ and will then obtain for the elements of $A^h \mathbb{R}^{n \times n}$, and $L_f^h \in \mathbb{R}^n$ that
+
+\begin{ceqn}
+	\begin{align}
+	A_{ij}^h = (\mathcal{A} \phi_j, \mathcal{A} \phi_i)_Y \quad \text{and} \quad (L_f^h)_i = (\mathcal{A} \phi_i, f)_Y
+	\end{align}
+\end{ceqn}
+The following theorem establishes that this problem formulation actually gives rise to finite element set up. 
+
+\begin{Theorem}
+	Let $\alpha || u ||_X^2 \leq || \mathcal{A} u ||_Y^2 \leq \beta || u ||_X^2$ for all $u \in X$ hold, under the same assumptions as established in this section and let $X^h \subset X$. Then, 
+	\begin{itemize}
+		\item[(i)] the bilinear form $a(\cdot, \cdot)$ defined in (3.21) is continuous, symmetric and coercive
+		\item[(ii)] the linear functional $L_f(\cdot)$ defined in (3.21) is continuous
+		\item[(iii)] the variational formulation (3.21) is of the form (3.9) and has a unique solution $u \in X$ which is also the unique solution of the minimisation problem (3.19)
+		\item[(iv)] there exists a constant $c > 0$, such that $u$ and $u_h$ satisfy 
+		\begin{align}
+		|| u - u^h ||_X \leq c \inf_{v^h \in X^h} || u - v^h||_X
+		\end{align}
+	    \item[(v)]	the matrix $A^h$ is symmetric positive definite	
+	\end{itemize}
+\end{Theorem}
+
+\textbf{Idea of Proof:} The properties \textit{(i)} and \textit{(ii)} directly follow from the boundedness and coercivity of $\mathcal{A}$ as well as the linearity of the inner product. Property \textit{(iii)} follows from the theorem of Lax-Milgram while property \textit{(iv)} is a consequence of C\'{e}a's lemma. The last property directly follows from the definition of $A^h$.
+\smallskip
+\\
+We therefore obtain that this least squares problem formulation has all the advantageous featurs of the Raleigh-Ritz setting without requiring $\mathcal{A}$ to be self-adjoint or symmetric which was our initial goal. However it is worth noting that the differential operator $\tilde{\mathcal{A}} = \mathcal{A}^* \mathcal{A}$ is of higher order than the one in the original formulation, which therefore requires higher regularity assumptions which might be unpreferrable as well as impractical. Potential ways to overcome this problem will be discussed in the following section as it is also an issue that arises in the formulation of (....).
+ 
+space-time LSFEM are not commonly used, future will tell if they establish themselves, what and how to compare to, what convergence to expect, \\
+
+------- potentially short transition back to Newton ----- 
+Now this was considering a linear problem where $f$ is independent of $u$ but we will see later that these linear problems correspond to individual iterates of the Newton method.Hence if $ f = f_u$ for a current iterate of $u$ we know that each linearised problem has a unique solution. Therefore if the Newton iteration converges ... ?
+\end{document}

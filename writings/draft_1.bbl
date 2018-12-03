@@ -1,0 +1,45 @@
+\begin{thebibliography}{1}
+
+\bibitem{WHO_statistics}
+``World healt organisation, cardiovascular diseases,'' Oct. 2018.
+
+\bibitem{deMotuCordis}
+W.~Harvey, {\em Exerciatio anatomica de motu cordis et sanguinis in
+  animalibus}.
+\newblock Frankfurt, 1628.
+
+\bibitem{franzone2014mathematical}
+P.~C. Franzone, L.~F. Pavarino, and S.~Scacchi, {\em Mathematical cardiac
+  electrophysiology}, vol.~13.
+\newblock Springer, 2014.
+
+\bibitem{cardiosmart}
+A.~C. of~Cardiology, ``cardiosmart, how the heart works,'' Oct. 2018.
+
+\bibitem{potse2006comparison}
+M.~Potse, B.~Dub{\'e}, J.~Richer, A.~Vinet, and R.~M. Gulrajani, ``A comparison
+  of monodomain and bidomain reaction-diffusion models for action potential
+  propagation in the human heart,'' {\em IEEE Transactions on Biomedical
+  Engineering}, vol.~53, no.~12, pp.~2425--2435, 2006.
+
+\bibitem{colli2004parallel}
+P.~Colli~Franzone and L.~F. Pavarino, ``A parallel solver for
+  reaction--diffusion systems in computational electrocardiology,'' {\em
+  Mathematical models and methods in applied sciences}, vol.~14, no.~06,
+  pp.~883--911, 2004.
+
+\bibitem{gander201550}
+M.~J. Gander, ``50 years of time parallel time integration,'' in {\em Multiple
+  Shooting and Time Domain Decomposition Methods}, pp.~69--113, Springer, 2015.
+
+\bibitem{gander2016analysis}
+M.~J. Gander and M.~Neumüller, ``Analysis of a new space-time parallel
+  multigrid algorithm for parabolic problems,'' {\em SIAM Journal on Scientific
+  Computing}, vol.~38, no.~4, pp.~A2173--A2208, 2016.
+
+\bibitem{bochev2009least}
+P.~B. Bochev and M.~D. Gunzburger, {\em Least-squares finite element methods},
+  vol.~166.
+\newblock Springer Science \& Business Media, 2009.
+
+\end{thebibliography}
