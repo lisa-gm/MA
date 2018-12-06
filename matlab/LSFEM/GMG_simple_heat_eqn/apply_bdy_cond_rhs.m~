@@ -1,0 +1,43 @@
+% ******************************************************************* %
+% ***************** APPLYING BDY CONDITIONS TO RHS ****************** %
+% ******************************************************************* %
+
+function [rhs_sym, Hess_J_sym] = apply_bdy_cond(Hess_J, f_vec, bdy_cond, u0, bdy_left, bdy_right)
+tot_pts = size(Hess_J,1)/2;
+
+rhs_sigma = f_vec(1:tot_pts);
+rhs_u = f_vec(tot_pts+1:end);
+
+rhs_u(1:Nx_pts) = u0;
+
+if(strcmp(bdy_cond, 'Dirichlet'))
+    rhs_u(1:Nx_pts:end) = bdy_left;
+    rhs_u(Nx_pts:Nx_pts:end) = bdy_right;
+end
+
+if(strcmp(bdy_cond, 'Neumann'))
+    rhs_sigma(1:Nx_pts:end) = bdy_left;
+    rhs_sigma(Nx_pts:Nx_pts:end) = bdy_right;
+end
+
+rhs = [rhs_sigma; rhs_u];
+
+Hess_J_sym = Hess_J;
+Hess_J_sym(bdy_ind,:) = 0;
+
+%% symmetrize the matrix
+
+rhs_sym(:) = rhs(:) - Hess_J_sym(:,bdy_ind)*rhs(bdy_ind);
+rhs_sym = rhs_sym';
+
+Hess_J_sym(:,bdy_ind) = 0;
+
+%% put in ones in diagonal
+
+tempA = speye(length(Hess_J));
+tempA(bdy_ind,:) = 0;
+tempB = speye(length(Hess_J));
+tempD = tempB-tempA;
+
+Hess_J_sym = Hess_J_sym + tempD;
+end

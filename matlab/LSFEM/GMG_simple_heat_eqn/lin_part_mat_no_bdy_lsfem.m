@@ -2,7 +2,7 @@
 % *************** SET UP LINEAR MATRICES ***************** %
 % ******************************************************** %
 
-function [J_ss_lin, J_su_lin, J_us_lin, J_uu_lin] = lin_part_mat_no_bdy_lsfem (S, Nx_elem, T, Nt_elem, c1 ,c2, diff_const, bdy_cond)
+function [J_ss_lin, J_su_lin, J_us_lin, J_uu_lin] = lin_part_mat_no_bdy_lsfem (S, Nx_elem, T, Nt_elem, c1 ,c2, diff_const)
 
 int_space = [0,S];
 hx = (int_space(2) - int_space(1))/Nx_elem;

@@ -7,13 +7,13 @@ function [rhs, u0] = step_fine_to_coarse(L_h, R, rhs, u0, max_iter_sm, smoother,
     %%% STEP 1: smooth L_h * u_approx = f by applying 
     % iterative scheme on fine grid
     if( level == 1)
-     fprintf('norm res before pre-smoothing : %d\n', norm(L_h*u0 - rhs));
+     fprintf('energy before pre-smoothing : %d\n', abs(u0'*L_h*u0-rhs'*u0));
     end
     
     u0 = smoothing(L_h, rhs, u0, max_iter_sm, smoother);
 
     if( level == 1)
-     fprintf('norm res after pre-smoothing : %d\n', norm(L_h*u0 - rhs));
+     fprintf('energy after pre-smoothing : %d\n', abs(u0'*L_h*u0-rhs'*u0));
     end
     
     %%%%% STEP 2: compute residual, then restrict residual

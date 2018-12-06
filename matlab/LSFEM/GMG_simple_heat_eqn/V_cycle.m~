@@ -4,71 +4,102 @@
 
 
 % J gives the number of coarsening levels
-function u = V_cycle(A, f, bdy_ind, J, max_iter, smoother, eps)
-
-N = length(f);
-%eps = 10^(-9);
+function sol = V_cycle(Nx_elem_list, hx_list, Nt_elem_list, ht_list, f, sol_init, c1, c2, diff_const, bdy_cond, u0, bdy_left, bdy_right, levels, max_iter, smoother, eps)
+S = Nx_elem_list(1)*hx_list(1);
+T =  Nt_elem_list(1)*ht_list(1);
 
 max_iter_sm = 2;
 
-% set up matrices for MG
-[L_h, R, I, u0, rhs] = set_up_mg(A, f, J, bdy_ind);
-res_after_pre_sm = {};
 
-    % check  if N/(2^J) < 1 then error
-if (N/(2^J) < 1)
-    fprintf('too many levels');
-    return;
+% get interpolation matrices
+[I, R] = set_up_interpolation_op(Nx_elem_list, Nt_elem_list, bdy_cond, levels);
+
+rhs = {};
+L_h = {};
+u = {};
+    
+bdy_ind_list = {};
+
+% overall loop, going up coarsening steps
+for l=1:levels   
+  % get Hessian on each level
+  if(l == 1)
+    [J_ss_lin, J_su_lin, J_us_lin, J_uu_lin] = lin_part_mat_no_bdy_lsfem (S, Nx_elem_list(l), T, Nt_elem_list(l), c1 , c2, diff_const);
+    L_h{l} = [J_ss_lin, J_su_lin; J_us_lin, J_uu_lin];
+    rhs{l} = f;
+    u{l} = sol_init;
+    
+    bdy_ind_list{l} = get_bdy_ind(Nx_elem_list(l)+1, Nt_elem_list(l)+1, bdy_cond);
+   [rhs{l}, L_h{l}] = apply_bdy_cond(Nx_elem_list(l)+1, Nt_elem_list(l)+1, L_h{l}, rhs{l}, bdy_cond, u0, bdy_left, bdy_right, l);
+  
+  else
+    L_h{l} = R{l-1}*L_h{l-1}*I{l-1}; 
+    rhs{l} = zeros(size(L_h{l},1),1);
+    u{l} = zeros(size(L_h{l},1),1);
+    [~, L_h{l}] = apply_bdy_cond(Nx_elem_list(l)+1, Nt_elem_list(l)+1, L_h{l}, rhs{l}, bdy_cond, u0, bdy_left, bdy_right, l);  
+    
+    bdy_ind_list{l} = get_bdy_ind(Nx_elem_list(l)+1, Nt_elem_list(l)+1, bdy_cond);
+  end
+  
 end
 
+res_red_coeff_list = zeros(1, max_iter);
 
 % write function for smoothening loop
 for k=1:max_iter
-    
-    % overall loop, going up coarsening steps
-for j=1:J 
-  %fprintf('on level: %d ', j);
-  [rhs{j+1}, u0{j}] = step_fine_to_coarse(L_h{j}, R{j}, rhs{j}, u0{j}, max_iter_sm, smoother, j);
-  res_after_pre_sm{j} = rhs{j} - L_h{j}*u0{j};
-end
+   
+  temp_res_pre = L_h{1}*u{1}-rhs{1};    
 
-    % use direct solver
-    u0{J+1} = L_h{J+1}\(rhs{J+1});
+  for l=1:levels-1 
+  %fprintf('on level: %d ', j);
+  [rhs{l+1}, u{l}] = step_fine_to_coarse(L_h{l}, R{l}, rhs{l}, u{l}, max_iter_sm, smoother, l); 
+  % now remove boundary conditions
+  rhs{l+1}(bdy_ind_list{l+1}) = 0;
+  end
+
+  % use direct solver
+  u{levels} = L_h{levels}\(rhs{levels});
     
-    % walk back from coarse to fine adding in corrections
-    % for J u0{J+1} = e{J+1}
-    % but then 
-    % u0{j} = u0{j} + e{j}
-    % where e{j} is interpolated correction from previous step
+  % walk back from coarse to fine adding in corrections
+  % for J u0{J+1} = e{J+1}
+  % but then 
+  % u0{j} = u0{j} + e{j}
+  % where e{j} is interpolated correction from previous step
     
-    for j=J:-1:1
+    for l=levels-1:-1:1
         % alpha scaling parameter 
-        c = I{j}*u0{j+1};
-        alpha = 1;
-        %alpha = dot(c, res_after_pre_sm{j})/dot(L_h{j}*c, c);
-        u0{j} = u0{j} + alpha*c;
+        c = I{l}*u{l+1};
         
-        if(j == 1)
-        fprintf('energy before post-smoothing : %d\n', abs(u0{j}'*L_h{j}*u0{j}-rhs{j}'*u0{j}));
+        % set c to zero on bdy points
+        c(bdy_ind_list{l}) = 0;
+        
+        alpha = 1;
+        %alpha = dot(c, res_after_pre_sm{l})/dot(L_h{l}*c, c);
+        u{l} = u{l} + alpha*c;
+        
+        if(l == 1)
+        fprintf('norm res before post-smoothing : %d\n', norm(L_h{l}*u{l} - rhs{l}));
         end
         
-        u0{j} = smoothing(L_h{j}, rhs{j}, u0{j}, max_iter_sm, smoother);
+        u{l} = smoothing(L_h{l}, rhs{l}, u{l}, max_iter_sm, smoother);
         
-        if(j == 1)
-        fprintf('energy after post-smoothing : %d\n', abs(u0{j}'*L_h{j}*u0{j}-rhs{j}'*u0{j}));
+        if(l == 1)
+        fprintf('norm res after post-smoothing : %d\n', norm(L_h{l}*u{l} - rhs{l}));
         end
         
     end    
     
-% u0{1} should give final solution of V cycle
-err = norm(f-A*u0{1});
-%fprintf('iter : %d, norm residual : %d\n', k, err);
+temp_res_post = L_h{l}*u{l}-rhs{l};    
 
-if(err < eps)
+
+if(temp_res_post < eps)
+    fprintf('\n');
+    fprintf('norm residual : %d\n', err);
     fprintf(' multigrid converged after %d V-cycles\n', k);
     break;
 end
 
 end
-u = u0{1};
+
+sol = u{1};
 end

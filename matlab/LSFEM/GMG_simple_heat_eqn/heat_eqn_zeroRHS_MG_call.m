@@ -12,7 +12,7 @@ clear all;
 % MG parameters
 max_iter = 100;                          % number of newton iterations
 eps = 10^(-8);                           % tolerance
-levels = 2; 
+levels = 3; 
 %smoother = 'ConjugateGradient';
 smoother = 'GaussSeidel_LS';
 
@@ -27,7 +27,7 @@ c2 = 2;                                 % need to multiply with them in computat
 
 % space 
 S = 1;
-Nx_elem = 4;
+Nx_elem = 15;
 
 Nx_pts = Nx_elem+1;
 int_space = [0,S];
@@ -36,7 +36,7 @@ x_vec = linspace(int_space(1), int_space(2), Nx_pts);
 
 % time
 T = 1;
-Nt_elem = 4;
+Nt_elem = 15;
 
 Nt_pts = Nt_elem+1;
 int_time = [0, T];
