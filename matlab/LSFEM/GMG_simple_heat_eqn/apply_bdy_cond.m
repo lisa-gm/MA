@@ -31,7 +31,7 @@ Hess_J_sym(bdy_ind,:) = 0;
 
 %% symmetrize the matrix
 
-rhs_sym(:) = rhs(:) - Hess_J_sym(:,bdy_ind)*rhs(bdy_ind);
+rhs_sym(:) = rhs(:)- Hess_J_sym(:,bdy_ind)*rhs(bdy_ind);
 rhs_sym = rhs_sym';
 
 Hess_J_sym(:,bdy_ind) = 0;

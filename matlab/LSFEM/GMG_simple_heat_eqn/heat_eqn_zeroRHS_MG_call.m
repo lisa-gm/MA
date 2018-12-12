@@ -84,7 +84,7 @@ u_bdy = reshape(u_bdy_mat, [tot_pts,1]);
 
 % ********************* CONSTRUCTING MATRICES *********************** %
 
-[J_ss_lin, J_su_lin, J_us_lin, J_uu_lin] = lin_part_mat_no_bdy_lsfem (S, Nx_elem, T, Nt_elem, c1 , c2, diff_const, bdy_cond);
+[J_ss_lin, J_su_lin, J_us_lin, J_uu_lin] = lin_part_mat_no_bdy_lsfem (S, Nx_elem, T, Nt_elem, c1 , c2, diff_const);
 Hess_J = [J_ss_lin, J_su_lin; J_us_lin, J_uu_lin];
 
 Hess_J_inner = Hess_J([inner_ind_sigma, tot_pts+inner_ind_u], [inner_ind_sigma, tot_pts+inner_ind_u]);
@@ -170,7 +170,7 @@ sigma = sigma_bdy;
 u = u_bdy;
 
 %sol_mg_inner = V_cycle(Hess_J_inner, rhs_inner, [], levels, max_iter, smoother, eps);
-sol_mg = V_cycle(Hess_J_sym, rhs_sym, bdy_ind, levels, max_iter, smoother, eps);
+sol_mg = V_cycle(Nx_elem_list, hx_list, Nt_elem_list, ht_list, f, sol_init, c1, c2, diff_const, bdy_cond, u0, bdy_left, bdy_right, levels, max_iter, smoother, eps);
 
 %sol_mg_inner_sigma = sol_mg_inner(1:length(inner_ind_sigma));
 %sol_mg_inner_u = sol_mg_inner(length(inner_ind_sigma)+1:end);

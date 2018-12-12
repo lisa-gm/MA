@@ -4,7 +4,7 @@
 
 
 % Nx_elem_list goes from coarse to fine
-function [I, R] = set_up_interpolation_op(Nx_elem_list, Nt_elem_list, bdy_cond, levels)
+function [I, R] = set_up_interpolation_op_SP_TIME(Nx_elem_list, Nt_elem_list, bdy_cond, levels)
 I = {};
 R = {};
 
