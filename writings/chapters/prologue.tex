@@ -3,43 +3,53 @@
 \begin{document}
 
 \chapter{Prologue}
-Find a way to go from very broad title to heart ....
-\bigskip
-\\
-I okay in Prologue / Epilogue ? 
-\bigskip
-\\
-structure of the thesis \\
-At the beginning of each chapter I will give an overview of its content and purpose as well as intuitive explanations of the core concepts and ideas it entails. \\
-\\
-specific versus how this can be generalised ...  \\
-\\ 
-non exhaustive overview cardiac electrophysiology, more details can be found ...
+
+In this thesis we would like to discuss, develop and present adaptive multigrid solvers using space-time discretisations solving parabolic reaction diffusion equations with a potentially nonlinear forcing term. They present a broad class of partial differential equations that can be written in the following form
+\begin{ceqn}
+\begin{equation}
+u_t - \nabla \cdot ( D(x) \nabla u) = f(u)
+\end{equation}
+\end{ceqn}
+for some $u = u(x,t)$ in a space domain over a time interval in addition to a set of boundary conditions. We will postpone a more rigorous definition to the following chapters and for now simply assume the problem to be well posed. These type of equations are used to describe a variety physical phenomena, among which there are the change of one or more chemical substances over time into another as well as the propagation of wavefronts which will be discussed in much more detail later \cite{zegeling2004adaptive} or the modeling of the development of animal populations in biology \cite{cosner2008reaction}. In its easiest form we have a zero source term, that is $f = 0$, this describes a simple heat equation, that is the variation of temperature in a particular region over time starting from a set of initial conditions which will eventually reach an equilibrium state.
 \smallskip
 \\
+Due to their great applicability and importance there has been and continuous being an extensive interest in efficiently solving this type of equations [source]. And while there is a wide variety of approaches used in order to find a numerical approximation to a solution of (1.1) we will considered the following; a space-time parallel discretisation using a least squares finite element approach whose linearisations will in turn give rise to sparse, symmetric linear systems of equations which we will then solve using different adaptive multigrid methods. This suffices in the linear case. That is if we have a nonlinear source or reaction term $f$, we additionally need an outer iteration succuessively solving linearisations of the above type. While this composition of methodologies may at first seem like a rather complicated construction we will justify in the subsequent paragraphs and chapters why we consider these particular choices to be advantegeous and will also be presenting numerical results. Having said this we can say that this is a fairly unique construction that has to our knowledge not been studied in this context and will therefore requires a wide range of investigation before drawing any final conclusions.
+\smallskip
+\\
+We are interested in large scale systems, giving rise to coupled equations with a great number of degrees of freedom. Assuming that we are interested in modeling real life phenomena this is a realistic assumption considering the complexity of the above mentioned applications which usually require a very high resolution in time and several space dimensions, and are often very sensitive to these parameters. A more precise account on the wide-ranged scales that can be involved are presented in the following chapter. Hence one has to assume that the final linear systems we strive to solve in the end are very large. Hence we are searching for an accurate, efficient and robust way to do so. When trying to numerically approximate the solution of a partial differential equation there is no unique way to do so and hence one encounters many choices that have to be made. One of them entails the way one deals with the evolution of the equation over time. Traditionally this is done by recursively computing an approximation for all space elements or nodes at a certain time $t_n$ and then using those results or even preceding ones to compute the approximate solution at the next time step $t_{n+1}$. This seems like the natural way to perform operations, mainly because this is how we move through time, sequentially, and second because the solution at a given time is usually depend on if not fully determined by the previous ones, so why not use that information. Computationally this has a large drawback, especially when dealing with large time scales, in order to compute a solution at time $t_n$ one has to wait until all other computations on the previous time steps are completed. Especially in a time where the clockspeed on computers does not increase anymore but the only way to achieve further speed up is through the usage of more processors parallelisation is key. Thus it seems favourable to  consider a space-time discretisation which can then hopefully be solved in a parallel set up if we choose the remaining strategies to solution appropriately. A further discussion as well as references can be found in section 3.1. 
+\smallskip
+\\ 
+A least squares finite element discretisation entails the construction of an optimisation problem whose solution coincides with the solution of the differential equation. Instead of solving the original problem we now apply a finite element approach in space-time to solve the auxiliary problem. This particular choice was made due to the fact that least squares formulations give rise to symmetric systems of equations, and when using a Galerkin approach for the discretisation the arising system will be sparse and in the linear case even positive definite. In section 3.3 we will be discussing the most important properties of finite element methods in general, and the method of least squares in this setting will be introduced in section 3.4. We especially wanted the constituting linear system of equations to be symmetric for reasons which will become more evident throughout this thesis and involve the development a particular adaptive multigrid method that makes use of inherent properties of certain reaction-diffusion equations.
+\smallskip
+\\
+Multigrid methods in general represent a powerful class of iterative solvers to approximate the solution of large sparse, symmetric, positive definite linear systems of equations usually arising from the discretisation of differential equations [source]. 
+They grant us the assembly of large systems involving all time steps at once, allowing for parallelisation. There are different varieties of how to construct the multilevel spaces and how to do so well for parabolic equations will be the matter of discussion in chapter 5, especially in the later sections. 
+\smallskip
+\\
+A forcing term $f$ that depends on the solution itself, that is $f = f(u)$ and that might in addition be non-linear can immensely complicate the process of solving this type of equation. The systems of equations arising from the linear case including appropriate boundary conditions have a unique solution, however this is not true in the nonlinear case.  Depending on the solution landscape one might require an initial guess that is already very close to actual solution to ensure convergence  to the solution one is actually looking for. This is especially true for a space-time parallel set up where an initial guess already requires values for all time steps. The non-linear solvers that were employed in the implementation section here [see ch. 6] are a trust region method and a damped Newton method, a theoretical introduction to either method can be found in section 3.2. Below we can see a schematic overview of how the core concepts are tied together in order to give rise to a comprehensive \textit{solver}. 
+\smallskip
+\\
+These are the main ingredients that we will tie together in this thesis in order to develop an efficient, robust and accurate solver to tackle problems of type (1.1). Each of them will be introduced more thoroughly in chapter 3, where we will also explain the choices for each of them in more detail, attempting to make use of their favourable attributes while trying to avoid the pitfalls. In chapter 4 we derive a proper problem formulation, which we will then discretise in order to derive linear systems of equations to be solved iteratively. Afterwards we introduce multrigrid methods in chapter 5, especially discussing the particularities that arise due to the construction of chapter 4. Chapter 6 then contains the numerical results we obtained for various test cases and discusses certain behaviors we observed during our work which will then be followed by a conclusion and an outlook in chapter 7. In order to not get lost in one of the many intermediate steps leading to our overall set up there will be a short paragraph at the beginning of each chapter roughly describing the main ideas and intentions.
 
 \begin{framed}
-	\underline{\textbf{Fahrplan -- how to tackle this}} 
+	\underline{\textbf{Overview of the different Steps towards an Approximate Solution}} 
 	
-	\begin{itemize}
-		\item  We reformulate it as a mimimisation problem $J$ whose solution coincides with the one of the original equation. 
-		\item Then we use a Newton iteration of the following form to solve this non-linear functional --- where do we linearise ...?
-		\item  That is we set up a linearised space-time Least Square Formulation in each iteration which gives rise to system of equations of the form $Au = f$.
-		\item  And then solve this using a multigrid method. 
-		\item we get an updated solution for our Newton iteration and can repeat the process
-	\end{itemize}	
+	\begin{enumerate}
+		\item  Reformulate (1.1) as a mimimisation problem $J$ whose solution coincides with the one of the original equation. 
+		\item Discretise the problem using a space-time finite element approach
+		\item Derive a non-linear iteration scheme (e.g. Newton or Trust Region method) where we solve a linearisation of the problem using the current iterative solution in each step
+		\item  Solve the arising linear system of equations using an adaptive multigrid method
+		\item Repeat step 4 with the updated solution each time until some stopping criterion is met 
+	\end{enumerate}	
 \end{framed}
 
+In order to obtain a meaningful solution $u$ we need a number of properties to be fulfilled. In each nonlinear iteration step the multigrid solver has to converge to the solution of the linearised least squares minimisation problem which mimics the corresponding linearisation of the original PDE. In the outer iteration we need the nonlienar iteration scheme to converge to the minimum of our non-linear functional whose solution as mentioned above is supposed to correspond to the solution of the original problem. However as mentioned before we are not ensured global convergence since the problem is non convex in the nonlinear case. 
+\bigskip
+\\
+There is one particular problem that originally motivated the construction of such a solver. The propagation of electronic signals in human heart tissue whose mathematical models are also a reaction-diffusion equation. 
 
-In order to obtain a meaningful solution for $u$ we need a number of properties to be fulfilled. In each Newton step the multigrid solver has to converge to the solution of the linearised least squares minimisation problem which mimics the corresponding linearisation of the original PDE. In the outer iteration we need the Newton method to converge to the minimum of our non-linear functional whose solution as mentioned above is supposed to correspond to the solution of the original problem.
-
-Our hearts are absolutely vital for our survival. While it normally functions with an incredible reliability and accuracy that does not even let us begin comprehend the complexity of the mechanisms involved, cardiovascular diseases are estimated to make up for more than 30\% of all world wide's death \cite{WHO_statistics}. Often this is related to abnormal heart contractions and thus understanding the processes involved in governing our heart beats is crucial to explain heart failues.  
-
-
-Traditionally partially differential equations are solved by recursively computing an approximation for all space-elements or nodes at a certain time $t_n$ and then using those results to compute the approximate solution at the next time step $t_{n+1}$. This seems like the natural way to perform operations, for one because this is how move through time, sequentially, and second because for any real life system the previous time steps often give a good approximation for the next one, so why not use that information. Computationally this has a large drawback 
-
-In times where we can no longer (easily or significantly) speed up sequential operations but can only increase the number of parallel tasks being 
-
+multrigrid solver especially adapted to that ....
+In a 1D space domain with a coupled time interval 
 Picture: what does wavefront look like? 
 
 As we can see there are two (almost) constant regions, the activated and not-activated areas. 
@@ -51,22 +61,16 @@ Would like to find a way to take this into account so that less computational re
 The aim is to achieve this through an adapted algebraic multigrid formulation (rule, ...?) that takes the specific behavior into account, that is 
 \smallskip
 \\
-The reason for us to consider a least squares formulation is due to the fact that the differential operator arising through the partial derivative in time is not symmetric. This can be seen by looking at the asymmetry of the primary variatinal formulation of the original problem. 
-\smallskip
-\\
 This would not be an issue if we were to solve the equation sequentially since our set up would then be a different one, where the differential operator would only consist of the diffusion term in space. However in the space-time setting that will be introduced in more detail later the first order derivative is part of the "differential FEM operator". By using a least squares finite element formulation we give rise to a symmetric system. How this is achieved will be explained in the follwoing sections.   
 \\
-this thesis tries to tie together a variety of ideas to obtain an efficient solver for ... Attempting to make use to the favourable attributes of each i... while trying to avoid the pitfalls. 
-\bigskip
-\\
-We would like to solve a parabolic reaction diffusion equation with a nonlinear forcing term, examples where these occur. here we focus on electrophysiology. \\
-The main ingredients are Newton iteration, formulate problem as two coupled first order system which are turned into a space-time lsfem system using a galerkin (?) approach? in each iteration we solve a linearisation of the the problem using a multigrid method with a ... smoother and a (something about coarsening strategy)
-\bigskip
-\\
-therefore for the reader not to get lost in one of the many intermediate steps leading to our overall set up I (is that okay?) will try also keep reminding ourselves where we are in the bigger picture in each individual section. 
-\\ 
-in the following chapter each of the individual puzzle pieces will be briefly introduced, important ideas, underlying concepts or different ways of how they work. Then we will slowly be starting to put the pieces together. That is forming a space-time least squares element setting for a non-linear equation which is then put into a Newton iteration where in each step a multigrid solve is required. 
 
-Short intro: Since we are dealing with a non-linear equation we cannot simply try to find to set up a linear it is necesary to employ . The usual approach is to try to set up a set up system of equations, 
+While above mentioned applies to this very broad class of equations and actually many more we want to discuss  ... in more detail, monodomain equation, which describes  
+here we focus on electrophysiology. \\ 
+
+
+
+non exhaustive overview cardiac electrophysiology, more details can be found ...
+\smallskip
+\\
 
 \end{document}
