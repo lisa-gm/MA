@@ -4,25 +4,24 @@
 
 \chapter{Multigrid Methods}
 
-\section{General Idea}
+\section{Core Ideas}
 %%% MAINLY TAKEN FROM BRIGGS CHAPTER 3
-"lose notation again, not associated anymore with .... " \\
-Multigrid Methods is an important class of algorithms to iteratively solve/approximate linear systems of equations of the form $Au = f$ where $A \in \mathbb{R}^n$ is a (sparse) symmetric positive definite matrix.  \\
-
-It incorporates a variety of ideas that make use of 
-Core concept : \\
-Due to the structure of $A$ its eigenvectors form an orthonormal basis of $\mathbb{R}^n$. 
-
-
-
-which allows us to consider the solution $u$, the approximate solution $w$ as well as the difference between the two, the error $ e = u - w$ as a linear combination of this basis. Furthermore ... frequency ... eigenfunctions ... eigenvectors. Therefore it is possible to differentiate between high and low frequency error where one generally assumes ... (further discussion of what high and low frequency is later ... physical connection to solution, AMG $ \iff $ GMG )
-
-Standard iterative solvers like Jacobi, Gauss-Seidel, ... (need reference here) are generally known to reduce the high frequency error quite well. (Intuitively) this makes sense since the operator the matrix $A$ stems from/represents/is consists of local connections. sparsity of it. Local communication \\
-$\Rightarrow$ property of A not exactly of smoother ? \\ Hence this type of solvers are usually refered to as smoothers or relaxation schemes. 
-So if we therefore assume that they reduce the high frequency error quite efficiently it is seems natural to look for a way to effectively minimise the low frequency error. \\ 
-some pictures? \\
+Multigrid Methods are an important class of algorithms to iteratively approximate linear systems of equations of the form $Au = f$ where $A \in \mathbb{R}^n$ is usually a sparse symmetric positive definite matrix, that arises from the discretisation of a differential equation. They were first developed in the early 1960s by the soviet mathematicians Fedorenko and Bachlwalow but only became more well-known and \textit{developed} in the late 1970s through the works of Hackbusch \cite{hackbusch2013multi} and Brandt \cite{brandt1977multi}. The core idea behind them is to approximate the error between an estimate and the unknown actual solution "on different frequencies". Zerlegung. Due to the structure of the matrix of discretised differential equations we only have a local transport of information, therefore simple iterative solvers such as a Jacobi or Gauss-Seidel method damp high frequency components of the error fastest, which leads to a much smoother, lower frequency error after only a few iterations. However the low frequency error on the fine grid becomes high frequency error on the coarse grid and can therefore be damped there more efficiently also applying a smoother there. That is the usage of coarser grids accelarates the transport of low frequency error across the discretised domain. Additionally the coarser grids have significantly less degrees of freedom which makes them computationally much cheaper to handle, until we can solve the problem directly on the coarsest grid. The key is to then restrict and interpolate effectively between the series of nested grids to approximate the error the current and the actual solution. 
+\smallskip
 \\
-If we suppose we were to project the low frequency error onto a coarse grid it would suddenly be of higher frequency compared to the grid. Obtain correction
+Through this combination of coarse grid correction and smoothing one obtains a fast, mesh-size independent convergence rate \textit{for elliptic problems} [source].
+\smallskip
+\\
+SMOOTHER
+\smallskip
+\\
+COARSENING STRATEGIES, cite that $\lambda$ parameter paper
+\smallskip
+\\
+INTERPOLATION AND RESTRICTION OPERATOR
+\smallskip
+\\
+which allows us to consider the solution $u$, the approximate solution $w$ as well as the difference between the two, the error $ e = u - w$ as a linear combination of this basis. Furthermore ... frequency ... eigenfunctions ... eigenvectors. Therefore it is possible to differentiate between high and low frequency error where one generally assumes ... (further discussion of what high and low frequency is later ... physical connection to solution, AMG $ \iff $ GMG )
 
 
 
@@ -31,7 +30,7 @@ nested meshes
 elliptic problems
 
 
-In geometric multigrid we have a predefined sequence of nested meshes of specific coarsening factors (that can vary in different directions (and on different levels)). The coarse level spaces still represent the original problem just with a lower resolution. 
+In geometric multigrid we have a predefined sequence of nested meshes of specific coarsening factors that can vary in different directions and on different levels. The coarse level spaces still represent the original problem just at a lower resolution. 
 
 Algebraic multigrid on the other hand does not have predefined coarse level spaces but instead they are chosen according to a given rule, that takes the values of $A$ (or other known properties of the problem) into account. This is favorable if .... but also more expensive to compute. 
 
@@ -40,9 +39,7 @@ Algebraic multigrid on the other hand does not have predefined coarse level spac
 
 %%%% ALSO BRIGGS P. 40, made more general 
 
-As mentioned before there is unique way to construct the ideal operators necessary. 
-
-Below we can see a multigrid V-cycle iteration scheme. Where we assume that $J, J-1, ..., 0$ denotes the grid levels from finest to coarsest.
+Hence we need the following main ingredients to construct a multigrid method with $l+1$ levels, where $l+1$ represents the finest grid; a smoother $S$, a set of interpolation and restriction matrices $I_l, I_{l-1}, ...I_1$ and $R_l, R_{l-1}, ... R_1$, represenations of the matrix $A$ on all levels, that is $A^l, A^{l-1}, A^{l-2}, ..., A^0$ with $A_l = A$, an initial guess $s_{\text{init}}$. These we can then put together in a multigrid V-cycle who looks as follows. 
 
 \begin{framed}
 	\underline{\textbf{Multigrid V-cycle}} 
@@ -89,11 +86,13 @@ strengthened Cauchy - Schwarz necessary?
 	Convergence.
 \end{Theorem}
 
-\section{Algebraic Multigrid}
+%\section{Algebraic Multigrid}
+\section{Coarse Space Construction Based on Eigenfunctions}
 
-\subsection{Essential Concepts}
-
-
+%wikipedia
+Practically important extensions of multigrid methods include techniques where no partial differential equation nor geometrical problem background is used to construct the multilevel hierarchy.[16] Such algebraic multigrid methods (AMG) construct their hierarchy of operators directly from the system matrix. In classical AMG, the levels of the hierarchy are simply subsets of unknowns without any geometric interpretation.
+\smallskip
+\\
 \begin{Definition}
 	Strong dependence.
 \end{Definition}
@@ -104,8 +103,7 @@ Concept of strong dependence. Different ways to define this, most commonly ...?
 
 This is where later on the adaption to the monodomain equation is made because here we can take specific knowledge about the equation into consideration. 
 
-\subsection{Coarse Space Construction, Eigenvectors, ...}
 
-\section{Non-Linear Multigrid}
+
 
 \end{document}

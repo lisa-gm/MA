@@ -5,111 +5,219 @@
 
 \chapter{Implementation and Numerical Results}
 
+\section{Discretisation Scheme}
+In this chapter we will look at how the \textit{solver} we derived actually performs in some test cases. We looked at problems with a one-dimensional space domain $\mathcal{S} = (0, S)$ and a time-interval $\mathcal{T} = (0,T)$, that is 
+\begin{ceqn}
+\begin{equation}
+\Omega = (0, S) \times (0, T), \quad S,T > 0
+\end{equation}
+\end{ceqn}
+and which we discretised using uniformly-sized rectangular elements. Let $N_x$ be the number of elements in space and $N_t$ the number of elements in time. As a finite-dimensional approximation space we used piecewise linear polynomials in space and time for the approximation of $\sigma_h$ as well as $u_h$ and chose the local basis \\
 
-Whole one dimensional thing therefore $H^1$ and $H^{div}$ the same and hence $\nabla(u) = div(u) = \frac{\partial u}{\partial x}$
-s 
+\begin{minipage}[l]{0.5\linewidth}
+	\begin{tikzpicture}
+	% Draw the grid
+	\tikzset{help lines/.style={color=black}}
+	\draw[thick,step=2.5cm] (0,0) grid (2.5,2.5);
+	
 
-The Hessian that arises from the minimisation problem is not simply the discretisation of one differential operator as one would for example obtain when solving a Poisson equation. Instead it is a combination of the Laplacian operator in space, the first order advection in time and the linearised (and adapted) first and second order derivatives of $f(u)$.
+	 \node [anchor=north] at (0,0) {$(0,0)$};
+	 \node [anchor=north] at (2.5,0) {$(1,0)$};
+	 \node [anchor=south] at (0,2.5) {$(0,1)$};
+	 \node [anchor=south] at (2.5,2.5) {$(1,1)$};
+	 
+	 
+	 \draw[thick,-latex] (1,-1) -- (2,-1) node[below] {space};
+	 \draw[thick,-latex] (-1,1) -- (-1,2) node[left]{time};
+	 
+	\end{tikzpicture}
+	
+\end{minipage}% 
+\begin{minipage}[r]{0.5\linewidth}
+\begin{ceqn}
+	\begin{equation}
+	\begin{aligned}
+	\phi_{11}(x,t) &= (1- x) &\cdot (1-t) \\
+	\phi_{12}(x,t) &=  x  &\cdot  (1-t) \\
+	\phi_{21}(x,t) &= (1- x) &\cdot t  \\
+	\phi_{22}(x,t) &= x  &\cdot  t 
+	\end{aligned}
+	\end{equation}
+	\end{ceqn}
+\end{minipage}
 
-Therefore it is complicated/not really possibly to relate to physical things .... ? 
+If we translate this from local to the global coordinates and scale appropriately according to the mesh size with an appropriate projection, we have that 
+\begin{ceqn}
+	\begin{equation}
+	\begin{aligned}
+	\phi_{ij}(x_k, t_l) = \begin{cases} 1 \quad \text{if } (k,l) = (i,j)  \\ 0 \quad \text{otherwise} \end{cases}
+	\end{aligned}
+	\end{equation}
+	\end{ceqn}
+
+We arrange the grid points the same way the local basis is labeled, that is for a fixed $t_j$ all elements in space with $x_i < x_{i+1}$, and subsequently all space elements for $t_{j+1}$. As previously mentioned the we arranged $\sigma_h$ and $u_h$ such that they are two concatenated vectors. Hence one obtains a system of equations with $m = (N_x + 1 )\cdot (N_t + 1)$ degrees of freedom for $\sigma_h$ and the same again for $u_h$. The solution vector is therefore of $2m$ while the matrices have a size of $2m \times 2m$. It is possible to use this local basis for $\sigma_h$ and $u_h$ because we are in the one-dimensional case and therefore $ \nabla u = \partial_x u = \sigma$ and $div(\sigma) = \partial_{x} \sigma$. For $dim (\mathcal{S}) > 1 $ we would have to treat this problem differently using for example Raviart-Thomas elements [source], which is however beyond the scope of this thesis \textit{but could be of interest in future investigations}. In order to compute the individual integral terms we used a quadrature rule of degree three, that is we get the exact integral for the linear apprximations of the functions. The admissible boundary conditions are a mixture of Dirichlet and Neumann type and are directly imposed in the system, either in $u$ or $\sigma$, respectively. 
+
+\section{Multigrid Implementation}
+We implemented a geometric multigrid V-cycle, where the number of elements on the coarse grid and the number of levels are chosen and then all other grids, interpolation operators, and finer level operators are generated automatically. The reason behind this is to guarantee nested meshes. As discussed previously there is no unique best problem indepedent coarsening strategy, and especially in the case of space-time discretisations it has a great effect on the overall performance. Unfortunately the literature on what could be a favourable strategy in a least squares space-time set up was very sparse and therefore we decided to use a classical space-time coarsening approach, where the size of each rectangle grows by a factor of 4 with each coarsening because the length of the element is doubles in each direction, see figure [...] below. It means that with each coarsening step the number of elements reducs by a factor of $(2^{-2})$ and therefore also the degrees of freedom. This seemed like a reasonable approach, since we are dealing with a coupled first order system, and hence considerations like in \cite{gander2016analysis}, that \textit{showed} it would to be preferrable to keep the quotient $\lambda = \frac{d \Delta t}{\Delta x^2}$ (where $d$ decribes the diffusion constant and $\Delta t$ and $\Delta x$ the respective step sizes) close to one on all levels, did not really apply here because we have no second order derivative, that would lead to the square term in space. So under the assumption that the diffusion term $d$ is not too different from one and we choose a similar stepsize in space and time, the standard space-time coarsening would lead to a coefficient that is the same on all levels as well as close to one. More extensive testing on this beyond the scope of this thesis. \textit{Rough estimates showed that for the linear case this seemed to be the case as a interpolation operators of type \cite{gander2016analysis} seemed to lead to slower convergence.} 
+\smallskip
 \\
-What is the idea? \\
-\\ 
+We then chose to use interpolation weights according to the following scheme, where fuilled dots represent coarse grid points and the blank circles fine grid points \\
 
-The Newton iteration at hand looks as follows:
-\begin{equation}
-y_{k+1} = y_k - H_J^{-1}(y_k) (\nabla J(y_k))
-\end{equation}
+\begin{minipage}[l]{0.5\linewidth}
+	\begin{tikzpicture}
+	% Draw the grid
+	\tikzset{help lines/.style={color=black}}
+	\draw[thin,step=1.25cm, help lines] (0,0) grid (2.5,2.5); 
+	
 
-where $y_k = (\sigma_k, u_k)^T$ and the hessian $H_J$ is defined as $H_J(y_k) = D^2J(\sigma_k, u_k)$. 
+    \draw[black, fill=black] (0,0) circle(2pt);
+    \draw[black, fill=black] (2.5,0) circle(2pt);
+    \draw[black, fill=black] (0,2.5) circle(2pt);
+    \draw[black, fill=black] (2.5,2.5) circle(2pt);
+    
+    \draw[black] (1.25,0) circle(2pt);
+    \draw[black] (0,1.25) circle(2pt);
+    \draw[black] (1.25,1.25) circle(2pt);
+    \draw[black] (2.5,1.25) circle(2pt);
+    \draw[black] (1.25, 2.5) circle(2pt);
+    
+	 \draw[thick,-latex] (1,-1) -- (2,-1) node[below] {space};
+	\draw[thick,-latex] (-1,1) -- (-1,2) node[left]{time};
+	
+	\node [anchor=north] at (0,0) {$y_{\text{C}_1}$};
+	\node [anchor=north] at (2.5,0) {$y_{\text{C}_2}$};
+	\node [anchor=south] at (0,2.5) {$y_{\text{C}_3}$};
+	\node [anchor=south] at (2.5,2.5) {$y_{\text{C}_4}$};
+	
+	\node [anchor=north] at (1.25,0) {$y_{\text{F}_1}$};
+	\node [anchor=east] at (0,1.25) {$y_{\text{F}_2}$};
+	\node [anchor=north] at (1.25,1.25) {$y_{\text{F}_3}$};
+	\node [anchor=west] at (2.5,1.25)  {$y_{\text{F}_4}$};
+	\node [anchor=south] at (1.25,2.5) {$y_{\text{F}_5}$};
+	
+	\end{tikzpicture}
+	
+
+\end{minipage}%
+\begin{minipage}[r]{0.5\linewidth}
+\begin{ceqn}
+	\begin{equation}
+	\begin{aligned}
+	s(y_{\text{C}_i})  &= s(y_{\text{C}_i})  \qquad \forall i \\	
+	s(y_{\text{F}_1}) &= \frac{1}{2} y_{\text{C}_1} + \frac{1}{2} y_{\text{C}_2} \\
+	s(y_{\text{F}_2}) &= \frac{1}{2} y_{\text{C}_1} + \frac{1}{2} y_{\text{C}_3} \\
+	s(y_{\text{F}_3}) &= \frac{1}{4} y_{\text{C}_1} + \frac{1}{4} y_{\text{C}_2} + \frac{1}{4} y_{\text{C}_3} + \frac{1}{4} y_{\text{C}_4} \\		
+	s(y_{\text{F}_4}) &= \frac{1}{2} y_{\text{C}_2} + \frac{1}{2} y_{\text{C}_4} \\
+	s(y_{\text{F}_5}) &= \frac{1}{2} y_{\text{C}_3} + \frac{1}{2} y_{\text{C}_4} \\
+	\end{aligned}
+	\end{equation}
+	\end{ceqn}
 \\
-Written in matrix notation one obtains the following system which is split up in the linear and non-linear part:
+\end{minipage}
+
+They are constructed respectively to go recursively from one level to the next, and this is for either $\sigma_h$ or $u_h$. If $\tilde{I}$ is an interpolation matrix of the above type then we will have that the overall interpolation operator will have the following form, that is we interpolate independently for the two variables. 
+\begin{ceqn}
+	\begin{equation}
+	I = \begin{bmatrix}
+	\tilde{I} & 0 \\
+	0 & 	\tilde{I}
+	\end{bmatrix}
+	\end{equation}
+	\end{ceqn}
+
+The interpolation matrix from level $k-1$ to level $k$ is as before denoted by $I_{k-1}^k$ and we have that  $_{k-1}^k \in \mathbb{R}^{2m_k \times 2m_{k-1}}$, where $m_k$ and $m_{k-1}$ denotes the number of points on the space time grid on the respective level. 
+\smallskip
+\\
+\textit{Already put picure here?}
+\smallskip
+\\
+
+Smoothers are a key part of an efficient multigrid algorithm. And while many of them may theoretically be a possibility, in practice the choice of a suitable smoother is often not an easy one. We would like that the combination of coarse grid correction and smoother reduces the error efficiently for all frequencies. In the case of a geometric multigrid applied to an elliptic problem the coarse grid correction captures the low frequency error quickly while most smoothers like (block-) Jacobi or Gauss-Seidel reduce the high frequency error well and therefore the two are a favourable synthesis. But as we are also trying to develop a highly parallelisable solver it is of course important to also be taking that into account when choosing a smoother, therefore a regular Gauss-Seidel iteration is for example not a suitable choice as it works sequentially. In our set up we also have the additional feature of the two coupled variables $\sigma_h$ and $u_h$, which are separated in the sense that they are two concatenated vectors but have the contentual connection. Therefore it might be favorable to use a (block-) smoother that takes this relationship into account. Hence we decided to use a Vanka type [source?] block Jacobi relaxation. That is a block Jacobi smoother where each block contains all degrees of freedom associated to one grid point in the space-time domain. That is we choose rectangular patches of size $p \times q$ on the domain, that is $p$ points in space and $q$ in time, construct a submatrix containing all entries of $A$ associated to those nodes for $\sigma_h$ and $u_h$ and all of the corresponding coupling terms and directly invert the small submatrix. We partition the entire domain like that, while potentially having smaller patches on the boundary, and finally assemble a preconditioner $P$ containing the inverted submatrices. Due to the organisation of $\sigma_h$ and $u_h$, $P$ will not be a block diagonal matrix. For $p = q = 2 $ we would have the following patches, where $\tilde{c}_i$ describes the set of indices assosciated with the patch, and $C_i$ the corresponding submatrix, which are each of size $8 \times 8$. 
+
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}
+	% Draw the grid
+	\tikzset{help lines/.style={color=black, dashed}}
+	\draw[thin,step=1.25cm, help lines] (0,0) grid (5.6,4.45); 
+	
+	\draw[thick,-latex] (1,-1) -- (2,-1) node[below] {space};
+	\draw[thick,-latex] (-1,1) -- (-1,2) node[left]{time};
+	
+	\draw[black] (-0.3,-0.3) rectangle  (1.5,1.5);
+	\draw[black] (2.2,-0.3) rectangle  (4,1.5);
+	
+	\draw[black] (-0.3,2.2) rectangle  (1.5,4);
+	\draw[black] (2.2,2.2) rectangle  (4,4);
+	
+	\draw[black] (4.7, -0.3) -- (5.6,-0.3);
+	\draw[black] (4.7, -0.3) -- (4.7, 1.5);
+	\draw[black] (4.7, 1.5) -- (5.6,1.5);	
+	
+	\draw[black] (4.7, 2.2) -- (5.6,2.2);
+	\draw[black] (4.7, 2.2) -- (4.7, 4);
+	\draw[black] (4.7, 4) -- (5.6,4);	
+	
+	\node [anchor=north] at (-0.3,-0.3) {$\tilde{c}_1$};
+	\node [anchor=north] at (2.2, -0.3) {$\tilde{c}_2$};
+	\node [anchor=north] at (4.7, -0.3) {$\tilde{c}_3$};	
+	
+	\node [anchor=south] at (-0.3,4) {$\tilde{c}_k$};
+	\node [anchor=south] at (2.2, 4) {$\tilde{c}_{k+1}$};
+	\node [anchor=south] at (4.7, 4) {$\tilde{c}_{k+2}$};		
+	\end{tikzpicture}
+	
+\end{figure}
+
+Below we can see how the smoother acts on a random initial guess for the linear system $As = f$, where $A$ is the least squares finite element matrix arising from the functional $J([\sigma, u], 0)$ with the discretisation chosen as described in chapter 4 and the previous parts of this chapter, and $f$ is a zero right-hand side that only contains the boundary conditions. \textit{In this case they were chosen to be .... We used a ... grid and a patch size of ...}
+\bigskip
+\\
+PICTURES AFTER ... MANY ITERATIONS ....
+\bigskip
+\\
+\textit{We can see that ... maybe another patch size ... difference?}
+
+\section{Numerical Test Cases}
+\subsection{Heat Equation}
+
+After having discussed the individual multigrid terms let us look at the overall multigrid performance for a heat equation using the derived LSFEM space-time discretisation. 
+\bigskip
+\\
+\textit{parameters, boundary conditions, grid sizes, ...}
+\bigskip
+\\
+\textit{pictures, this is how the solution looks like}
+\bigskip
+\\
+\textit{some tables with convergence results}
+\bigskip
+\\
+\textit{further analysis? test laplace and $u_t$ independently, what can we see from there?}
 
 
-\begin{equation}
-\begin{aligned}
-\nabla J(y_k) = 
-\begin{bmatrix}
-- \langle u_t, div(\tau) \rangle + \langle \sigma_k, \tau \rangle + \langle div(\sigma_k), div(\tau)  - \langle \nabla u_k, \tau \rangle  \\
-\langle u_t, v_t \rangle - \langle v_t, div(\sigma_k)+ \langle \nabla u, \nabla v \rangle - \langle \sigma_k, \nabla v \rangle
-\end{bmatrix} \\
-+ \begin{bmatrix}
-+ \langle f(u_k), div(\tau) \rangle \\
-\langle div(\sigma_k), f'(u_k) v \rangle + \langle f(u_k), f'(u_k)v \rangle - \langle (u_k)_t, f'(u_k) v \rangle - \langle v_t, f(u) \rangle 
-\end{bmatrix}
-\end{aligned}
-\end{equation}
-
-\begin{equation}
-\begin{aligned}
-H_J(y_k) = \begin{bmatrix}
-\langle \tau, \rho \rangle + \langle div(\tau), div(\rho) \rangle & - \langle \rho, \nabla v \rangle - \langle v_t, div(\rho) \rangle  \\
-- \langle \tau, \nabla w \rangle - \langle w_t, div(\tau)& \langle v_t, v_t \rangle + \langle \nabla v, \nabla w \rangle 
-\end{bmatrix} \\
-+ \begin{bmatrix}
-0 & - \langle div(\tau), f'(u_k) \cdot w \rangle \\
-- \langle div(\rho), f'(u_k) v \rangle & -\langle (u_k)_t, w^T f''(u_k) v \rangle + \langle div(\sigma_k), w^T f''(u_k) v \rangle + \langle f'(u_k)w , f'(u_k) w \rangle +... \\ &... + \langle f(u_k), w^T f''(u_k) v \rangle - \langle w_t, f'(u_k) v \rangle - \langle v_t, f'(u_k) w \rangle
-\end{bmatrix}
-\end{aligned}
-\end{equation}
-
-Using basis and test functions of the type .... P1. Approximate the integrals using Gaussian quadrature of degree three, therfore computing integrals of polynomials of degree one, which includes our basis functions, however not exact for $f$ which is represented as ... 
-The system one obtains from the first \\
-$u$ as a sum of basis functions, $\sigma$ as well \\
 
 
-reorganise these terms to set up the Newton iteration  
-how does my newton iteration look like exactly? 
+% do analysis of coarse grid correction
+ for the particular problem one is looking 
+% how to divide sections? 
+% block Jacobi, write different version
+% analyse difference, error doesnt seem smooth in space, but can't really see it when looking at solution ... 
 
-write that up ....
-
-
-put in additional terms for equation, for now $u_p$ is $u$ from previous iteration. 3rd line will go on rhs, last line as well, 2nd line on the left
-\begin{align*}
-\begin{bmatrix}
-A_{\sigma \sigma} &  \\
-& A_{uu}
-\end{bmatrix} \cdot
-\begin{bmatrix}
-\sigma \\
-u
-\end{bmatrix} + 
-\begin{bmatrix}
-0 & 0 \\
-diag(M_t \times G_h \cdot (f'(u) \cdot v)) & - diag(G_t \times M_h) \cdot 
-\end{bmatrix}
-= 
-\begin{bmatrix}
-- \langle div(\tau), f(u_p) \rangle \\
-\langle v_t, f(u_p) \rangle 
-\end{bmatrix}
-\end{align*}
-
-%\begin{align*}
-
-%\end{align*}
-Then leave it at the continuous problem formulation though.
-
-Next thing that we need is the space-time discretisation. 
-
-what changes between Dirichlet and Neumann boundary conditions? 
-
-Boundary conditions are directly enforced. How to get symmetry back? 
-
-Some sort of convergence test? 
-
-Eventually come to multigrid implementation. 
-
-The chosen basis function are from $Q_1$, that is the space of 
-For each basis function we have that  and  
-\begin{equation}
-\phi_{ij}(x_k, t_l) = \begin{cases} 1 \quad \text{if } (k,l) = (i,j)  \\ 0 \quad \text{otherwise} \end{cases}
-\end{equation}
-
-\section{Newton Implementation}
-
-how to make this better ....? line search requires gradient evaluations in inner loop
+\subsection{Linearisation of a Monodomain Equation}
 
 
+\subsection{Monodomain Equation}
+
+
+talk about non convexity \\
+Show what solution looks like, wavefront with initial conditions \\
+
+
+\begin{itemize}
+	\item general construction
+	\item talk about non-convexity 
+	\item then about nonlinear solvers
+	
+\end{itemize}
 
 \end{document}
