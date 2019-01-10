@@ -1,0 +1,113 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
+\usepackage{lipsum} %This package just generates Lorem Ipsum filler text. 
+\usepackage{fullpage} % changes the margin
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\setlength\parindent{0pt}
+\begin{document}
+\textbf{\underline{ ADDITIONAL BITS I DIDNT WANT TO DELETE COMPLETE AS OF YET}}
+\bigskip
+\\
+\textit{\underline{Prologue}} \\
+
+And while there is a wide variety of approaches used in order to find a numerical approximation to a solution of (1.1) we will focus on a space-time parallel discretisations using a least squares finite element approach whose linearisations will in turn give rise to sparse, symmetric linear systems of equations. These we will then solve using different adaptive multigrid methods. This suffices in the linear case. That is, if we have a nonlinear 
+\\
+\\
+which are intended to converge to the final solution. While this composition of methodologies may at first seem like a rather complicated construction we will justify in the subsequent paragraphs and chapters why we consider these particular choices to be of interest and will also be presenting numerical results.
+\\
+\\
+A forcing term $f$ that depends on the solution itself, that is $f = f(u)$ and that might in addition be non-linear can immensely complicate the process of solving this type of equation. The system of equations arising from the linear case including well-defined boundary conditions has a unique solution, and the auxiliary minimisation problem has a single global minimiser, however this is not true in the nonlinear case, which might have an arbitrary number of local minima.  Depending on the solution landscape one might therefore require an initial guess that is already very close to the global solution to ensure convergence. This is especially true for a space-time parallel set up where an initial guess already requires values for all time steps	
+\\
+\\
+There are many different ways of how to construct an efficient multigrid algorithm with many problem dependent paramters. One of our main objects remains high parallelisability and the construction of coarse level spaces especially adapted to the monodomain equation.
+\\
+\\
+And while one therefore requires a very precise approximation in areas of the traveling wavefront which goes hand in hand with an highly increased computational cost, such a fine resolution can be considered a waste of resources in times and areas where there is almost no change. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NEWTONS METHOD
+
+The convergence of Newton's method under certain conditions in the one dimensional case is established and proven relatively easily, however it requires much more work to establish the existence of and convergence to a root in the multidimensional case. There are different ways to do so, requiring (slightly) varying assumptions and hence obtaining (slighlty) different results. Here we will restrict ourselves to a classical version which was first shown by L. Kantorovich in 1940 and states the following:
+
+\begin{Theorem}{Newton-Kantorovich.} \\
+	State here? Not too extensive? 
+\end{Theorem}
+
+While this theoretically establishes conditions for convergence, it is in practice ususally impossible to know if the necessary criteria are met. What we can however say, is that the likelyhood of converging at all and maybe even to the desired solution usually increases drastically if our initial guess is relatively close to the solution, assuming that "close" is defined in a meaningful way. Therefore one often solves a simplified related problem, commonly some sort of linearisation of the original problem which hopefully admits a similar solution that can then serve as a first initial guess. We will see in the following sections that the same idea will be applied here. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5%%%%% LSFEM whole introduction function space bla bla 
+
+Hence the strong formulation of problem (4.3) reads  
+\begin{ceqn}
+	\begin{equation}
+	\text{Find  } (\sigma, u) \in \tilde{X} \text{ such that } \mathcal{A}([\sigma, u]^T ) = \tilde{f}(u) \text{ in } \tilde{Y} 
+	\end{equation}
+\end{ceqn}
+However it is unreasonable to be looking for a solution of this strong form (4.3) or (4.4). Instead we will turn towards the derivation of an optimisation problem that satisfies the above equation in a weak sense and that will therefore give rise to a variational formulation 
+
+\begin{ceqn}
+	\begin{equation}
+	\text{Find  } (\sigma, u) \in  \text{ such that } a([\sigma, u], [\tau, v]) = L_{\tilde{f}}(u)([\tau, v]) \text{ in } Y \text { for all } (\tau, v) \in X \text{ or } \hat{X}
+	\end{equation}
+\end{ceqn}
+And the variational formulation of the least squares approach that will evolve from the optimisation functional 
+(iii)
+\begin{ceqn}
+	\begin{equation}
+	\text{Find  } (\sigma, u) \in U \text{ such that } \mathcal{B}([\sigma, u],  [\tau, v]) = \tilde{f}(u) \text{ in } Z \text{ for all } (\tau, v) \in V
+	\end{equation}
+\end{ceqn}
+Hence, wehn we now point out to one of the above mentioned spaces it is clear which formulation of the problem we are refering to. 
+
+\textbf{FROM IMPLEMENTATION SECTION}
+
+\begin{ceqn}
+	\begin{equation}
+	\begin{aligned}
+	C_1 = \begin{bmatrix}
+	A_{11} & && & & & & \\
+	& A_{22} & & & & & & \\
+	& &  A_{N_x+2, N_x+2}  & & & & &\\
+	& & & A_{N_x+3, N_x+3} & & & &\\
+	& & & & A_{\tilde{m} + 1, \tilde{m} + 1} & & &  \\
+	& & & & & &  A_{\tilde{m} + 2, \tilde{m} + 2} & & \\
+	& & & & & & & A_{\tilde{m} + N_x+2, \tilde{m} + N_x+2} & \\
+	& & & & & & & & A_{\tilde{m} + N_x+3, \tilde{m} + N_x+3}
+	\end{bmatrix}^{-1}
+	\end{aligned}
+	\end{equation}
+\end{ceqn}
+
+
+\begin{equation}
+\begin{aligned}
+\nabla J(y_k) = 
+\begin{bmatrix}
+- \langle u_t, div(\tau) \rangle + \langle \sigma_k, \tau \rangle + \langle div(\sigma_k), div(\tau)  - \langle \nabla u_k, \tau \rangle  \\
+\langle u_t, v_t \rangle - \langle v_t, div(\sigma_k)+ \langle \nabla u, \nabla v \rangle - \langle \sigma_k, \nabla v \rangle
+\end{bmatrix} \\
++ \begin{bmatrix}
++ \langle f(u_k), div(\tau) \rangle \\
+\langle div(\sigma_k), f'(u_k) v \rangle + \langle f(u_k), f'(u_k)v \rangle - \langle (u_k)_t, f'(u_k) v \rangle - \langle v_t, f(u) \rangle 
+\end{bmatrix}
+\end{aligned}
+\end{equation}
+
+\begin{equation}
+\begin{aligned}
+H_J(y_k) = \begin{bmatrix}
+\langle \tau, \rho \rangle + \langle div(\tau), div(\rho) \rangle & - \langle \rho, \nabla v \rangle - \langle v_t, div(\rho) \rangle  \\
+- \langle \tau, \nabla w \rangle - \langle w_t, div(\tau)& \langle v_t, v_t \rangle + \langle \nabla v, \nabla w \rangle 
+\end{bmatrix} \\
++ \begin{bmatrix}
+0 & - \langle div(\tau), f'(u_k) \cdot w \rangle \\
+- \langle div(\rho), f'(u_k) v \rangle & -\langle (u_k)_t, w^T f''(u_k) v \rangle + \langle div(\sigma_k), w^T f''(u_k) v \rangle + \langle f'(u_k)w , f'(u_k) w \rangle +... \\ &... + \langle f(u_k), w^T f''(u_k) v \rangle - \langle w_t, f'(u_k) v \rangle - \langle v_t, f'(u_k) w \rangle
+\end{bmatrix}
+\end{aligned}
+\end{equation}
+
+\end{document}

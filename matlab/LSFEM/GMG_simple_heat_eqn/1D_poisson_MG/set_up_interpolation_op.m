@@ -16,7 +16,7 @@
 
 % boundary in space: 0.5 -- x -- 0.5 
 
-function [I, R, Nx_elem_list] = set_up_interpolation_op_SP(Nx_elem_list, Nt_elem_list, bdy_cond, levels)
+function [I, R, Nx_elem_list, Nt_elem_list] = set_up_interpolation_op_SP(Nx_elem_list, Nt_elem_list, bdy_cond, levels)
 I = {};
 R = {};
 
@@ -29,7 +29,8 @@ Nt_pts_c = Nt_elem_list(l)+1;
 Nx_pts = Nx_elem_list(l)+1;
 Nt_pts = Nt_elem_list(l)+1;
 
-% update lists and return them later on
+% since we don't coarsen in time!
+Nt_elem_list(l+1) = Nt_elem_list(l);
 
 tot_pts_c = Nx_pts_c*Nt_pts_c;
 tot_pts = Nx_pts*Nt_pts;
@@ -70,10 +71,8 @@ for j=2:Nt_pts-1
         end
 end
 
-% need this operator twice, for sigma and u
-Int = zeros(2*size(I_one));
-Int(1:tot_pts, 1:tot_pts_c) = I_one;
-Int(tot_pts+1:end, tot_pts_c+1:end) = I_one;
+% only need it once here, not LSFEM
+Int = I_one;
 
 if(l == 1)
     bdy_ind = get_bdy_ind(Nx_pts, Nt_pts, bdy_cond);

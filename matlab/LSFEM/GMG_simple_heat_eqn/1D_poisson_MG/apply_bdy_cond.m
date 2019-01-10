@@ -29,10 +29,9 @@ bdy_ind = get_bdy_ind(Nx_pts, Nt_pts, bdy_cond);
 Hess_J_sym = Hess_J;
 Hess_J_sym(bdy_ind,:) = 0;
 
-Hess_J_non_sym = Hess_J_sym;
 %% symmetrize the matrix
 
-rhs_sym(:) = rhs(:) - Hess_J_sym(:,bdy_ind)*rhs(bdy_ind);
+rhs_sym(:) = rhs(:)- Hess_J_sym(:,bdy_ind)*rhs(bdy_ind);
 rhs_sym = rhs_sym';
 
 Hess_J_sym(:,bdy_ind) = 0;
@@ -46,8 +45,6 @@ tempD = tempB-tempA;
 
 Hess_J_sym = Hess_J_sym + tempD;
 
-u_non_sym = Hess_non_sym \ rhs;
-u_sym = Hess_J_sy
 else
 tot_pts = Nx_pts*Nt_pts;
 

@@ -30,8 +30,8 @@ get_elem_ind = @(i,j) [pos2id(i,j); pos2id(i+1,j); pos2id(i,j+1); pos2id(i+1,j+1
 %% basis functions, and their gradients
 
 basis_fct_eval = @(x,t) [(1-x)*(1-t); x*(1-t); (1-x)*t;  x*t];
-grad_x_fct_eval = @(x,t) 1/hx*[(-1)*(1-t); 1*(1-t); (-1)*t;  1*t];
-grad_t_fct_eval = @(x,t) 1/ht*[(1-x)*(-1); x*(-1); (1-x)*1;  x*1];
+grad_x_fct_eval = @(x,t) S/hx*[(-1)*(1-t); 1*(1-t); (-1)*t;  1*t];
+grad_t_fct_eval = @(x,t) T/ht*[(1-x)*(-1); x*(-1); (1-x)*1;  x*1];
 
 
 % linear parts of Hessian
@@ -41,8 +41,6 @@ J_us_lin = zeros(tot_pts);
 J_uu_lin = zeros(tot_pts);
         
 %% loop construct matrices
-% ************ no boundary conditions put in yet ... ************
-
 
 for elem_j = 1:Nt_elem                                      % iterate through all elements
     for elem_i = 1:Nx_elem
@@ -64,7 +62,7 @@ for elem_j = 1:Nt_elem                                      % iterate through al
                        J_ss_lin(curr_ind(bf_i), curr_ind(bf_j)) = J_ss_lin(curr_ind(bf_i), curr_ind(bf_j)) + c2*hxht*bf_eval(bf_i)*bf_eval(bf_j)*qd_weights(pt_i)*qd_weights(pt_j);
                        J_ss_lin(curr_ind(bf_i), curr_ind(bf_j)) = J_ss_lin(curr_ind(bf_i), curr_ind(bf_j)) + c1*hxht*grad_tau_x_eval(bf_i)*grad_tau_x_eval(bf_j)*qd_weights(pt_i)*qd_weights(pt_j);
                        
-                       % J_su linear part: - diff_const < \tau, v_x> - <v_t, \tau_x
+                       % J_su linear part: -diff_const < \tau, v_x> - <v_t, \tau_x>
                        J_su_lin(curr_ind(bf_i), curr_ind(bf_j)) = J_su_lin(curr_ind(bf_i), curr_ind(bf_j)) - c2*hxht*diff_const*bf_eval(bf_i)*grad_tau_x_eval(bf_j)*qd_weights(pt_i)*qd_weights(pt_j);
                        J_su_lin(curr_ind(bf_i), curr_ind(bf_j)) = J_su_lin(curr_ind(bf_i), curr_ind(bf_j)) - c1*hxht*grad_v_t_eval(bf_j)*grad_tau_x_eval(bf_i)*qd_weights(pt_i)*qd_weights(pt_j);
                        

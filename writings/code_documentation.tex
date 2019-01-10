@@ -1,0 +1,74 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
+\usepackage{lipsum} %This package just generates Lorem Ipsum filler text. 
+\usepackage{fullpage} % changes the margin
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\setlength\parindent{0pt}
+\begin{document}
+\section*{Documentation MATLAB - Code}
+\underline{\textbf{What is out there? - LSFEM only}}
+\begin{enumerate}
+	\item \textit{GMG simple heat eqn}
+	\item \textit{AMG simple heat eqn}
+	\item \textit{modulated MG}
+	\item \textit{modulated direct}
+	\item \textit{modulated old}
+	\item \textit{eigenfunctions}
+	\item \textit{comparison}
+	\item \textit{other}
+\end{enumerate}
+\subsection*{1 GMG simpe heat equation}
+
+we are solving LSFEM version of heat equation using a geometric multigrid. Let's talk about the multigrid setting first, for the \textbf{smoother} there are mainly two different options even though all other ones would theoretically work as well, but probably don't make much sense.
+\begin{itemize}
+	\item GaussSeidelSolve LS
+	\item \textbf{JacobiSolve extended space time}
+\end{itemize}
+The first one, does a regular Gauss-Seidel iteration but couples $\sigma$ and $u$. Not so good though, not parallelisable. Then there are different Jacobi Solve versions, but the above one can do everything the others can, because there you get to choose the size of the patch in space and time. Patch size needs to be manually set in smoother function though, is not an input parameter. Improves performance a bit but not so much. 
+\bigskip\\
+The set up of the grid has two options, you can start with the fine mesh, but then it has to have a size $2^k$ so that we can coarsen it appropriately or you start with a coarse grid that is then recursively refined or we take this $\lambda$
+business into account (however meaningful that is, current idea would be to keep $\frac{d \Delta t}{\Delta x} = \lambda \approx 1$, not well tested yet, there is an implementation for keeping $\frac{d \Delta t}{\Delta x^2} = \lambda \approx 1$ if $d$ diffusion constant is small. Hence as set ups we have 
+
+\begin{itemize}
+	\item heat eqn zero rhs MG call
+	\item  run heat eqn lsfem adaptive mesh ref
+	\item \textbf{run from coarse heat eqn zero rhs}
+\end{itemize}
+
+Hence we now need that appropriately sized interpolation operators are being generated
+
+\begin{itemize}
+	\item heat eqn zero rhs MG call
+	\item \textbf{set up interpolation op sp time} - coarsens in space and time
+	\item set up interpolation op sp - only coarsens in space but not in time 
+	\item set up interpolation op
+\end{itemize}
+They all get called in the V-cycle function. Probably most important function, pretty everything happens there and often needs to be adapted manually but it already has so many input parameters. In \textbf{V-cylce}
+
+\begin{itemize}
+	\item set up interpolation operators
+	\item set up coarse grid operators (constructing them explicitly, including boundary conditions)
+	\item then loop over maximal number of iterations and then in there over levels
+	\item here we do a step from fine to coarse, that is smoothen $+$ computing the restricted residual, which we return
+	\item after we have done this for all levels except last one, solve directly on coarsest grid
+	\item interpolate back to finer grid, set boundary terms to zero, and smoothen
+	\item when on finest grid check if residual smaller than $\epsilon$, if yes, stop otherwise contiunue unless max iteration reached
+\end{itemize}
+ 
+two V-cycle versions, one with comments, figures that are generated, etc. to debug, one plain one to see the overall structure, that is 
+
+\begin{itemize}
+	\item \textbf{V-cycle}
+	\item V-cycle plain
+\end{itemize}
+
+\subsection*{3 Modulated MG}
+Doesn't seem to converge anywhere at all, which is weird, because it should be convex in most cases.
+
+\subsection*{4 Modulated Direct}
+Not using a multigrid, don't necessarily have positive definiteness, hence use a direct solve instead and as a nonlinear iteration scheme a trust region dogleg method and a backtracking line search with wolfe conditions
+
+\end{document}

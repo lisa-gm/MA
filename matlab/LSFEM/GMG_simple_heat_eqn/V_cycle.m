@@ -8,7 +8,7 @@ function [sol, it_sol_mg, it_res_mg] = V_cycle(Nx_elem_list, hx_list, Nt_elem_li
 S = Nx_elem_list(1)*hx_list(1);
 T =  Nt_elem_list(1)*ht_list(1);
 
-max_iter_sm = 2;
+max_iter_sm = 3;
 
 % get interpolation matrices
 %[I, R, Nx_elem_list, Nt_elem_list] = set_up_interpolation_op_SP(Nx_elem_list, Nt_elem_list, bdy_cond, levels);
@@ -81,7 +81,7 @@ for k=1:max_iter
    
   for l=1:levels-1 
   %fprintf('on level: %d ', j);
-  [rhs{l+1}, u{l}] = step_fine_to_coarse(L_h{l}, R{l}, rhs{l}, u{l}, max_iter_sm, smoother, l); 
+  [rhs{l+1}, u{l}] = step_fine_to_coarse(Nx_elem_list(l)+1, Nt_elem_list(l)+1, L_h{l}, R{l}, rhs{l}, u{l}, max_iter_sm, smoother, l); 
   % now remove boundary conditions
       % reshape
       
@@ -110,19 +110,21 @@ for k=1:max_iter
             sigma_mat_temp(:, ts) = sigma_temp((ts-1)*Nx_pts_list(1)+1:ts*Nx_pts_list(1));
         end
 
-        figure(10);
-        mesh(0:Nx_elem_list(1), 0:Nt_elem_list(1), transpose(sigma_mat_temp));
-        xlabel('space');
-        ylabel('time');
-        zlabel('sigma temp');
-        %zlim([min(u), max(u)]);
-        title('after pre smoothing');
-        end
+%         figure(10);
+%         mesh(0:Nx_elem_list(1), 0:Nt_elem_list(1), transpose(sigma_mat_temp));
+%         xlabel('space');
+%         ylabel('time');
+%         zlabel('sigma temp');
+%         %zlim([min(u), max(u)]);
+%         title('after pre smoothing');
+%         end
  
   
-  rhs{l+1}(bdy_ind_list{l+1}) = 0;
+        rhs{l+1}(bdy_ind_list{l+1}) = 0;
+        end
+  
   end
-
+  
   % use direct solver
   u{levels} = L_h{levels}\(rhs{levels});
   
@@ -133,13 +135,13 @@ for k=1:max_iter
         u_mat_c(:, ts) = u_vec_c((ts-1)*Nx_pts_list(end)+1:ts*Nx_pts_list(end));
     end
 
-    figure(3);
-    mesh(1:Nx_pts_list(end), 1:Nt_pts_list(end), transpose(u_mat_c));
-    xlabel('space');
-    ylabel('time');
-    zlabel('u');
-    %zlim([min(u), max(u)]);
-    title('coarse grid correction');
+%     figure(3);
+%     mesh(1:Nx_pts_list(end), 1:Nt_pts_list(end), transpose(u_mat_c));
+%     xlabel('space');
+%     ylabel('time');
+%     zlabel('u');
+%     %zlim([min(u), max(u)]);
+%     title('coarse grid correction');
 %     
 %     sigma_vec_c = u{levels}(1:Nx_pts_list(end)*Nt_pts_list(end));
 %     sigma_mat_c = zeros(Nx_pts_list(end), Nt_pts_list(end));
@@ -188,30 +190,30 @@ for k=1:max_iter
             end
 
 
-            figure(4);
-            mesh(0:Nx_elem_list(1), 0:Nt_elem_list(1), transpose(c_sigma_mat_temp));
-            xlabel('space');
-            ylabel('time');
-            zlabel('sigma temp');
-            %zlim([min(u), max(u)]);
-            title('fine grid correction');
+%             figure(4);
+%             mesh(0:Nx_elem_list(1), 0:Nt_elem_list(1), transpose(c_sigma_mat_temp));
+%             xlabel('space');
+%             ylabel('time');
+%             zlabel('sigma temp');
+%             %zlim([min(u), max(u)]);
+%             title('fine grid correction');
+%             
+%             figure(5);
+%             mesh(0:Nx_elem_list(1), 0:Nt_elem_list(1), transpose(sigma_mat_temp));
+%             xlabel('space');
+%             ylabel('time');
+%             zlabel('u temp');
+%             %zlim([min(u), max(u)]);
+%             title('sigma before update: sigma mat temp');
             
-            figure(5);
-            mesh(0:Nx_elem_list(1), 0:Nt_elem_list(1), transpose(sigma_mat_temp));
-            xlabel('space');
-            ylabel('time');
-            zlabel('u temp');
-            %zlim([min(u), max(u)]);
-            title('sigma before update: sigma mat temp');
-            
-            figure(6);
-            mesh(0:Nx_elem_list(1), 0:Nt_elem_list(1), transpose(sigma_mat_temp+c_sigma_mat_temp));
-            xlabel('space');
-            ylabel('time');
-            zlabel('u temp');
-            %zlim([min(u), max(u)]);
-            title('current sol: sigma mat temp + correction');
-            
+%             figure(6);
+%             mesh(0:Nx_elem_list(1), 0:Nt_elem_list(1), transpose(sigma_mat_temp+c_sigma_mat_temp));
+%             xlabel('space');
+%             ylabel('time');
+%             zlabel('u temp');
+%             %zlim([min(u), max(u)]);
+%             title('current sol: sigma mat temp + correction');
+%             
         
         end
         
@@ -222,16 +224,16 @@ for k=1:max_iter
         if(l == 1)
         res = L_h{l}*u{l} - rhs{l};
         tot_pts = length(res)/2;
-        fprintf('norm res before post-smoothing : %d\n', norm(res));
+        %fprintf('norm res before post-smoothing : %d\n', norm(res));
         %fprintf('norm res sigma before post-smoothing : %d\n', norm(res(1:tot_pts)));
         %fprintf('norm res u before post-smoothing : %d\n', norm(res(tot_pts+1:end)));
 
         end
         
-        u{l} = smoothing(L_h{l}, rhs{l}, u{l}, max_iter_sm, smoother);
+        u{l} = smoothing(Nx_elem_list(l)+1, Nt_elem_list(l)+1 ,L_h{l}, rhs{l}, u{l}, max_iter_sm, smoother);
         
         if(l == 1)
-        fprintf('norm res after post-smoothing : %d\n', norm(L_h{l}*u{l} - rhs{l}));
+        %fprintf('norm res after post-smoothing : %d\n', norm(L_h{l}*u{l} - rhs{l}));
         end
         
     end    
@@ -241,6 +243,8 @@ it_sol_mg(:,k+1) = u{1};
 err = norm(L_h{1}*u{1} - rhs{1});
 it_res_mg(1,k+1) = err;
 
+
+sol = u{1};
 
 if(err < eps)
     fprintf('\n');
@@ -253,5 +257,4 @@ end
 
 end
 
-sol = u{1};
 end

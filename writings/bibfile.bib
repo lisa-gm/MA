@@ -1,5 +1,29 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%% PROLOGUE %%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+@article{zegeling2004adaptive,
+	title={Adaptive moving mesh computations for reaction--diffusion systems},
+	author={Zegeling, Paul A and Kok, HP},
+	journal={Journal of Computational and Applied Mathematics},
+	volume={168},
+	number={1-2},
+	pages={519--528},
+	year={2004},
+	publisher={Elsevier}
+}
+
+@incollection{cosner2008reaction,
+	title={Reaction--diffusion equations and ecological modeling},
+	author={Cosner, C},
+	booktitle={Tutorials in Mathematical Biosciences IV},
+	pages={77--115},
+	year={2008},
+	publisher={Springer}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%% CARDIOLOGY %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -53,7 +77,7 @@
 
 @ONLINE{WHO_statistics,
 	author = {},
-	title = {World Healt Organisation, Cardiovascular diseases},
+	title = {World Health Organisation, Cardiovascular diseases},
 	month = oct,
 	year = {2018},
 	url = {http://www.who.int/news-room/fact-sheets/detail/cardiovascular-diseases-(cvds)}
@@ -67,8 +91,28 @@
 	url = {https://www.cardiosmart.org/Heart-Basics/How-the-Heart-Works}
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% NUMERIK ALLGEMEIN  %%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@book{deuflhard2011adaptive,
+	title={Adaptive L{\"o}sung partieller Differentialgleichungen},
+	author={Deuflhard, Peter and Weiser, Martin},
+	year={2011},
+	publisher={Walter de Gruyter}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%% PDES ALLGEMEIN %%%%%%%%%%%%%%%%%%%%%%
+
+@article{evans2010partial,
+	title={Partial differential equations},
+	author={Evans, Lawrence C},
+	year={2010},
+	publisher={American Mathematical Society}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%% SPACE - TIME %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -81,6 +125,56 @@
 	publisher={Springer}
 }
 
+@article{lions2001resolution,
+	title={R{\'e}solution d'EDP par un sch{\'e}ma en temps {\guillemotleft}parar{\'e}el{\guillemotright} A``parareal''in time discretization of PDE's},
+	author={Lions, J},
+	journal={Academie des Sciences Paris Comptes Rendus Serie Sciences Mathematiques},
+	volume={332},
+	pages={661--668},
+	year={2001}
+}
+
+@incollection{gander2008nonlinear,
+	title={Nonlinear convergence analysis for the parareal algorithm},
+	author={Gander, Martin J and Hairer, Ernst},
+	booktitle={Domain decomposition methods in science and engineering XVII},
+	pages={45--56},
+	year={2008},
+	publisher={Springer}
+	}
+
+@article{gander1996overlapping,
+	title={Overlapping Schwarz for linear and nonlinear parabolic problems},
+	author={Gander, Martin Jakob},
+	year={1996}
+}
+
+@article{gander1999optimal,
+	title={Optimal convergence for overlapping and non-overlapping Schwarz waveform relaxation},
+	author={Gander, Martin Jakob and Halpern, Laurence and Nataf, Fr{\'e}d{\'e}ric},
+	year={1999}
+}
+
+@incollection{guttel2013parallel,
+	title={A parallel overlapping time-domain decomposition method for ODEs},
+	author={G{\"u}ttel, Stefan},
+	booktitle={Domain decomposition methods in science and engineering XX},
+	pages={459--466},
+	year={2013},
+	publisher={Springer}
+}
+
+@article{gander2013paraexp,
+	title={PARAEXP: A parallel integrator for linear initial-value problems},
+	author={Gander, Martin J and Güttel, Stefan},
+	journal={SIAM Journal on Scientific Computing},
+	volume={35},
+	number={2},
+	pages={C123--C142},
+	year={2013},
+	publisher={SIAM}
+}
+
 @article{gander2016analysis,
 	title={Analysis of a new space-time parallel multigrid algorithm for parabolic problems},
 	author={Gander, Martin J and Neumüller, Martin},
@@ -90,6 +184,33 @@
 	pages={A2173--A2208},
 	year={2016},
 	publisher={SIAM}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%% NEWTON + TRUST REGION
+
+@book{deuflhard2011newton,
+	title={Newton methods for nonlinear problems: affine invariance and adaptive algorithms},
+	author={Deuflhard, Peter},
+	volume={35},
+	year={2011},
+	publisher={Springer Science \& Business Media}
+}
+
+@Book{NoceWrig99,
+	Title = {Numerical Optimization},
+	Author = {Jorge Nocedal and Stephen J. Wright},
+	Publisher  = {Springer},
+	Year = {1999},
+	Address = {New York, NY, USA}
+}
+
+@book{conn2000trust,
+	title={Trust region methods},
+	author={Conn, Andrew R and Gould, Nicholas IM and Toint, Ph L},
+	volume={1},
+	year={2000},
+	publisher={Siam}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -104,7 +225,55 @@
 	publisher={Springer Science \& Business Media}
 }
 
+@article{cai1994first,
+	title={First-order system least squares for second-order partial differential equations: Part I},
+	author={Cai, Zhiqiang and Lazarov, R and Manteuffel, Thomas A and McCormick, Stephen F},
+	journal={SIAM Journal on Numerical Analysis},
+	volume={31},
+	number={6},
+	pages={1785--1799},
+	year={1994},
+	publisher={SIAM}
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%% MULTIGRID %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+@book{briggs2000multigrid,
+	title={A multigrid tutorial},
+	author={Briggs, William L and McCormick, Steve F and others},
+	volume={72},
+	year={2000},
+	publisher={Siam}
+}
+
+@article{brandt1977multi,
+	title={Multi-level adaptive solutions to boundary-value problems},
+	author={Brandt, Achi},
+	journal={Mathematics of computation},
+	volume={31},
+	number={138},
+	pages={333--390},
+	year={1977}
+}
+
+@book{hackbusch2013multi,
+	title={Multi-grid methods and applications},
+	author={Hackbusch, Wolfgang},
+	volume={4},
+	year={2013},
+	publisher={Springer Science \& Business Media}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% SMOOTHER %%%%%%%%%%%%%%%%%%%%
+@inproceedings{adams2001distributed,
+	title={A distributed memory unstructured Gauss-Seidel algorithm for multigrid smoothers},
+	author={Adams, Mark F},
+	booktitle={Proceedings of the 2001 ACM/IEEE conference on Supercomputing},
+	pages={4--4},
+	year={2001},
+	organization={ACM}
+}
 

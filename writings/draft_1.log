@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/MacPorts 2017_2) (preloaded format=pdflatex 2018.3.21)  26 NOV 2018 18:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/MacPorts 2017_2) (preloaded format=pdflatex 2018.3.21)  10 JAN 2019 18:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -419,9 +419,126 @@ File: pgfmodulematrix.code.tex 2013/09/17  (rcs-revision 1.8)
 ytopaths.code.tex
 File: tikzlibrarytopaths.code.tex 2008/06/17 v3.0.1 (rcs-revision 1.2)
 )))
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+yshapes.code.tex
+File: tikzlibraryshapes.code.tex 2008/01/09 v3.0.1 (rcs-revision 1.1)
+
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+yshapes.geometric.code.tex
+File: tikzlibraryshapes.geometric.code.tex 2008/01/09 v3.0.1 (rcs-revision 1.1)
+
+
+(/opt/local/share/texmf/tex/generic/pgf/libraries/shapes/pgflibraryshapes.geome
+tric.code.tex
+File: pgflibraryshapes.geometric.code.tex 2008/06/26 v3.0.1 (rcs-revision 1.1)
+))
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+yshapes.misc.code.tex
+File: tikzlibraryshapes.misc.code.tex 2008/01/09 v3.0.1 (rcs-revision 1.1)
+
+(/opt/local/share/texmf/tex/generic/pgf/libraries/shapes/pgflibraryshapes.misc.
+code.tex
+File: pgflibraryshapes.misc.code.tex 2013/07/18 v3.0.1 (rcs-revision 1.5)
+))
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+yshapes.symbols.code.tex
+File: tikzlibraryshapes.symbols.code.tex 2008/01/09 v3.0.1 (rcs-revision 1.1)
+
+(/opt/local/share/texmf/tex/generic/pgf/libraries/shapes/pgflibraryshapes.symbo
+ls.code.tex
+File: pgflibraryshapes.symbols.code.tex 2013/09/11 v3.0.1 (rcs-revision 1.6)
+))
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+yshapes.arrows.code.tex
+File: tikzlibraryshapes.arrows.code.tex 2008/01/09 v3.0.1 (rcs-revision 1.1)
+
+(/opt/local/share/texmf/tex/generic/pgf/libraries/shapes/pgflibraryshapes.arrow
+s.code.tex
+File: pgflibraryshapes.arrows.code.tex 2008/06/26 v3.0.1 (rcs-revision 1.1)
+))
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+yshapes.callouts.code.tex
+(/opt/local/share/texmf/tex/generic/pgf/libraries/shapes/pgflibraryshapes.callo
+uts.code.tex))
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+yshapes.multipart.code.tex
+File: tikzlibraryshapes.multipart.code.tex 2008/01/09 v3.0.1 (rcs-revision 1.1)
+
+
+(/opt/local/share/texmf/tex/generic/pgf/libraries/shapes/pgflibraryshapes.multi
+part.code.tex
+File: pgflibraryshapes.multipart.code.tex 2010/01/07 v3.0.1 (rcs-revision 1.2)
+\pgfnodepartlowerbox=\box39
+\pgfnodeparttwobox=\box40
+\pgfnodepartthreebox=\box41
+\pgfnodepartfourbox=\box42
+\pgfnodeparttwentybox=\box43
+\pgfnodepartnineteenbox=\box44
+\pgfnodeparteighteenbox=\box45
+\pgfnodepartseventeenbox=\box46
+\pgfnodepartsixteenbox=\box47
+\pgfnodepartfifteenbox=\box48
+\pgfnodepartfourteenbox=\box49
+\pgfnodepartthirteenbox=\box50
+\pgfnodeparttwelvebox=\box51
+\pgfnodepartelevenbox=\box52
+\pgfnodeparttenbox=\box53
+\pgfnodepartninebox=\box54
+\pgfnodeparteightbox=\box55
+\pgfnodepartsevenbox=\box56
+\pgfnodepartsixbox=\box57
+\pgfnodepartfivebox=\box58
+)))
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+ysnakes.code.tex
+File: tikzlibrarysnakes.code.tex 2013/07/15 v3.0.1 (rcs-revision 1.7)
+
+
+Package pgf Warning: Snakes have been superseded by decorations. Please use the
+ decoration libraries instead of the snakes library on input line 14.
+
+
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+ydecorations.pathmorphing.code.tex
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+ydecorations.code.tex
+(/opt/local/share/texmf/tex/generic/pgf/modules/pgfmoduledecorations.code.tex
+\pgfdecoratedcompleteddistance=\dimen165
+\pgfdecoratedremainingdistance=\dimen166
+\pgfdecoratedinputsegmentcompleteddistance=\dimen167
+\pgfdecoratedinputsegmentremainingdistance=\dimen168
+\pgf@decorate@distancetomove=\dimen169
+\pgf@decorate@repeatstate=\count121
+\pgfdecorationsegmentamplitude=\dimen170
+\pgfdecorationsegmentlength=\dimen171
+)
+\tikz@lib@dec@box=\box59
+)
+(/opt/local/share/texmf/tex/generic/pgf/libraries/decorations/pgflibrarydecorat
+ions.pathmorphing.code.tex))
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+ydecorations.pathreplacing.code.tex
+(/opt/local/share/texmf/tex/generic/pgf/libraries/decorations/pgflibrarydecorat
+ions.pathreplacing.code.tex))
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+ydecorations.shapes.code.tex
+(/opt/local/share/texmf/tex/generic/pgf/libraries/decorations/pgflibrarydecorat
+ions.shapes.code.tex)))
+(/opt/local/share/texmf-texlive/tex/latex/fancyhdr/fancyhdr.sty
+Package: fancyhdr 2016/09/06 3.8 Extensive control of page headers and footers
+\fancy@headwidth=\skip51
+\f@ncyO@elh=\skip52
+\f@ncyO@erh=\skip53
+\f@ncyO@olh=\skip54
+\f@ncyO@orh=\skip55
+\f@ncyO@elf=\skip56
+\f@ncyO@erf=\skip57
+\f@ncyO@olf=\skip58
+\f@ncyO@orf=\skip59
+)
 (/opt/local/share/texmf-texlive/tex/latex/ncctools/nccmath.sty
 Package: nccmath 2005/02/21 v1.2 Additional Math Commands (NCC)
-\NCC@fracrulewidth=\dimen165
+\NCC@fracrulewidth=\dimen172
 )
 (/opt/local/share/texmf-texlive/tex/latex/subfiles/subfiles.sty
 Package: subfiles 2012/05/23 Federico Garcia
@@ -433,37 +550,45 @@ Package: verbatim 2014/10/28 v1.5q LaTeX2e package for verbatim enhancements
 \verbatim@in@stream=\read2
 ))
 
+Package Fancyhdr Warning: \fancyhead's `E' option without twoside option is use
+less on input line 23.
+
+
+Package Fancyhdr Warning: \fancyhead's `E' option without twoside option is use
+less on input line 25.
+
+
 LaTeX Warning: Unused global option(s):
     [bibliography=totoc].
 
 (./draft_1.aux)
 \openout1 = `draft_1.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
 
 (/opt/local/share/texmf-texlive/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count121
-\scratchdimen=\dimen166
-\scratchbox=\box39
-\nofMPsegments=\count122
-\nofMParguments=\count123
+\scratchcounter=\count122
+\scratchdimen=\dimen173
+\scratchbox=\box60
+\nofMPsegments=\count123
+\nofMParguments=\count124
 \everyMPshowfont=\toks40
-\MPscratchCnt=\count124
-\MPscratchDim=\dimen167
-\MPnumerator=\count125
-\makeMPintoPDFobject=\count126
+\MPscratchCnt=\count125
+\MPscratchDim=\dimen174
+\MPnumerator=\count126
+\makeMPintoPDFobject=\count127
 \everyMPtoPDFconversion=\toks41
 ) (/opt/local/share/texmf-texlive/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
@@ -515,211 +640,214 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 ABD: EveryShipout initializing macros
-\c@Definition=\count127
-\c@Theorem=\count128
-LaTeX Font Info:    Try loading font information for U+msa on input line 25.
+\c@Definition=\count128
+\c@Theorem=\count129
+LaTeX Font Info:    Try loading font information for U+msa on input line 35.
 
 (/opt/local/share/texmf-texlive/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 25.
+LaTeX Font Info:    Try loading font information for U+msb on input line 35.
 
 (/opt/local/share/texmf-texlive/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
-{/opt/local/var/db/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./draft_1.toc)
+{/opt/local/var/db/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./draft_1.toc [1
+
+])
 \tf@toc=\write5
 \openout5 = `draft_1.toc'.
 
 
-(./chapters/prologue.tex [1
+
+Package Fancyhdr Warning: \headheight is too small (0.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[2] (./chapters/prologue.tex
+Chapter 1.
+[3
+
+
+] [4]) (./chapters/electrophysiology.tex [5]
+Chapter 2.
+<images/electrophysiology/heart_structure.png, id=34, 578.16pt x 670.505pt>
+File: images/electrophysiology/heart_structure.png Graphic file (type png)
+
+<use images/electrophysiology/heart_structure.png>
+Package pdftex.def Info: images/electrophysiology/heart_structure.png used on i
+nput line 12.
+(pdftex.def)             Requested size: 173.44933pt x 201.15305pt.
+
+<images/electrophysiology/conduction_system.png, id=35, 672.5125pt x 388.45125p
+t>
+File: images/electrophysiology/conduction_system.png Graphic file (type png)
+ <use images/electrophysiology/conduction_system.png>
+Package pdftex.def Info: images/electrophysiology/conduction_system.png used on
+ input line 21.
+(pdftex.def)             Requested size: 336.25542pt x 194.22514pt.
+ [6
+
+ <./images/electrophysiology/heart_structure.png>] [7 <./images/electrophysiolo
+gy/conduction_system.png>]
+<images/electrophysiology/cardiac_action_pot_franzone.png, id=45, 920.43875pt x
+ 584.1825pt>
+File: images/electrophysiology/cardiac_action_pot_franzone.png Graphic file (ty
+pe png)
+ <use images/electrophysiology/cardiac_action_pot_franzone.png>
+Package pdftex.def Info: images/electrophysiology/cardiac_action_pot_franzone.p
+ng used on input line 33.
+(pdftex.def)             Requested size: 276.13376pt x 175.25609pt.
+
+[8 <./images/electrophysiology/cardiac_action_pot_franzone.png>] [9])
+(./chapters/mathematical_ingredients.tex [10]
+Chapter 3.
+[11
+
+] [12] [13] [14] [15]
+
+LaTeX Warning: Citation `lions2001resolutionions2001resolution' on page 16 unde
+fined on input line 228.
+
+[16] [17] [18] [19] [20]) (./chapters/problem_formulation.tex [21]
+Chapter 4.
+[22
+
+] [23] [24] [25]
+Overfull \hbox (7.03162pt too wide) in paragraph at lines 237--237
+[] 
+ []
+
+[26] [27] [28]
+Overfull \hbox (43.58923pt too wide) detected at line 342
+$[][]$  
+ []
+
+
+Overfull \hbox (6.10196pt too wide) detected at line 348
+$[][]$  
+ []
+
+[29] [30]) (./chapters/multigrid_methods.tex [31]
+Chapter 5.
+[32
 
 ]
-Chapter 1.
-
-Underfull \hbox (badness 10000) in paragraph at lines 6--20
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 6--20
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 6--20
-
- []
-
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 25.
-(/opt/local/share/texmf-texlive/tex/latex/base/omscmr.fd
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 51.
+ (/opt/local/share/texmf-texlive/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 25.
- [2
-
-])
-(./chapters/electrophysiology.tex [3]
-Chapter 2.
-<images/heart_structure_2.png, id=27, 805.0075pt x 758.835pt>
-File: images/heart_structure_2.png Graphic file (type png)
-
-<use images/heart_structure_2.png>
-Package pdftex.def Info: images/heart_structure_2.png used on input line 12.
-(pdftex.def)             Requested size: 241.50412pt x 227.65225pt.
-
-<images/conduction_system.png, id=29, 672.5125pt x 388.45125pt>
-File: images/conduction_system.png Graphic file (type png)
-
-<use images/conduction_system.png>
-Package pdftex.def Info: images/conduction_system.png used on input line 21.
-(pdftex.def)             Requested size: 336.25542pt x 194.22514pt.
- [4
-
- <./images/heart_structure_2.png>]
-[5 <./images/conduction_system.png>]
-<images/cardiac_action_pot_franzone.png, id=38, 920.43875pt x 584.1825pt>
-File: images/cardiac_action_pot_franzone.png Graphic file (type png)
-
-<use images/cardiac_action_pot_franzone.png>
-Package pdftex.def Info: images/cardiac_action_pot_franzone.png used on input l
-ine 33.
-(pdftex.def)             Requested size: 276.13376pt x 175.25609pt.
- [6 <./images/cardiac_action_pot_franzone.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 62--66
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 51.
+ [33]
+Underfull \hbox (badness 10000) in paragraph at lines 93--96
 
  []
 
-) (./chapters/mathematical_ingredients.tex [7]
-Chapter 3.
-[8
-
-] [9] [10]
-Underfull \hbox (badness 10000) in paragraph at lines 153--159
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 160--163
-
- []
-
-[11] [12] [13] [14] [15]
-Underfull \hbox (badness 10000) in paragraph at lines 365--366
-
- []
-
-[16]) (./chapters/problem_formulation.tex [17]
-Chapter 4.
-[18
-
-] [19] [20] [21]
-Overfull \hbox (26.21597pt too wide) detected at line 180
-$[][]$  
- []
-
-
-Overfull \hbox (6.10196pt too wide) detected at line 186
-$[][]$  
- []
-
-[22]
-Underfull \hbox (badness 10000) in paragraph at lines 225--231
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 237--241
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 242--243
-
- []
-
-) (./chapters/multigrid_methods.tex [23]
-Chapter 5.
-
-Underfull \hbox (badness 10000) in paragraph at lines 9--11
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 20--26
-
- []
-
-[24
-
-] [25]) (./chapters/implementation.tex [26]
+) (./chapters/implementation.tex [34]
 Chapter 6.
 
-Underfull \hbox (badness 10000) in paragraph at lines 14--18
+Underfull \hbox (badness 10000) in paragraph at lines 13--16
+
+ []
+
+[35
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 61--65
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 14--18
+Underfull \hbox (badness 10000) in paragraph at lines 113--116
 
  []
 
+[36]
+<images/implementation/sol_heat_eqn_interpol.png, id=145, 1644.1425pt x 837.127
+5pt>
+File: images/implementation/sol_heat_eqn_interpol.png Graphic file (type png)
+ <use images/implementation/sol_heat_eqn_interpol.png>
+Package pdftex.def Info: images/implementation/sol_heat_eqn_interpol.png used o
+n input line 132.
+(pdftex.def)             Requested size: 411.03462pt x 209.28136pt.
+ [37 <./images/implementation/sol_heat_eqn_interpol.png (PNG copy)>]
+<images/implementation/contour_plot_1_blk_size1by1.png, id=149, 1328.965pt x 94
+3.525pt>
+File: images/implementation/contour_plot_1_blk_size1by1.png Graphic file (type 
+png)
+ <use images/implementation/contour_plot_1_blk_size1by1.png>
+Package pdftex.def Info: images/implementation/contour_plot_1_blk_size1by1.png 
+used on input line 189.
+(pdftex.def)             Requested size: 372.10767pt x 264.1852pt.
 
-Overfull \hbox (3.59738pt too wide) detected at line 54
-$[][]$  
+Underfull \hbox (badness 10000) in paragraph at lines 193--194
+
  []
 
+[38]
+<images/implementation/contour_plot_1_lineSm.png, id=153, 1124.2pt x 995.72pt>
+File: images/implementation/contour_plot_1_lineSm.png Graphic file (type png)
 
-Underfull \hbox (badness 10000) in paragraph at lines 56--59
+<use images/implementation/contour_plot_1_lineSm.png>
+Package pdftex.def Info: images/implementation/contour_plot_1_lineSm.png used o
+n input line 250.
+(pdftex.def)             Requested size: 314.77385pt x 278.7997pt.
+ [39 <./images/implementation/contour_plot_1_blk_size1by1.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 291--293
 
  []
 
-[27
-
-]) (./chapters/conclusions.tex [28]
+[40 <./images/implementation/contour_plot_1_lineSm.png (PNG copy)>])
+(./chapters/conclusions.tex [41]
 Chapter 7.
-) (./chapters/epilogue.tex [29
+) (./chapters/epilogue.tex [42
 
 ]
 Chapter 8.
-) (./draft_1.bbl [30
+) (./draft_1.bbl [43
+
+] [44
 
 ]
 Missing character: There is no Ì in font cmr10!
 Missing character: There is no ˆ in font cmr10!
-) [31
+Missing character: There is no Ì in font cmr10!
+Missing character: There is no ˆ in font cmr10!
+) [45] (./draft_1.aux)
 
-] (./draft_1.aux) ) 
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 12912 strings out of 494108
- 251037 string characters out of 6155655
- 394598 words of memory out of 5000000
- 15984 multiletter control sequences out of 15000+600000
+ 15627 strings out of 494108
+ 332733 string characters out of 6155655
+ 492409 words of memory out of 5000000
+ 18623 multiletter control sequences out of 15000+600000
  13531 words of font info for 50 fonts, out of 8000000 for 9000
  430 hyphenation exceptions out of 8191
- 55i,15n,54p,1848b,723s stack positions out of 5000i,500n,10000p,200000b,80000s
-</opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/
-cm/cmbx10.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cm
-bx12.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmex10.
-pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
-/opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi6.pfb></opt/l
-ocal/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi8.pfb></opt/local/s
-hare/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10.pfb></opt/local/share/t
-exmf-texlive/fonts/type1/public/amsfonts/cm/cmr12.pfb></opt/local/share/texmf-t
-exlive/fonts/type1/public/amsfonts/cm/cmr17.pfb></opt/local/share/texmf-texlive
-/fonts/type1/public/amsfonts/cm/cmr6.pfb></opt/local/share/texmf-texlive/fonts/
-type1/public/amsfonts/cm/cmr8.pfb></opt/local/share/texmf-texlive/fonts/type1/p
-ublic/amsfonts/cm/cmsy10.pfb></opt/local/share/texmf-texlive/fonts/type1/public
-/amsfonts/cm/cmsy6.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfo
-nts/cm/cmsy8.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm
-/cmti10.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/symbols
-/msbm10.pfb>
-Output written on draft_1.pdf (32 pages, 2870084 bytes).
+ 55i,16n,76p,2504b,724s stack positions out of 5000i,500n,10000p,200000b,80000s
+</opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx10.pfb></o
+pt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb></opt/lo
+cal/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/local/s
+hare/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi10.pfb></opt/local/share/
+texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi6.pfb></opt/local/share/texmf-
+texlive/fonts/type1/public/amsfonts/cm/cmmi8.pfb></opt/local/share/texmf-texliv
+e/fonts/type1/public/amsfonts/cm/cmr10.pfb></opt/local/share/texmf-texlive/font
+s/type1/public/amsfonts/cm/cmr12.pfb></opt/local/share/texmf-texlive/fonts/type
+1/public/amsfonts/cm/cmr17.pfb></opt/local/share/texmf-texlive/fonts/type1/publ
+ic/amsfonts/cm/cmr6.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsf
+onts/cm/cmr8.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm
+/cmsy10.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy
+6.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
+</opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti10.pfb></opt
+/local/share/texmf-texlive/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on draft_1.pdf (46 pages, 1834292 bytes).
 PDF statistics:
- 182 PDF objects out of 1000 (max. 8388607)
- 124 compressed objects within 2 object streams
+ 230 PDF objects out of 1000 (max. 8388607)
+ 156 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 28 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 43 words of extra memory for PDF output out of 10000 (max. 10000000)
 

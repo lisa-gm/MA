@@ -4,7 +4,7 @@
 
 
 % Nx_elem_list goes from coarse to fine
-function [I, R] = set_up_interpolation_op_SP_TIME(Nx_elem_list, Nt_elem_list, bdy_cond, levels)
+function [I, R] = set_up_interpolation_op_SP_TIME_no_bdy(Nx_elem_list, Nt_elem_list, levels)
 I = {};
 R = {};
 
@@ -64,13 +64,8 @@ Int = zeros(2*size(I_one));
 Int(1:tot_pts, 1:tot_pts_c) = I_one;
 Int(tot_pts+1:end, tot_pts_c+1:end) = I_one;
 
-if(l == 1)
-    bdy_ind = get_bdy_ind(Nx_pts, Nt_pts, bdy_cond);
-    Int(bdy_ind, :) = 0;
-end
-
 I{l} = Int;
-R{l} = 0.25*Int';
+R{l} = Int';
 end
 
 end

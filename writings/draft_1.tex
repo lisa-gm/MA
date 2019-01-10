@@ -8,11 +8,21 @@
 \usepackage{amsthm}
 \usepackage{framed}
 \usepackage{tikz}
+\usetikzlibrary{shapes,snakes}
+
+\usepackage{fancyhdr}
+
 \usepackage{nccmath}
 \usepackage{subfiles}
 
 
 \setlength\parindent{0pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[EL, OR]{\thepage}
+\fancyhead[OL]{\nouppercase\rightmark}
+\fancyhead[ER]{\nouppercase\lefttmark}
 
 \begin{document}
 \setlength{\mathindent}{0pt}
@@ -24,6 +34,11 @@
 	
 \maketitle 
 \tableofcontents
+
+
+
+\cleardoublepage
+\pagebreak
 	
 \subfile{chapters/prologue}
 \subfile{chapters/electrophysiology}
