@@ -128,10 +128,10 @@ Depending on the operator $\mathcal{A}$, there is not necessarily a straight for
 
 \section{Least Squares Finite Element Methods}
 
-In this section which is based on (\cite{bochev2009least}, mainly ch. 2.1) we would like to introduce least squares finite element methods (LSFEMs), a class of methods for finding the numerical solution of partial differential equations that incorporates two main ideas concepts; the concept of finite elements and optimisation problems. They are based on the minimisation of functionals which are constructed from residual equations. Historically finite element methods were first developed and analysed for problems like linear elasticity whose solutions describe minimisers for convex, quadratic functionals over infinite dimensional Hilbert spaces and therefore actually emerged in an optimisation setting. A Rayleigh-Ritz approximation of solutions of such problems is then found by minimising the functional over a family of finite dimensional subspaces. For these classical problems the Rayleigh-Ritz setting gives rise to formulations that have a variety of favourable features and therefore have been and continue being highly successful.  Among those are that:
+In this section which is based on (\cite{bochev2009least}, mainly ch. 2.1) we would like to introduce least squares finite element methods (LSFEMs), a class of methods for finding the numerical solution of partial differential equations that is based on the minimisation of functionals which are constructed from residual equations. Historically finite element methods were first developed and analysed for problems like linear elasticity whose solutions describe minimisers for convex, quadratic functionals over infinite dimensional Hilbert spaces and therefore emerged in an optimisation setting. A Rayleigh-Ritz approximation of solutions of such problems is then found by minimising the functional over finite dimensional subspaces. For these classical problems the Rayleigh-Ritz setting gives rise to formulations that have a variety of favourable features and therefore have been and continue being highly successful.  Among those are that:
 
 \begin{enumerate}
-	\item \textit{general regions} and boundary conditions can be treated in a systematic way relatively easily
+	\item \textit{general} domains and boundary conditions can be treated relatively easily in a systematic way 
 	\item conforming finite element spaces are sufficient to guarantee stability and optimal accuracy of the approximate solutions
 	\item all variables can be approximated using the same finite element space, e.g. the space of degree $n$ piecewise polynomials on a particular grid
 	\item the arising linear systems are 
@@ -140,16 +140,16 @@ In this section which is based on (\cite{bochev2009least}, mainly ch. 2.1) we wo
 	\subitem (iii) positive definite
 \end{enumerate}
 
-Hence finite element methods originally emerged in the environment of an optimisation setting but have since then been extended to much broader classes of problems that are not necessarily associated to a minimisation problem anymore and generally lose the desirable features of the Rayleigh-Ritz setting except for 1 and 4 (iii). Least squares finite element methods can be seen as a new attempt to re-establishing as many advantageous aspects of the Rayleigh-Ritz setting as possible if not all for more general classes of problems. In the following section we will have a look at a classical straightforward Rayleigh-Ritz setting to familiarise ourselves with the set up before extending it to the more complicated class of problems introduced in [...]. 
+Hence finite element methods originally emerged in the environment of an optimisation setting but have since then been extended to much broader classes of problems that are not necessarily associated to a minimisation problem anymore and generally lose the desirable features of the Rayleigh-Ritz setting except for 1 and 4 (iii). Least squares finite element methods can be seen as a new attempt to re-establishing as many advantageous aspects of the Rayleigh-Ritz setting as possible, if not all, for more general classes of problems. In the following section we will have a look at a classical straightforward Rayleigh-Ritz setting to familiarise ourselves with the set up before extending it to the more complicated class of problems introduced in [...]. 
 \smallskip
 \\
 We will consider a similar set up as in the finite element section (3.3.1) but with $X$ and $Y$ being Hilbert spaces, $f \in Y$ and a bounded, coercive linear operator $\mathcal{A}: X \rightarrow Y$, that is for some  $\alpha, \beta > 0$:
 \begin{ceqn}
 \begin{align}
-\quad \alpha || u ||_X^2 \leq || \mathcal{A} u ||_Y^2 \leq \beta || u ||_X^2 \quad \forall u \in Y
+\quad \alpha || u ||_X^2 \leq || \mathcal{A} u ||_Y^2 \leq \beta || u ||_X^2 \quad \forall u \in Y.
 \end{align} 
 \end{ceqn}
-we consider the problem and the least squares functional:
+We consider the problem and the least squares functional:
 \begin{ceqn}
 \begin{align}
  \text{Find } u \in X  \text{ such that} \ \mathcal{A} u = f \text{ in } Y	
@@ -162,7 +162,7 @@ J(u; f) = || \mathcal{A} u - f ||_Y^2
 which poses the minimisation problem:
  \begin{ceqn}
 \begin{align}
-\min_{u \in X} J(u; f)
+\text{argmin}_{u \in X} J(u; f)
 \end{align}
 \end{ceqn}
 where we can see that the least squares functional (3.21) measures the residual of (3.20) in the norm of $Y$ while seeking in for a solution in the space $X$. It follows that if a solution of the the problem (3.20) exists it will also be a solution of the minimisation problem. And a solution of the minimisation problem due to the definition of a norm will be a solution to (3.20) if the minimum is zero. If we consider $f = 0$, and using (3.19) we obtain that 
@@ -225,7 +225,7 @@ Most solution methods for partial differential equations  do not use the time di
 The earliest papers on time parallelisation go back more than 50 years now to the 1960's, where it was mostly a theoretical consideration, before receiving an increasingly growing interest in the past two decades due to its computational need and feasibility. As mentioned in \cite{gander201550}, on which this section is mainly based on and can be referred to for further details, time parallel methods can be classified into 4 different approaches, methods based on multiple shooting, domain decomposition and waveform relaxation, space-time multigrid and direct time parallel methods. Below a very brief overview of the main ideas behind these methods through some examples before taking a closer look at the strategy employed in this thesis. 
 \smallskip
 \\
-\textbf{Shooting type time parallel methods} use a decomposition of the space-time domain $\Omega$ into time slabs $\Omega_j$, that is if $\Omega = \mathcal{S} \times [0, T]$  where $\mathcal{S}$ describes the spatial domain then $ \Omega_j =  \mathcal{S} \times [t_{j-1}, t_j]$ with $0 = t_0 < t_1 < .... < t_m = T$. Then there is usually an outer procedure that gives a coarse approximated solution $y_j$ for all $ x \in \mathcal{S}$ at $t_j$ for all $j$, which are then used to compute solutions in the time subdomains $\Omega_j$ independently and in parallel and give rise to an overall solution. One important example of how this can be done was given by Lions, Maday and Turinici in 2001 \cite{lions2001resolutionions2001resolution}, with an algorithm called parareal. A generalized version of it for a nonlinear problem of the form
+\textbf{Shooting type time parallel methods} use a decomposition of the space-time domain $\Omega$ into time slabs $\Omega_j$, i.e. $\Omega = \mathcal{S} \times [0, T]$  where $\mathcal{S}$ describes the spatial domain then $ \Omega_j =  \mathcal{S} \times [t_{j-1}, t_j]$ with $0 = t_0 < t_1 < .... < t_m = T$. Then there is usually an outer procedure that gives a coarse approximated solution $y_j$ for all $ x \in \mathcal{S}$ at $t_j$ for all $j$, which are then used to compute solutions in the time subdomains $\Omega_j$ independently and in parallel and give rise to an overall solution. One important example of how this can be done was given by Lions, Maday and Turinici in 2001 \cite{lions2001resolutionions2001resolution}, with an algorithm called parareal. A generalized version of it for a nonlinear problem of the form
 \begin{ceqn}
 	\begin{equation}
 	y' = f(y), \quad y(t_0) = y_0

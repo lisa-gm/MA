@@ -9,7 +9,7 @@
 In this chapter we will tie the beforementioned concepts together to derive a discretised problem formulation that can subsequently be turned into an algorithm capable of approximating reaction diffusion equations. In order to do so let us firstly set the ground for the overall framework we are looking at. We consider a space-time domain 
 \begin{ceqn}
 \begin{equation}
-\Omega = \mathcal{S} \times \mathcal{T}, \quad \mathcal{T} = (0,T), \ T>0 \text{ and }  \mathcal{S} \subset \mathbb{R}^N
+\Omega = \mathcal{S} \times \mathcal{T}, \quad \mathcal{T} = (0,T), \ T>0 \text{ and }  \mathcal{S} \subset \mathbb{R}^N, \ N = 1,2,3
 \end{equation} 
 \end{ceqn}
 where $\mathcal{T} $ represents the time domain and $ \mathcal{S}$ is the domain in space which we require to be Lipschitz regular. We may have a mixture of Dirichlet and Neumann boundary conditions on the boundary of $\Omega$ which we will denote by $\Gamma$ and are labeled as $\Gamma_D, \Gamma_N \subset \Gamma$ respectively. We further assume them to be such that the problem is well posed. \textit{Is this enough?}.  The class of partial differential equations introduced in the prologue that we would like to solve for then reads as the following:
@@ -60,7 +60,7 @@ which can be shortened to $\mathcal{A} ([\sigma, u]) = \tilde{f}(u)$, where $\ma
 \textit{Show that this operator is linear and bounded? but then norm ... spaces ... bla bla bla ...}
 \smallskip
 \\
-\textbf{Remark.} It is not clear yet though in which space we will be looking for a solution. In general when working with strong and weak formulations there is a a number of function spaces involved, problem formulations that are similar but not the same and it is difficult to represent them in clear but short notation. This can easily lead to some confusion. In the current case the situation is even more complicated since we are trying to derive a weak formulation in a least squares setting, while additionally there obviously exist the regular or so-called primal weak formulations of (4.2) which we will sometimes refer to. Therefore we will first derive  a least functional $J$ with a corresponding variational formulation, postponing the definition of appropriate spaces for now but simply assuming them to already be well-defined. 
+\textbf{Remark.} It is not clear yet though in which space we will be looking for a solution. In general when working with strong and weak formulations there is a a number of function spaces involved, problem formulations that are similar but not the same and it is difficult to represent them in clear but short notation. This can easily lead to some confusion. In the current case the situation is even more complicated since we are trying to derive a weak formulation in a least squares setting, while additionally there obviously exist the regular or so-called primal weak formulations of (4.2) which we will sometimes refer to. Therefore we will first derive  a least squares functional $J$ with a corresponding variational formulation, postponing the definition of appropriate spaces for now but simply assuming them to already be well-defined. 
 \smallskip
 \\
 So instead of looking for a solution of the strong formulation, let us now turn to the derivation of an optimisation problem that we would like to satisfy in a weak sense. The properties that we would like to be fulfilled are the following. We want a solution of (4.3) to be a global minimum of the optimisation problem, independently of the choice of the spaces that we are using and its associated norm, hence we additionally want the least squares functional $J$ to be zero for a solution of (4.3). On the other hand if $J(\sigma, u) = 0$ then the orginial problem (4.3) also has to be satisfied if only in a weak sense with respect to the spaces $U$ and $Z$. We can check that all three properties hold for the functional  
@@ -136,6 +136,7 @@ In order to define $V$ and $Z$ let us consider the optimisation problem [...] an
 that is we require that 
 \begin{ceqn}
 	\begin{align}
+	\label{spacesLS}
 \sigma \in H_{DIV}^1(\Omega) \text{  and  } u \in H^1(\Omega) \text { with } \\
 || \sigma ||_{H_{DIV}^1(\Omega)} = || \sigma ||_{L^2(\Omega)} + || div(\sigma) ||_{L^2(\Omega)}, \\
  ||u ||_{H^1(\Omega)} = || u ||_{L^2(\Omega)} + || \nabla u ||_{L^2(\Omega)} + || u_t ||_{L^2(\Omega)} \text{ and hence } \\
@@ -143,7 +144,7 @@ that is we require that
  CORRECT ?!
 	\end{align}
 \end{ceqn}
-we can then check that all above terms in $J([\sigma, u], 0)$ are well defined. If we additionally assume $f(u) \in L^2(\Omega)$ for all $u$, the problem remains to be well-posed. Theoretically one could potentially only require $f \in H^{-1}(\Omega)$ but for the scope of this thesis, we will restrict ourselves to the former. Especially as we will later on have to require $f$ to be twice differentiable to actually solve the problem numerically, [see Newton's method, section ...].\\
+We can then check that all above terms in $J([\sigma, u], 0)$ are well defined. If we additionally assume $f(u) \in L^2(\Omega)$ for all $u$, the problem remains to be well-posed. Theoretically one could potentially only require $f \in H^{-1}(\Omega)$ but for the scope of this thesis, we will restrict ourselves to the former. Especially as we will later on have to require $f$ to be twice differentiable to actually solve the problem numerically, [see Newton's method, section ...].\\
 \smallskip
 \\
 \textit{what do we get on $\mathcal{A}$ with respect to what space? bounded? in previous section would have the bounds from X, how to do this here? how does this even make sense, hilbert space, strong form?}

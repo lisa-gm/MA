@@ -123,15 +123,19 @@ They are constructed respectively to go recursively from one level to the next, 
 	0 & 	\tilde{I}
 	\end{bmatrix}
 	\end{equation}
-	\end{ceqn}
+\end{ceqn}
 
-The interpolation matrix from level $k-1$ to level $k$ is as before denoted by $I_{k-1}^k$ and we have that  $_{k-1}^k \in \mathbb{R}^{2m_k \times 2m_{k-1}}$, where $m_k$ and $m_{k-1}$ denotes the number of points on the space time grid on the respective level. 
-\smallskip
-\\
-\textit{Already put picure here?}
-\smallskip
-\\
+The interpolation matrix from level $k-1$ to level $k$ is as before denoted by $I_{k-1}^k$ and we have that  $I_{k-1}^k \in \mathbb{R}^{2m_k \times 2m_{k-1}}$, where $m_k$ and $m_{k-1}$ denotes the number of points on the space time grid on the respective level. 
 
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[scale=0.25]{images/implementation/sol_heat_eqn_interpol}
+	\caption{Interpolation of the solution to the heat equation with $u(x,0) = \max(1-2x, 0)$, $D(x) = 0.1$ and homogeneous Neumann boundary conditions in time on a unit square from $8 \times 8$ to $16 \times 16$ elements. The interpolated solution of $\sigma$ is not shown here as $\tilde{I}$ simply applied to $\sigma$ and $u$ independently.}
+\end{figure}
+
+Visually the function on the right really appears to be a good interpolation of the function on the left, transmitting \textit{global} information. \textit{In the multigrid implementation we remove the influence of the boundary conditions.}
+
+\subsection{Smoothers}
 Smoothers are a key part of an efficient multigrid algorithm. And while many of them may theoretically be a possibility, in practice the choice of a suitable smoother is often not an easy one. We would like that the combination of coarse grid correction and smoother reduces the error efficiently for all frequencies. In the case of a geometric multigrid applied to an elliptic problem the coarse grid correction captures the low frequency error quickly while most smoothers like (block-) Jacobi or Gauss-Seidel reduce the high frequency error well and therefore the two are a favourable synthesis. But as we are also trying to develop a highly parallelisable solver it is of course important to also be taking that into account when choosing a smoother, therefore a regular Gauss-Seidel iteration is for example not a suitable choice as it works sequentially. In our set up we also have the additional feature of the two coupled variables $\sigma_h$ and $u_h$, which are separated in the sense that they are two concatenated vectors but have the contentual connection. Therefore it might be favorable to use a (block-) smoother that takes this relationship into account. Hence we decided to use a Vanka type [source?] block Jacobi relaxation. That is a block Jacobi smoother where each block contains all degrees of freedom associated to one grid point in the space-time domain. That is we choose rectangular patches of size $p \times q$ on the domain, that is $p$ points in space and $q$ in time, construct a submatrix containing all entries of $A$ associated to those nodes for $\sigma_h$ and $u_h$ and all of the corresponding coupling terms and directly invert the small submatrix. We partition the entire domain like that, while potentially having smaller patches on the boundary, and finally assemble a preconditioner $P$ containing the inverted submatrices. Due to the organisation of $\sigma_h$ and $u_h$, $P$ will not be a block diagonal matrix. For $p = q = 2 $ we would have the following patches, where $\tilde{c}_i$ describes the set of indices assosciated with the patch, and $C_i$ the corresponding submatrix, which are each of size $8 \times 8$. 
 
 \begin{figure}[ht!]
@@ -166,16 +170,89 @@ Smoothers are a key part of an efficient multigrid algorithm. And while many of 
 	\node [anchor=south] at (2.2, 4) {$\tilde{c}_{k+1}$};
 	\node [anchor=south] at (4.7, 4) {$\tilde{c}_{k+2}$};		
 	\end{tikzpicture}
-	
+	\caption{Schematic overview of the construction of the blocks of damped Jacobi smoother}
 \end{figure}
 
-Below we can see how the smoother acts on a random initial guess for the linear system $As = f$, where $A$ is the least squares finite element matrix arising from the functional $J([\sigma, u], 0)$ with the discretisation chosen as described in chapter 4 and the previous parts of this chapter, and $f$ is a zero right-hand side that only contains the boundary conditions. \textit{In this case they were chosen to be .... We used a ... grid and a patch size of ...}
+\textit{damped Jacobi} \\
+Below we can see how the smoother acts on a random initial guess for the linear system $As = f$, where $A$ is the least squares finite element matrix arising from the functional $J([\sigma, u], 0)$ with the discretisation chosen as described in chapter 4 and the previous parts of this chapter, and $f$ is a zero right-hand side that only contains the boundary conditions. That is we look at the iteration 
+\begin{ceqn}
+	\begin{equation}
+	e_{k+1} = e_k + \omega P (f - Ae_k)
+	\end{equation}
+\end{ceqn}
+where $P$ is the preconditioner and $\omega$ stands for the damping factor. Since we have a zero forcing term, the exact solution is zero everywhere if we have homogenous boundary conditions, and hence $e_k$ describes the remaining error in each iteration starting from an initial guess. 
+
+% for contourplot 1 it took 8184 iterations to have residual <10^(-9)
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[scale=0.28]{images/implementation/contour_plot_1_blk_size1by1}
+	\caption{Iterates after $k = 0,3,8, 20$ iterations for a patch size of $1 \times 1$, and a grid with $10 \times 10$ elements. needed more than 8000 iterations in order for the norm of the residual to be $< 10^{-9}$.}
+\end{figure}
+
+We can see that the damped block Jacobi smoother really leads to a fast reduction of the high frequency error whereas the low frequency error is only reduced very slowly. \textit{something about computationally very cheap.} Again we only plotted $u$ as $\sigma$ behaves in the same way, simply with different boundary conditions. \\
+
+\textit{Block Jacobi 2x2 DIVERGES ?! can that be?}
+
+
+
+\textit{In this case they were chosen to be .... We used a ... grid and a patch size of ...}
 \bigskip
 \\
 PICTURES AFTER ... MANY ITERATIONS ....
 \bigskip
 \\
 \textit{We can see that ... maybe another patch size ... difference?}
+
+Another type of smoother that we tested is a Gauss-Seidel \textit{line smoother} \cite{adams2001distributed} which can also be categorised as a Vanka smoother  \textit{write more about that reference?}. One considers each spatial degree of freedom individually but together for all times as well as the values for $\sigma$ and $u$. We extract all matrix values for each of the $x_i$, to construct submatrices. We then first solve exactly for all odd subsets of $\tilde{c}_i$, here coloured in black and update the solution before solving for all even subsets, here coloured in red. Hence for all subsets labeled in black we can solve in parallel, and subsequently for all subsets in red. 
+
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}
+	% Draw the grid
+	\tikzset{help lines/.style={color=black, dashed}}
+	\draw[thin,step=1cm, help lines] (0,0) grid (6,2.4); 	
+	\draw[thin,step=1cm, help lines] (0,3.6) grid (6,6); 
+	
+	\draw [black, dotted, ultra thick] (0, 2.6) -- (0, 3.4);
+	\draw [black, dotted, ultra thick] (1, 2.6) -- (1, 3.4);
+	\draw [black, dotted, ultra thick] (2, 2.6) -- (2, 3.4);
+	 \draw [black, dotted, ultra thick] (3, 2.6) -- (3, 3.4);
+	 \draw [black, dotted, ultra thick] (4, 2.6) -- (4, 3.4);
+	\draw [black, dotted, ultra thick] (5, 2.6) -- (5, 3.4);
+	\draw [black, dotted, ultra thick] (6, 2.6) -- (6, 3.4);		  
+		  
+	\draw[thick,-latex] (1,-1) -- (2,-1) node[below] {space};
+	\draw[thick,-latex] (-1,1) -- (-1,2) node[left]{time};
+	
+	\draw[black] (-0.3,-0.3) rectangle  (0.3,6.3);
+	\draw[red] (0.7,-0.3) rectangle  (1.3,6.3);
+	\draw[black] (1.7,-0.3) rectangle  (2.3,6.3);
+	\draw[red] (2.7,-0.3) rectangle  (3.3,6.3);
+	\draw[black] (3.7,-0.3) rectangle  (4.3,6.3);
+	\draw[red] (4.7,-0.3) rectangle  (5.3,6.3);
+	\draw[black] (5.7,-0.3) rectangle  (6.3,6.3);	
+	
+	\node [anchor=north] at (0,-0.3) {$\tilde{c}_1$};
+	\node [anchor=north] at (1, -0.3) {$\tilde{c}_2$};
+	
+	\node [anchor=north] at (4, -0.3) {$\tilde{c}_{2k-1}$};	
+	\node [anchor=north] at (5, -0.3) {$\tilde{c}_{2k}$};					
+	
+	\end{tikzpicture}
+	\caption{Schematic overview of the construction blocks in the Gauss Seidel line smoother}
+\end{figure}
+
+We repeated the same test as before where the preconditioner $P$ is now defined by the above description. 
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[scale=0.28]{images/implementation/contour_plot_1_lineSm}
+	\caption{Iterates after $k = 0,3,8, 20$ iterations for the described line smoother, using a grid with $10 \times 10$ elements. It needed more than about 1300 iterations in order for the norm of the residual to be $< 10^{-9}$. where $A, f$ as before}
+\end{figure}
+
+As one might expect the line smoother converges much faster than the block Jacobi iteration, since the individual blocks we solve for exactly are larger. We can also see that the regions become more homogenous more quickly. \textit{there are quite large areas where we go below 0, why?}. But obviously this comes with an increase in the computational cost. 
+
 
 \section{Numerical Test Cases}
 \subsection{Heat Equation}
@@ -190,11 +267,12 @@ After having discussed the individual multigrid terms let us look at the overall
 \bigskip
 \\
 \textit{some tables with convergence results}
+also how many steps do we need until convergence of the smoothers by itself
 \bigskip
 \\
 \textit{further analysis? test laplace and $u_t$ independently, what can we see from there?}
-
-
+\\
+\textit{Galerkin not Galerkin assembly, try with both}
 
 
 % do analysis of coarse grid correction
@@ -207,6 +285,7 @@ After having discussed the individual multigrid terms let us look at the overall
 
 
 \subsection{Monodomain Equation}
+
 
 
 talk about non convexity \\
