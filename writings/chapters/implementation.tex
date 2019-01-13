@@ -187,22 +187,16 @@ where $P$ is the preconditioner and $\omega$ stands for the damping factor. Sinc
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[scale=0.28]{images/implementation/contour_plot_1_blk_size1by1}
-	\caption{Iterates after $k = 0,3,8, 20$ iterations for a patch size of $1 \times 1$, and a grid with $10 \times 10$ elements. needed more than 8000 iterations in order for the norm of the residual to be $< 10^{-9}$.}
+	\caption{Iterates after $k = 0,3,8, 20$ iterations for a patch size of $1 \times 1$, and a grid with $11 \times 11$ elements. needed more than 9000 iterations in order for the norm of the residual to be $< 10^{-9}$.}
 \end{figure}
 
-We can see that the damped block Jacobi smoother really leads to a fast reduction of the high frequency error whereas the low frequency error is only reduced very slowly. \textit{something about computationally very cheap.} Again we only plotted $u$ as $\sigma$ behaves in the same way, simply with different boundary conditions. \\
+We can see that the damped block Jacobi smoother really leads to a fast reduction of the high frequency error whereas the low frequency error is only reduced very slowly. \textit{something about computationally very cheap.} Again we only plotted $u$ as $\sigma$ behaves in the same way, simply with different boundary conditions. 
 
-\textit{Block Jacobi 2x2 DIVERGES ?! can that be?}
-
-
-
-\textit{In this case they were chosen to be .... We used a ... grid and a patch size of ...}
-\bigskip
-\\
-PICTURES AFTER ... MANY ITERATIONS ....
-\bigskip
-\\
-\textit{We can see that ... maybe another patch size ... difference?}
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[scale=0.28]{images/implementation/contour_plot_1_blk_size3by4}
+	\caption{Iterates after $k = 0,3,8, 20$ iterations for a patch size of $3 \times 4$, and a grid with $11 \times 11$ elements. needed more than 3177 iterations in order for the norm of the residual to be $< 10^{-9}$.}
+\end{figure}
 
 Another type of smoother that we tested is a Gauss-Seidel \textit{line smoother} \cite{adams2001distributed} which can also be categorised as a Vanka smoother  \textit{write more about that reference?}. One considers each spatial degree of freedom individually but together for all times as well as the values for $\sigma$ and $u$. We extract all matrix values for each of the $x_i$, to construct submatrices. We then first solve exactly for all odd subsets of $\tilde{c}_i$, here coloured in black and update the solution before solving for all even subsets, here coloured in red. Hence for all subsets labeled in black we can solve in parallel, and subsequently for all subsets in red. 
 
@@ -248,12 +242,14 @@ We repeated the same test as before where the preconditioner $P$ is now defined 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[scale=0.28]{images/implementation/contour_plot_1_lineSm}
-	\caption{Iterates after $k = 0,3,8, 20$ iterations for the described line smoother, using a grid with $10 \times 10$ elements. It needed more than about 1300 iterations in order for the norm of the residual to be $< 10^{-9}$. where $A, f$ as before}
+	\caption{Iterates after $k = 0,3,8, 20$ iterations for the described line smoother, using a grid with $11 \times 11$ elements. It needed more than about 1759 iterations in order for the norm of the residual to be $< 10^{-9}$. where $A, f$ as before}
 \end{figure}
 
 As one might expect the line smoother converges much faster than the block Jacobi iteration, since the individual blocks we solve for exactly are larger. We can also see that the regions become more homogenous more quickly. \textit{there are quite large areas where we go below 0, why?}. But obviously this comes with an increase in the computational cost. 
+\\
+Performs much better than 3 by 4, why? Gauss Seidel? 
 
-
+\pagebreak
 \section{Numerical Test Cases}
 \subsection{Heat Equation}
 
@@ -283,15 +279,142 @@ also how many steps do we need until convergence of the smoothers by itself
 
 \subsection{Linearisation of a Monodomain Equation}
 
+Before considering the full nonlinear problem we draw our attention to its linearisation in a neighbourhood of the solution $s$, the full description of how to obtain this solution we refer to the next section. Under the assumption that we have a unique local minimiser of the problem, we know that we have convexity close to the solution, that is the hessian $H_s = H(s)$ is positive definite and the gradient is very close to zero. \\
+In order to better understand the behavior of the hessian around the solution we perform an error analysis using a Jacobi smoother on the linearised system. More specifically we want to see how small pertubations in the solution in areas of the wavefront and the constant regions behave under the iteration of the smoother. \textit{This could be in order to construct adapted coarse spaces that take these different local behaviors into account.} \\
+We consider the following iteration 
+\begin{ceqn}
+	\begin{equation}
+	\begin{aligned}
+e_{k+1} &= e_k + P(\nabla J - H_s e_k) \quad \text{ or} \\
+e_{k+1} &= e_k - P H_s e_k 
+	\end{aligned}
+	\end{equation}
+\end{ceqn}
+if we assume exactly that $\nabla J = 0$, and where $P$ describes the preconditioner. We now let $e_0$ equal to zero except for a small pertubation either in the area of the wavefront or the constant regions and see how this behaves under iteration.
+
+\begin{ceqn}
+	\begin{equation}
+	\begin{aligned}
+u_{k+1} &= u_k - H_k^{-1}(\nabla J_k) \\
+H_k u_{k+1} &= H_k u_k - \nabla J_k, \\ 
+\\
+\text{ let } r_k := H_k u_k - \nabla J_k
+\text{ and solve } H_k u_{k+1} = r_k \quad \text{using multigrid}
+	\end{aligned}
+	\end{equation}
+\end{ceqn}
+
+
 
 \subsection{Monodomain Equation}
 
+The simplified monodomain equation that shows the movement of an excitation front through space-time looks as follows
 
+\begin{ceqn}
+	\begin{equation}
+	\begin{aligned}
+\partial_t u - div(D \nabla u) &= u (1 - u ) (\alpha - u), \qquad &D > 0, \ 0 < \alpha < 1 \\
+u(x, 0) &= u_0(x) &\forall \ x \in S \\
+\nabla u \cdot n &= 0 \qquad &\forall \ (x,t) \in \{ x \in \{0,S\}, t \in (0,T) \} 
+	\end{aligned}
+		\end{equation}
+\end{ceqn}
+We can see that the right-hand side is clearly nonlinear as it describes a third order polynomial. It can be shown that the equation has 3 fixed points, two stable fixed in zero and one, and an unstable fixed point in $\alpha$ \cite{deuflhard2011adaptive}. Hence depending on the initial conditions $u_0$ the solution will tend to either zero or one, unless it is exactly $\alpha$ and then through diffusion, very much dependent on diffusion constant though, if there is values larger than $\alpha$ eventually lead to an activation of entire domain. Below we can see approximations of the solution.
 
-talk about non convexity \\
+talk about non convexity, therefore using a direct solver \\
 Show what solution looks like, wavefront with initial conditions \\
+we can clearly see that this is only the excitation and not the depolarisation, (is maybe less of an interest as long as is it depolarises again eventually)
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[scale=0.3]{images/implementation/sol_d0_001_1by20_20by40elem}
+	\includegraphics[scale=0.3]{images/implementation/sol_d0_003_1by20_20by40elem}
+	\caption{For both graphs we have $u_0 = max(1-2x, 0)$, homogeneous Neumann boundary conditions on the spatial boundaries of the domain, for 20 elements in space and 40 in time. On the left we have a diffusion constant $D= 10^{-3}$, whereas on the right we have $D=3 \cdot 10^{-3}$.}
+\end{figure}
+The two equations giving rise to the above solutions only differ in the choice of the diffusion constant $D$. As to be expected we can see that with a larger value of $D$, the activation happens much more quickly. We can also see that the front is not as steep, as we have a faster transport of electric potential through space. 
+\smallskip
+\\
+As previously mentioned the solutions are obtained using a dogleg trust region method for the nonlinear iteration, which is a combination of a gradient descent and a Newton iteration. \textit{More specifically we have ... description of the algorithm. ONLY WORKS FOR LOCALLY POS DEF.....	which we have. WHY NOT NEWTON UNLESS NOT SPD THEN GRADIENT DESCENT, maybe i can check for convexity in a point and if not just do gradient descent?!!} 	
+\smallskip
+\\
+We are using a quadratic model to approximate the functional $J$, that is we solve
 
+\begin{ceqn}
+	\begin{equation}
+	\begin{aligned}
+\min_p m(p) = f + g^T p + \frac{1}{2} p^T H p \qquad s.t. \ ||p|| \leq \Delta, \ p \in span\{g, H^{-1}g\}. 
+	\end{aligned}
+	\end{equation}
+\end{ceqn}
 
+\begin{ceqn}
+	\begin{equation}
+	\begin{aligned}
+p^U = - \frac{g^Tg}{g^T H g} g
+	\end{aligned}
+	\end{equation}
+\end{ceqn}
+
+\begin{ceqn}
+	\begin{equation}
+	\begin{aligned}
+	\tilde{p}(\tau) = \begin{cases}
+	\tau p^U \qquad &0 \leq \tau \leq 1 \\
+	p^U + (\tau - 1)(p^B - p^U) \qquad &1 \leq \tau \leq 2
+	\end{cases}
+	\end{aligned}
+	\end{equation}
+\end{ceqn}
+
+ 
+The discretisation of the least squares formulation uses the same approximation spaces and basis as introduced in the previous sections. The nonlinear part is computed as described in section 4.5 and 4.6. \textit{MORE....?}
+\smallskip
+\\
+\\
+at the end, convex, quadratic model good fit, show table
+
+\begin{figure}
+\begin{center}
+	\begin{tabular}{||c | c | c | c | c ||} 
+		\hline
+		accepted Iter & overall Iter & $ || J || $ & $|| \nabla J ||$ & TR Radius \\ [0.5ex] 
+		\hline\hline
+		1 & 6 & 87837 & 787 & \\ 
+		\hline
+		2 & 7 & 78 & 5415 & \\
+		\hline
+		3 & 545 & 778 & 7507 & \\
+		\hline
+		4 & 545 & 18744 & 7560 & \\
+		\hline
+		5 & 88 & 788 & 6344 & \\ [1ex] 
+		\hline
+	\end{tabular}
+\end{center}
+\caption{Last steps of the Iteration, where $\mathcal{S} = (0, 1), \mathcal{T} = (0, 20)$, 20 elements in space, 40 elements in time, diffusion constant $d=10^{-3}$, }
+\end{figure}
+
+\begin{figure}
+	\begin{center}
+		\begin{tabular}{||c | c | c | c | c ||} 
+			\hline
+			accepted Iter & overall Iter & $ || J || $ & $|| \nabla J ||$ & TR Radius \\ [0.5ex] 
+			\hline\hline
+			1 & 6 & 87837 & 787 & \\ 
+			\hline
+			2 & 7 & 78 & 5415 & \\
+			\hline
+			3 & 545 & 778 & 7507 & \\
+			\hline
+			4 & 545 & 18744 & 7560 & \\
+			\hline
+			5 & 88 & 788 & 6344 & \\ [1ex] 
+			\hline
+		\end{tabular}
+	\end{center}
+	\caption{Last steps of the Iteration, where $\mathcal{S} = (0, 1), \mathcal{T} = (0, 20)$, 20 elements in space, 40 elements in time, diffusion constant $d=10^{-3}$, }
+\end{figure}
+
+could also talk a little bit about how with an increase of diffusion constant problem seems to become more "elliptic" or more "convex", better behaved ... 
 \begin{itemize}
 	\item general construction
 	\item talk about non-convexity 
