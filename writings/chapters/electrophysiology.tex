@@ -73,6 +73,21 @@ $I_{\text{ext}}(x,t)$: external current
 In the case of the simplified FitzHugh-Nagumo model we have $I_{\text{int}}= u (u - 1 )(\alpha - u)$, with $ 0 < \alpha < 1$. \textit{mention gating variables...? }
 \smallskip
 \\
+%"From a macroscopic point of view, the Forward Problem of Electrocardiology is described by the so-called Bidomain model for the evolution of the intra, extracellular and extracardiac potential fields. The two main components of the Bidomain model are: (a) the dynamics of the ionic current flow through the cardiac cellular membrane, modeled by a system of ordinary differential equations and (b) a macroscopic representation of the cardiac tissue modeled as a bidomain superposition of the intra and extra cellular media characterized by anisotropic conductivity tensors associated with the fiber architecture of the myocardium."
+\smallskip
+\\
+%"Due to the presence of gap junctions between two subsequent myocytes, the conductivity  i .x/ is practically constant in the interior of the cell, with value given by the cytosolic conductivity, but in the small length of the gap junctions it undergoes a strong reduction due to the high resistivity of the gap junctions."
+\smallskip
+\\
+%"Due to the presence of gap junctions connecting the cardiac cells end-to-end and side-to-side,  ̋i and  ̋e are regarded as two simply-connected open sets of R3. The effects of the microstructure on the current flow are also included in the conductivity tensors  ̇i .x/;  ̇e .x/ as inhomogeneous functions of space that reflect the local variations of conductances because of the presence of structural intra and extracellular inhomogeneities of resistance associated with e.g. gap junctions, connective tissue, collagen and blood vessels."
+\smallskip
+\\
+%"The cellular conductivity matrices  ̇i.x/ and  ̇e.x/ are symmetric positive definite matrices"
+\smallskip
+\\
+" if the two media have the same anisotropy ratio then the Bidomain system reduces to the Monodomain model. We remark that this is not a physiological case, as it clearly follows from well established experimental evidence. "
+\smallskip
+\\
 There are a number of difficulties that arise when trying to numerically approximate a solution to this problem. One is the beforementioned challenging task of dealing with large differences in spatial and temporal scaling due to the complex multiscale structure. As mentioned before the microscopic scale the electric conduction of excitation fronts happens through ion channels of cellular membranes which are on a scale of the order of 0.1 mm. On the other hand the overall size cardiac tissues invovled entails a size of several centimeters which leads to a spatial spread factor of up to $10^3$. Similarly for the time parametrisation we have an even larger spread factor. A normal heartbeat takes about 1 second, that is one full cycle, whereas the step excitation front that is described in phase 0 in the previous section ranges on a much shorter time scale therefore requiring time steps within a range of about 0.1 to 500 milliseconds for accurate representation \cite{colli2004parallel}.
 \smallskip
 \\

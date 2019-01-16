@@ -2,38 +2,47 @@
 
 \begin{document}
 
-
-\chapter{Derivation of a Least Squares Finite Element Space - Time Discretisation}
+\chapter{Derivation of a  Least Squares Finite Element Space-Time Discretisation}
 \section{Construction of an Equivalent Minimisation Problem}
 
-In this chapter we will tie the beforementioned concepts together to derive a discretised problem formulation that can subsequently be turned into an algorithm capable of approximating reaction diffusion equations. In order to do so let us firstly set the ground for the overall framework we are looking at. We consider a space-time domain 
+In this chapter we will tie the beforementioned concepts together to derive a discretised problem formulation that can subsequently be turned into an algorithm capable of approximating reaction diffusion equations. In order to do so let us first set the ground for the overall framework we are looking at. We consider a space-time domain 
 \begin{ceqn}
 \begin{equation}
 \Omega = \mathcal{S} \times \mathcal{T}, \quad \mathcal{T} = (0,T), \ T>0 \text{ and }  \mathcal{S} \subset \mathbb{R}^N, \ N = 1,2,3
 \end{equation} 
 \end{ceqn}
-where $\mathcal{T} $ represents the time domain and $ \mathcal{S}$ is the domain in space which we require to be Lipschitz regular. We may have a mixture of Dirichlet and Neumann boundary conditions on the boundary of $\Omega$ which we will denote by $\Gamma$ and are labeled as $\Gamma_D, \Gamma_N \subset \Gamma$ respectively. We further assume them to be such that the problem is well posed. \textit{Is this enough?}.  The class of partial differential equations introduced in the prologue that we would like to solve for then reads as the following:
+where $\mathcal{T} $ represents the time domain and $ \mathcal{S}$ the domain in space, which we require to be Lipschitz regular. We allow a mixture of Dirichlet and Neumann boundary conditions on $\partial \Omega$ which we denote as $\Gamma_D, \Gamma_N \subset \Gamma$ respectively. We further assume them to be such that the problem is well posed. \textit{Is this enough?}.  The class of partial differential equations introduced in the prologue that we would like to solve for then reads as the following:
 \begin{ceqn}
 \begin{align}
 \begin{aligned}
-\partial_t u - div (D(x) \nabla u) &= f(u) \qquad \  (x,t) \in \Omega \\
-u &= g_D \quad \qquad (x,t)  \in \Gamma_D \\
-\nabla u \cdot n &= g_N \quad \qquad (x,t) \in \Gamma_N
+\label{strong_form}
+\partial_t u - div (D(x) \nabla u) &= f(u) \qquad \  \text{ in } \Omega \\
+u &= g_D \quad \qquad \text{ on } \Gamma_D \\
+\nabla u \cdot n &= g_N \quad \qquad \text{ on } \Gamma_N
 \end{aligned}
 \end{align}
 \end{ceqn}
-It describes a parabolic partial differential equation with a non-linear right hand side where the divergence is defined as $div(\sigma) = \frac{\partial \sigma}{\partial x_1} + ... + \frac{\partial \sigma}{\partial x_N}$ for $\sigma = \sigma(x,t)$ and $\nabla u = [\frac{\partial u}{\partial x_1}, ..., \frac{\partial u}{\partial x_N} ]^T$ for $u = u(x,t)$. And where we further assume that $D(x)$ is a bounded, symmetric positive definite matrix of size $N \times N$ with functions in $L^2(\mathcal{S})$ for almost all $ x \in \bar{\mathcal{S}}$. \textit{Are these sufficient assumptions on D(x)?} Typically we will have that $u(x,0) = u_0 = g_D$ for all $ x \in \mathcal{S}$ and Neumann boundary conditions on the boundary of $\mathcal{S}$ for $t \in (0,T)$. 
+It describes a parabolic partial differential equation with a potentially nonlinear right-hand side where the divergence is defined as 
+\begin{ceqn}
+	\begin{align*}
+\begin{aligned}
+div(\sigma) = \frac{\partial \sigma}{\partial x_1} + ... + \frac{\partial \sigma}{\partial x_N} \text{  for } \sigma = \sigma(x,t) \text{ and } \nabla u = [\frac{\partial u}{\partial x_1}, ..., \frac{\partial u}{\partial x_N} ]^T \text{  for } u = u(x,t). 
+\end{aligned}
+\end{align*}
+\end{ceqn}
+We further assume that $D(x)$ is a bounded, symmetric positive definite matrix of size $N \times N$ with functions in $L^2(\mathcal{S})$ for almost all $ x \in \bar{\mathcal{S}}$. \textit{Are these sufficient assumptions on D(x)?} Typically we will have that $u(x,0) = u_0 = g_D$ for all $ x \in \mathcal{S}$ and Neumann boundary conditions on the boundary of $\mathcal{S}$ for $t \in (0,T)$. 
 \smallskip
 \\
-The next step will be to derive an equivalent optimisation problem whose solution therefore then coincides with the solution of (4.2) at least in a weak sense. Since we are entirely working with finding solutions in Sobolev spaces in the least squares setting we can generally only require equivalence to a primal weak formulation of (4.3) and (4.2) or equivalence with respect to the solution space of the variational formulation, for a further discussion we refer to [source]. Generally when working with least squares finite element formulations choosing a suitable solution space $V$ and data space $Z$ is often non trivial as there are a number of difficulties that can arise. One usually faces a trade off between constructing a mathematically well-defined problem and allowing for a relatively simple, efficient, robust while still accurate implementation.Therefore to make the methodology of LSFEMs competitive compared to other approaches like Galerkin approximations further considerations need to be taken into account. We saw in the previous chapter that it is possible to derive least squares formulations that recover the properties of the Rayleigh- Ritz setting, however one hindrance one encounters in this setting as well as in many others is the higher order operator arising in (3.25), that would require a solution space of higher regularity. When considering a simple Poisson equation with Dirichlet boundary conditions this would for example imply that we would require the solution $u$ to be from $H_0^2$, instead of $H_0^1$ \cite{bochev2009least}. This does not only heavily limit the set of admissible solutions but it is additionally much harder to construct appropriate finite dimensional subspaces for and is therefore impractical to use. In order to succomb this obstacle we will recast (4.2) as a system of coupled of equations only containing first order derivatives to apply the methodologies introduced in section (3.4) at the price of introducing an additional variable.
+The next step will be to derive an equivalent optimisation problem whose solution therefore then coincides with the solution of (\ref{strong_form}) at least in a weak sense. Since we are entirely working with finding solutions in Sobolev spaces in the least squares setting we can generally only require equivalence to a primal weak formulation of (\ref{strong_form}) or equivalence with respect to the solution space of the variational formulation, for a further discussion we refer to \cite{bochev2009least}. Generally when working with least squares finite element formulations choosing a suitable solution space $U$ and data space $Y$ is often non trivial as there are a number of difficulties that can arise. One usually faces a trade off between constructing a mathematically well-defined problem and allowing for a relatively simple, efficient, robust while still accurate implementation. Therefore further considerations need to be taken into account to make the methodology of LSFEMs competitive compared to other approaches like Galerkin approximations. We saw in the previous chapter that it is possible to derive least squares formulations that recover the properties of the Rayleigh--Ritz setting, however one hindrance one encounters in this setting as well as in many others is the higher order operator arising in (3.25), that would require a solution space of higher regularity. When considering a simple Poisson equation with Dirichlet boundary conditions this would for example imply that we would require the solution $u$ to be from $H_0^2$, instead of $H_0^1$ \cite{bochev2009least} \textit{more here or in previous LSFEM section ...?}. This does not only heavily limit the set of admissible solutions but it is additionally much harder to construct appropriate finite dimensional subspaces for and is therefore impractical to use. In order to succomb this obstacle we will recast (4.2) as a system of mixed equations only containing first order derivatives to apply the methodologies introduced in section (3.4) at the price of introducing an additional variable. Hence let
 
 \begin{ceqn}
 	\begin{equation}
 	\begin{aligned}
-	 \partial_t u - div(\sigma) \ =& \ f(u) \qquad \qquad (x,t) \in \Omega \\
-	\sigma \ =& \ D(x)  \nabla u \ \qquad (x,t) \in \Omega  \\
-	u \ =& \ g_D  \ \ \qquad  \qquad (x,t) \in \Gamma_D \\
-	\nabla u \cdot n \ =& \ g_N  \ \ \qquad \qquad (x,t) \in \Gamma_N
+	\label{mixed_form}
+	 \partial_t u - div(\sigma) \ =& \ f(u) \qquad \qquad \text{ in } \Omega \\
+	\sigma \ =& \ D(x)  \nabla u \ \qquad \text{ in } \Omega  \\
+	u \ =& \ g_D  \ \ \qquad  \qquad \text{ on } \Gamma_D \\
+	\nabla u \cdot n \ =& \ g_N  \ \ \qquad \qquad \text{ on } \Gamma_N.
 	\end{aligned}
 	\end{equation}
 \end{ceqn}
@@ -54,31 +63,28 @@ Rearranging this equation into a vector form we obtain in $\Omega$
 	\end{pmatrix}
 	\end{equation}
 \end{ceqn}
-which can be shortened to $\mathcal{A} ([\sigma, u]) = \tilde{f}(u)$, where $\mathcal{A}$ denotes the differential operator and $\tilde{f}(u)$ the right hand side. 
+which we will refer to as the mixed strong form of our problem and can be shortened to $\mathcal{A} ([\sigma, u]) = \tilde{f}(u)$, where $\mathcal{A}$ denotes the differential operator and $\tilde{f}(u)$ the right hand side. 
 \smallskip
 \\
-\textit{Show that this operator is linear and bounded? but then norm ... spaces ... bla bla bla ...}
+\textbf{Remark.} It is not clear yet in which space we will be looking for a solution. In general when working with strong and weak formulations there is a a number of function spaces involved, problem formulations that are similar but not the same and it is difficult to represent them in clear but short notation. This can easily lead to some confusion. In the current case the situation is even more complicated since we are trying to derive a weak formulation in a least squares setting, while additionally there obviously exist the regular or so-called primal weak formulations of (\ref{strong_form}) or (\ref{mixed_form}). Therefore we will first derive a least squares functional $J$ with a corresponding variational formulation, postponing the definition of appropriate spaces for now but simply assuming them to already be well-defined, and later on show that they indeed exist.
 \smallskip
 \\
-\textbf{Remark.} It is not clear yet though in which space we will be looking for a solution. In general when working with strong and weak formulations there is a a number of function spaces involved, problem formulations that are similar but not the same and it is difficult to represent them in clear but short notation. This can easily lead to some confusion. In the current case the situation is even more complicated since we are trying to derive a weak formulation in a least squares setting, while additionally there obviously exist the regular or so-called primal weak formulations of (4.2) which we will sometimes refer to. Therefore we will first derive  a least squares functional $J$ with a corresponding variational formulation, postponing the definition of appropriate spaces for now but simply assuming them to already be well-defined. 
-\smallskip
-\\
-So instead of looking for a solution of the strong formulation, let us now turn to the derivation of an optimisation problem that we would like to satisfy in a weak sense. The properties that we would like to be fulfilled are the following. We want a solution of (4.3) to be a global minimum of the optimisation problem, independently of the choice of the spaces that we are using and its associated norm, hence we additionally want the least squares functional $J$ to be zero for a solution of (4.3). On the other hand if $J(\sigma, u) = 0$ then the orginial problem (4.3) also has to be satisfied if only in a weak sense with respect to the spaces $U$ and $Z$. We can check that all three properties hold for the functional  
+So instead of looking for a solution of the strong formulation which is far more restrictive, let us now turn to the derivation of an optimisation problem that we would like to satisfy in a weak sense. The properties that we would like to be fulfilled are the following. We want a solution of (4.3) to be a global minimum of the optimisation problem, independently of the choice of the spaces that we are using and its associated norm, hence we additionally want the least squares functional $J$ to be zero for a solution of (4.3). On the other hand if $J(\sigma, u) = 0$ then the orginial problem (4.3) also has to be satisfied if only in a weak sense with respect to the spaces $U$ and $Y$. We can check that all three properties hold for the functional  
 \begin{ceqn}
 \begin{align}
-\tilde{J}(\sigma, u) =|| u_t - div(\sigma) - f(u) ||_Z^2 + || \sigma - D(x) \nabla u || _Z^2
+\tilde{J}(\sigma, u) =|| u_t - div(\sigma) - f(u) ||_Y^2 + || \sigma - D(x) \nabla u || _Y^2
 \end{align}
 \end{ceqn}
-Furthermore it has shown to be practical to be able to weight the two terms with coefficients [source] which does not affect the overall solution but grants us the possibility to numerically give more importance to one term than the other. We also introduce additional scalars of $0.5$ to simplify further computations of the derivatives as we will see in the following section. Therefore the the minimisation problem then reads
+Furthermore it has shown to be practical to be able to weight the two terms with coefficients [source] which does not affect the overall solution but grants us the possibility to numerically give more importance to one term than the other. We also introduce additional scalars of $\frac{1}{2}$ to simplify further computations of the derivatives as we will see in the following section. Therefore the the minimisation problem then reads
 \begin{ceqn}
 	\begin{align}
-	\min_{(\sigma, u) \in U} J(\sigma, u) = \frac{1}{2} c_1 || u_t - div(\sigma) - f(u) ||_Z^2 + \frac{1}{2} c_2 || \sigma - D(x) \nabla u ||_Z^2.
+	\min_{(\sigma, u) \in U} J(\sigma, u) = \frac{1}{2} c_1 || u_t - div(\sigma) - f(u) ||_Y^2 + \frac{1}{2} c_2 || \sigma - D(x) \nabla u ||_Y^2.
 	\end{align}
 \end{ceqn}
 $J$ now defines an energy we can minimise over. If we consider the functional for $ f = 0$ we obtain
 \begin{ceqn}
 	\begin{align}
-J([\sigma, u], 0) = \frac{1}{2} c_1 \langle u_t - div(\sigma), u_t - div(\sigma)\rangle_Z + \frac{1}{2} c_2 \langle \sigma - D(x) \nabla u, \sigma - D(x) \nabla u \rangle_Z.
+J([\sigma, u], 0) = \frac{1}{2} c_1 \langle u_t - div(\sigma), u_t - div(\sigma)\rangle_Y + \frac{1}{2} c_2 \langle \sigma - D(x) \nabla u, \sigma - D(x) \nabla u \rangle_Y.
 	\end{align}
 \end{ceqn}
 which more specifically gives rise to the following bilinear form if we differentiate $J$ with respect to directional derivatives $\tau$ and $v$, and subsequently sum over them [see section 4.5 for the derivation]. 
@@ -100,7 +106,7 @@ which more specifically gives rise to the following bilinear form if we differen
 	\begin{pmatrix}
 	\tau \\
 	v
-	\end{pmatrix} \rangle_Z
+	\end{pmatrix} \rangle_Y
 	\end{aligned}
 	\end{equation}
 \end{ceqn}
@@ -110,16 +116,16 @@ The resulting candidate for a variational formulation can be derived as usual [s
 	\begin{align}
 	\begin{aligned}
 	\text{ Find } (\sigma, u) \in U \text{ such that } \mathcal{B} ([\sigma, u], [\tau, v]) = L_{\tilde{f}}(u)(v) \quad \forall (\tau, v) \in W \\
- \text{ with } \mathcal{B} ([\sigma, u], [\tau, v]) = (\mathcal{A} [\sigma, u]^T,  \mathcal{A} [\tau, v]^T) \text{ and } \mathcal{L}_{\tilde{f}}(u)([\tau,v]) = (\mathcal{A}[\tau,v], \tilde{f}(u))_Z
+ \text{ with } \mathcal{B} ([\sigma, u], [\tau, v]) = (\mathcal{A} [\sigma, u]^T,  \mathcal{A} [\tau, v]^T) \text{ and } \mathcal{L}_{\tilde{f}}(u)([\tau,v]) = (\mathcal{A}[\tau,v], \tilde{f}(u))_Y
 \end{aligned}
 	\end{align}
 \end{ceqn}
 Remark: $L_{\tilde{f}}(u)(v)$ is a linear operator in $v$ but non-linear in $u$. 
-What remains to be determined are the function spaces $V$, $W$, $Z$ which potentially even lead us to a setting where can show norm equivalence in order for \textit{Theorem 3} to hold.
+What remains to be determined are the function spaces $U$, $W$, $Y$ which potentially even lead us to a setting where can show norm equivalence in order for \textit{Theorem 3} to hold.
 
 \section{Function Spaces}
 
-In order to define $V$ and $Z$ let us consider the optimisation problem [...] and its variational formulation [...] again. We would like to allow for the broadest class of solutions possible while still ensuring that all terms are well-defined in $V$, and staying away from Sobolev spaces of negative or fractional powers due to the beforementioned practicality reasons. Additionally to guarantee the existence of all terms involved we have to make sure that the present weak derivatives of $\sigma$ and $u$ exist in the induced inner product of $Z$. Let us therefore consider the following spaces 
+In order to define $U$ and $Y$ let us consider the optimisation problem [...] and its variational formulation [...] again. We would like to allow for the broadest class of solutions possible while still ensuring that all terms are well-defined in $U$, and staying away from Sobolev spaces of negative or fractional powers due to the beforementioned practicality reasons. Additionally to guarantee the existence of all terms involved we have to make sure that the present weak derivatives of $\sigma$ and $u$ exist in the induced inner product of $Y$. Let us therefore consider the following spaces 
 \begin{ceqn}
 	\begin{align}
 	&H_{div}^1(\mathcal{S}) = \{\sigma \in (L^2(\mathcal{S}))^n : div (\sigma) \in L^2(\mathcal{S})\} \\
@@ -130,7 +136,7 @@ In order to define $V$ and $Z$ let us consider the optimisation problem [...] an
 \begin{ceqn}
 	\begin{align}
     & U = W = H_{DIV}^1(\Omega) \times H^1(\Omega) \\
-    & Z = L^2(\Omega)
+    & Y = L^2(\Omega)
 	\end{align}
 \end{ceqn}
 that is we require that 
@@ -154,9 +160,9 @@ Another point that has not been a mentioned so far but will have to be taken int
 
 \section{Norm Equivalence}
 
-$\mathcal{B}$ induces an inner product on $V$ and subsequently a norm. It is clearly a symmetric bilinear form. We also have that $ \mathcal{B} ([\sigma, u], [\sigma, u]) \geq 0 $ for all $[\sigma, u] \in V$, it only remains to show that $ \mathcal{B} ([\sigma, u], [\sigma, u]) = 0 \Rightarrow [\sigma, u] = 0 $.  
+$\mathcal{B}$ induces an inner product on $U$ and subsequently a norm. It is clearly a symmetric bilinear form. We also have that $ \mathcal{B} ([\sigma, u], [\sigma, u]) \geq 0 $ for all $[\sigma, u] \in U$, it only remains to show that $ \mathcal{B} ([\sigma, u], [\sigma, u]) = 0 \Rightarrow [\sigma, u] = 0 $.  
 Show positive definiteness : \\
-We clearly have $\mathcal{B}([\sigma, u], [\sigma, u]) \geq 0$ for all $(\sigma, u) \in V$ since $J([\sigma, u], 0)$ is the sum of two squared $L^2$-norms. It remains to show that 
+We clearly have $\mathcal{B}([\sigma, u], [\sigma, u]) \geq 0$ for all $(\sigma, u) \in U$ since $J([\sigma, u], 0)$ is the sum of two squared $L^2$-norms. It remains to show that 
 \begin{ceqn}
 	\begin{equation}
 \mathcal{B}([\sigma, u], [\sigma, u]) = 0  \iff (\sigma, u) = 0
@@ -180,13 +186,13 @@ The spaces differ from \cite{cai1994first} in terms of the $H_{DIV}$ definition,
 After having derived a continuous least squares formulation let us turn towards deriving a finite element discretisation of the problem. We want to consider conforming subspaces of $U$ and $W$, hence we will be considering finite dimensional spaces $U_h \subset U$ and $W_h \subset W$ that are also defined on the entire space-time domain. 
 \smallskip
 \\
-$U_h$ contains the solution space for $\sigma$ and $u$. They can be chosen independently from each other which can potentially be advantageous due to the different occurences of their partial derivatives. Hence let us assume that $\sigma \in \tilde{V}_h$ and $u \in V_h$, where $ U_h = \tilde{V}_h \times V_h$. 
+$U^h$ contains the solution space for $\sigma^h$ and $u^h$, that is $s^h = [\sigma^h, u^h] \in U^h$. However the subspaces for the variables do not have to be the same which can potentially be advantageous as the continuous spaces differ as well, due to their different properties. Hence let us assume that $\sigma^h \in \tilde{U}^h$ and $u^h \in \hat{U}^h$, where $ U^h = \tilde{U}^h \times \hat{U}^h$. 
 \smallskip
 \\ 
-Suppose we have $\tilde{n} = dim(\tilde{V}_h)$ and let $ \{\tilde{\phi}_1, ..., \tilde{\phi}_{\tilde{n}}\} $ be a basis of $\tilde{V}_h$ and similarly $n = dim(V_h)$ and $span \{\phi_1, ..., \phi_n\}  = V_h$. We furthermore assume $V_h$ to be constructed such that $\inf_{u_h \in V_h} || v - v_h||_V \rightarrow 0 \ \text{as } h \rightarrow 0$ for all $v \in U$ and respectively the same for $\sigma_h$ and $\tilde{V}_h$. It is also worth noting that since we are in a space-time setting we have $\tilde{\phi} = \tilde{\phi}(x,t)$ and  $\phi = \phi(x,t)$.
+Suppose we have $\tilde{n} = dim(\tilde{U}^h)$ and let $ \{\tilde{\phi}_1, ..., \tilde{\phi}_{\tilde{n}}\} $ be a basis of $\tilde{U}^h$ and similarly $n = dim(\hat{U}^h)$ and $span \{\phi_1, ..., \phi_n\}  = \hat{U}^h$. We furthermore assume $U^h$ to be constructed such that $\inf_{s^h \in U^h} || s - s^h||_U \rightarrow 0 \ \text{as } h \rightarrow 0$ for all $s \in U$. \text{This is a reasonable assumption, Raviart - Thomas something?!}. It is also worth noting that since we are in a space-time setting we have $\tilde{\phi} = \tilde{\phi}(x,t)$ and  $\phi = \phi(x,t)$.
 \smallskip
 \\ 
-We can then represent $\sigma$ and $u$ as a linear combination of basis functions in $V_h$ or equivalently $\tilde{V}_h$, that is
+We can then represent $\sigma^h$ and $u^h$ as a linear combination of basis functions in $\tilde{U}^h$ or equivalently $\hat{U}^h$ that is
 \begin{ceqn}
 	\begin{equation}
  	\sigma_h(x,t) = \sum_{i = 1}^{\tilde{n}} \sigma_i \tilde{\phi}_i(x,t) \qquad 
@@ -196,13 +202,13 @@ We can then represent $\sigma$ and $u$ as a linear combination of basis function
 The functional $J$ then looks as follows 
 \begin{ceqn}
 	\begin{equation}
-J(\sigma_h, u_h) =|| \sum_{i=1}^{n} u_i \ (\phi_i)_t - \sum_{i=1}^{\tilde{n}} \sigma_i \ div(\tilde{\phi}_i) - f(\sum_{i=1}^{n} u_i \phi_i) ||_Z^2 + || \sum_{i=1}^{\tilde{n}} \sigma_i \tilde{\phi}_i - D(x) \nabla (\sum_{i=1}^{n} u_i \phi_i) || _Z^2
+J(\sigma_h, u_h) =|| \sum_{i=1}^{n} u_i \ (\phi_i)_t - \sum_{i=1}^{\tilde{n}} \sigma_i \ div(\tilde{\phi}_i) - f(\sum_{i=1}^{n} u_i \phi_i) ||_Y^2 + || \sum_{i=1}^{\tilde{n}} \sigma_i \tilde{\phi}_i - D(x) \nabla (\sum_{i=1}^{n} u_i \phi_i) || _Y^2
 	\end{equation}
 \end{ceqn}
 which will give rise to a vector-valued system once we discretise the domain. 
 \smallskip
 \\ 
-In the arising variational formulation that we will also have to consider finite dimensional subspaces of $W_h$ of $W$. In the scope of this thesis we restrict ourselves to the assumption that $W_h = U_h$. That is we introduce a set of test functions consisting of the basis vectors of $\tilde{V}_h$ and $V_h$. That is the discretised weak form then reads 
+In the arising variational formulation that we will also have to consider finite dimensional subspaces of $W_h$ of $W$. In the scope of this thesis we restrict ourselves to the assumption that $W_h = U_h$. That is we introduce a set of test functions consisting of the basis vectors of $\tilde{U}^h$ and $U^h$. That is the discretised weak form then reads 
 
 \begin{ceqn}
 	\begin{align}
@@ -230,17 +236,17 @@ B_{u \sigma}  & B_{uu}
 Each entry of each of the blocks of $B$ can be computed explicitly according to the subsequent schemes.
 \begin{ceqn}
 	\begin{align}
-&\text{For } B_{\sigma \sigma} :	\qquad B_{ij} = \langle \tilde{\phi}_j, \tilde{\phi}_i \rangle_Z + \langle div(\tilde{\phi_j}), div(\tilde{\phi_i}) \rangle_Z \quad &\forall i,j \in \{1, ..., \tilde{n}\} \\
-&\text{For } B_{\sigma u} : \qquad B_{ij} = - \langle D(x) \nabla \phi_j, \tilde{\phi}_i \rangle_Z - \langle (\phi_j)_t, div(\tilde{\phi_i}) \rangle_Z \quad &\forall i \in \{1, ..., \tilde{n}\}, j \in \{\tilde{n}+1, ..., m\} \\
-&\text{For } B_{u \sigma} : \qquad B_{ij} = - \langle D(x) \nabla \phi_i, \tilde{\phi}_j \rangle_Z - \langle (\phi_i)_t, div(\tilde{\phi_j}) \rangle_Z \quad &i \in \{\tilde{n}+1, ..., m\}, \forall j \in \{1, ..., \tilde{n}\}\\
-&\text{For } B_{uu} : \qquad B_{ij} = \langle D(x) \nabla \phi_j, D(x) \nabla \phi_i \rangle_Z + \langle (\phi_j)_t, (\phi_i)_t \rangle_Z \quad &\forall i,j \in \{\tilde{n}+1, ..., m\}
+&\text{For } B_{\sigma \sigma} :	\qquad B_{ij} = \langle \tilde{\phi}_j, \tilde{\phi}_i \rangle_Y + \langle div(\tilde{\phi_j}), div(\tilde{\phi_i}) \rangle_Y \quad &\forall i,j \in \{1, ..., \tilde{n}\} \\
+&\text{For } B_{\sigma u} : \qquad B_{ij} = - \langle D(x) \nabla \phi_j, \tilde{\phi}_i \rangle_Y - \langle (\phi_j)_t, div(\tilde{\phi_i}) \rangle_Y \quad &\forall i \in \{1, ..., \tilde{n}\}, j \in \{\tilde{n}+1, ..., m\} \\
+&\text{For } B_{u \sigma} : \qquad B_{ij} = - \langle D(x) \nabla \phi_i, \tilde{\phi}_j \rangle_Y - \langle (\phi_i)_t, div(\tilde{\phi_j}) \rangle_Y \quad &i \in \{\tilde{n}+1, ..., m\}, \forall j \in \{1, ..., \tilde{n}\}\\
+&\text{For } B_{uu} : \qquad B_{ij} = \langle D(x) \nabla \phi_j, D(x) \nabla \phi_i \rangle_Y + \langle (\phi_j)_t, (\phi_i)_t \rangle_Y \quad &\forall i,j \in \{\tilde{n}+1, ..., m\}
 \end{align}
 \end{ceqn}
 In the case that $f$ is independent of $u$, that is $f = 0$ or $f = f(x,t)$, the derivative of $f$ with respect to $u$, is clearly zero and therefore the right-hand side, which we will denote by $L_{\tilde{f}} = L_{\tilde{f}}(u_h)$ to underline its independence of $u$ only contains the following terms
 \begin{ceqn}
 	\begin{align}
 &(L_{\tilde{f}})_i = 0 \qquad &i \in \{1, ..., \tilde{n} \} \\
-&(L_{\tilde{f}})_i = P(\sum_{j=1}^{\tilde{n}}\langle div(\tilde{\phi_j}), f \rangle_Z)_i - \langle (\phi_i)_t, f \rangle_Z \qquad  &i \in \{\tilde{n}+1, ..., m\}
+&(L_{\tilde{f}})_i = \sum_{j=1}^{\tilde{n}}\langle div(\tilde{\phi_j}), f \rangle_Y - \langle (\phi_i)_t, f \rangle_Y \qquad  &i \in \{\tilde{n}+1, ..., m\}
 \end{align}
 \end{ceqn}
 \textit{where $P$ is some sort of projection in case $\tilde{n} \neq n$, how to really write this up?} \\
@@ -258,7 +264,7 @@ which can then be solved immediately for $[\sigma, u]^T$ using for example a mul
 
 
 \section{Computation of the Derivatives}
-In order to formulate a nonlinear iteration scheme we will first derive the first and second order Gateaux derivatives of $J$ to be able to find concrete formulations for the gradient and hessian. We formulate them here now in their continuous form and will discuss the discretisation in the subsequent section. Furthermore for the remainder of this chapter we will assume that $\langle \cdot, \cdot \rangle = \langle \cdot, \cdot \rangle _Z$ in order to simplify the notation. For brevity and clarity we split the functional $J$ in three different terms that will be considered separately dividing it into the linear and nonlinear terms which is possible due to the linearity of the inner product. 
+In order to formulate a nonlinear iteration scheme we will first derive the first and second order Gateaux derivatives of $J$ to be able to find concrete formulations for the gradient and hessian. We formulate them here now in their continuous form and will discuss the discretisation in the subsequent section. Furthermore for the remainder of this chapter we will assume that $\langle \cdot, \cdot \rangle = \langle \cdot, \cdot \rangle _Y$ in order to simplify the notation. For brevity and clarity we split the functional $J$ in three different terms that will be considered separately dividing it into the linear and nonlinear terms which is possible due to the linearity of the inner product. 
 
 \begin{equation}
 \begin{aligned}
@@ -389,7 +395,7 @@ Thus we have now computed the necessary terms needed for the gradient as well as
 As discussed in the previous chapter [see section 3.4] the general approach to finding a minimiser of the functional $J$ is to search for a tuple $[\sigma, u]$ for which $\nabla  J ([\sigma, u])= 0$, while $\nabla^2 J ([\sigma, u]) $ is positive definite. We start with an initial guess $s_0 = s_{\text{init}} = [\sigma_{\text{init}}, u_{\text{init}}]$ and then successively try to decrease energy. In case of a Newton step by finding a quadratic approximation of $J$ at the value of the current iterate $s_k$, where the updated solution $s_{k+1}$ is the minimiser of the quadratic approximation. However if $J$ is not convex, and hence $\nabla^2 J ([\sigma, u]) $ not positive definite, the extremum of the quadratic approximation can actually lead us to a maximum of $J$. Therefore if we want to use a Newton iteration and maintain a decrease or at least no increase of energy in every step, that is $J(s_0) \geq J(s_1) \geq ... \geq J(s_k) \geq ... $ we need to be checking for convexity. In order to perform a Newton step we have to compute the Hessian of $J$, as well as its gradient in each iterate. The other option that was discussed previously to obtain a reduction in energy is to use a gradient descent method where we simply take an iteration step into the steepest descent direction. Hence we only need to evaluate the gradient in this case, which is computationally much cheaper but only leads to a linear convergence rate, instead of a quadratic one in the convex Newton case. 
 \smallskip
 \\
-There are different ways to linearise and discretise in $f$, that is we have to decide how to represent $f$ in our finite dimensional subspace formulation. For simplicity we assumed that $f \in C^2$, and denote the first and second derivative with respect to $u$ by $f'$ and $f''$. This is in line with the forcing term stemming from the FitzHugh-Nagumo model as well as many other physical applications [source]. Hence for each degree of freedom in $u$ we can determine coefficients for $f, f', f''$ and represent them in the basis of $V_h$, that is 
+There are different ways to linearise and discretise in $f$, that is we have to decide how to represent $f$ in our finite dimensional subspace formulation. For simplicity we assumed that $f \in C^2$, and denote the first and second derivative with respect to $u$ by $f'$ and $f''$. This is in line with the forcing term stemming from the FitzHugh-Nagumo model as well as many other physical applications [source]. Hence for each degree of freedom in $u$ we can determine coefficients for $f, f', f''$ and represent them in the basis of $\hat{U}^h$, that is 
 \begin{ceqn}
 	\begin{align}
 (f_h)_i = \sum_{i=1}^{n} f_i \phi_i, \qquad (f'_h)_i = \sum_{i=1}^{n} f'_i \phi_i, \qquad (f''_h)_i = \sum_{i=1}^{n} f''_i \phi_i
@@ -401,8 +407,8 @@ We want $\nabla J = 0$
 
 \begin{ceqn}
 	\begin{align}
- (L_{\tilde{f}}(u_h))_{\sigma} = \langle div(\sigma_h), f'_h \rangle_Z\\
-  (L_{\tilde{f}}(u_h))_{u} = - \langle u_t, f'_h \rangle_Z - \langle v_t, f_h \rangle_Z  + \langle f_h, f'_h \rangle_Z 
+ (L_{\tilde{f}}(u_h))_{\sigma} = \langle div(\sigma_h), f'_h \rangle_Y\\
+  (L_{\tilde{f}}(u_h))_{u} = - \langle u_t, f'_h \rangle_Y - \langle v_t, f_h \rangle_Y  + \langle f_h, f'_h \rangle_Y 
 	\end{align}
 \end{ceqn}
 
@@ -462,7 +468,7 @@ put derivative to zero therefore if we assume local convexity must be an extremu
 \\
 As mentioned in the prologue we consider an iterative approach to solve this problem and will therefore consider linearisations of the problem. But before going into more detail about that, let us consider the variational formulation of the coupled reaction-diffusion system (4.3)
 
-A solution to (4.3) will always be a minimiser of the functional $J$ independent on the choice of $Z$, however the sequence of iterates is dependent on the choice of the norm. 
+A solution to (4.3) will always be a minimiser of the functional $J$ independent on the choice of $Y$, however the sequence of iterates is dependent on the choice of the norm. 
 \smallskip
 \\
 After having derived this discrete least squares space-time finite element formulation we will in the next chapter be looking at a concrete implementation which contains numerical results for some sample problems. 

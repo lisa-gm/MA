@@ -194,7 +194,7 @@ We can see that the damped block Jacobi smoother really leads to a fast reductio
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[scale=0.28]{images/implementation/contour_plot_1_blk_size3by4}
+	\includegraphics[width=0.9\textwidth]{images/implementation/contour_plot_1_blk_size3by4}
 	\caption{Iterates after $k = 0,3,8, 20$ iterations for a patch size of $3 \times 4$, and a grid with $11 \times 11$ elements. needed more than 3177 iterations in order for the norm of the residual to be $< 10^{-9}$.}
 \end{figure}
 
@@ -216,8 +216,8 @@ Another type of smoother that we tested is a Gauss-Seidel \textit{line smoother}
 	\draw [black, dotted, ultra thick] (5, 2.6) -- (5, 3.4);
 	\draw [black, dotted, ultra thick] (6, 2.6) -- (6, 3.4);		  
 		  
-	\draw[thick,-latex] (1,-1) -- (2,-1) node[below] {space};
-	\draw[thick,-latex] (-1,1) -- (-1,2) node[left]{time};
+	\draw[thick,-latex] (1,-1) -- (2,-1) node[below] {Space};
+	\draw[thick,-latex] (-1,1) -- (-1,2) node[left]{Time};
 	
 	\draw[black] (-0.3,-0.3) rectangle  (0.3,6.3);
 	\draw[red] (0.7,-0.3) rectangle  (1.3,6.3);
@@ -251,11 +251,85 @@ Performs much better than 3 by 4, why? Gauss Seidel?
 
 \pagebreak
 \section{Numerical Test Cases}
+
+\subsection{One-Dimensional Poisson Equation}
+
+After having discussed the individual multigrid terms let us look at the overall multigrid performance. As a very first test case we construct a one-dimensional Poisson problem using the least squares set up. Of course this problem could be solved more easily using for example a primal weak formulation however this can serve us as a an simple test case for the multigrid implementation. We would like to remark here, that it necessarily has to be a one-dimensional problem in space, as we would otherwise have to use a different set of basis functions, like Raviart-Thomas basis functions, to obtain a well-defined discretisation, which would then not be using later on. Hence we want to find an approximate solution to the continuous minimisation problem
+
+\begin{ceqn}
+	\begin{equation}
+	\begin{aligned}
+	\text{Find } [\sigma, u] \in H_{div}(\mathcal{S}) \times H^1(\mathcal{S}) \text{ such that } \hat{J}([\sigma, u], f) \text{ is minimal, with } \\
+\hat{J}([\sigma, u], f) = \frac{1}{2}|| - div(\sigma) - f ||_{L^2(\mathcal{S})}^2  + \frac{1}{2} || \sigma - \nabla u ||_{L^2(\mathcal{S})}^2.
+	\end{aligned}
+	\end{equation}
+\end{ceqn}
+where we assume $f = f(x,t)$ and use the multigrid algorithm described above to solve the arising linear system of equations, only adapting the interpolation and restriction operators to suit a one-dimensional problem, standard one used here, see e.g. \cite{briggs2000multigrid} for details.
+
+\begin{figure}
+	\begin{center}
+		\begin{tabular}{||c | c | c | c | c ||} 
+			\hline
+			test case & no of fine elem & iter until conv & final res norm & avg conv rate \\ [0.5ex] 
+			\hline\hline
+			1 & 120 & 8 & $6.25 \cdot 10^{-10}$ &  0.065 \\ 
+			\hline
+			2 & 2 & 7 & 78 & 5415   \\
+			\hline
+			3 & 0 & 0 & 0 & 0  \\
+			\hline
+		\end{tabular}
+	\end{center}
+	\caption{test case 1: $\mathcal{S} = (0,1)$, with $u(0) = 1$, $u(1) = 2$, initial iterate $u_{\text{init}} = 0.1$, $\sigma_{\text{init}} = 0.1$, $f = 0$.
+	test case 2: $\mathcal{S} = (0,3)$, with $u(0) = 3$, $u(1) = 0$, initial iterate $u_{\text{init}} = 1$, $\sigma_{\text{init}} = 0.5$, $f = 0$. test case 3: \textit{put it if i get $f$ nonzero working.} }
+\end{figure}
+
+The number of elements was chosen to roughly match the number of elements we will consider in the following sections to make the results more comparable, however as we only coarsen in space here. The iterations until convergence counts the number of $V$-cycles needed to read a residual norm smaller than $10^{-9}$ using 3 pre-and post smoothing steps, using a 2 levels. The convergence coefficient is defined as $\mu_k = \frac{res_k}{res_{k-1}}$, where $k$ stands for the current iterate, and the its mean value is taken to be the overall convergence rate, hence the smaller the value is, that is the closer to zero the better is the update. If we have $\mu_k > 1$, it means that the residual actually increased from one iteration to another. The first values of $\mu_k$ highly depend on the initial guess but we can see below that later on the average coefficient is around $0.05$ which is of course a very good convergence rate however our test case is also very simple, so one would also expect the algorithm to converge very quickly.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.45\textwidth]{images/implementation/poisson/test_case_1_conv_plot}
+	\includegraphics[width=0.45\textwidth]{images/implementation/poisson/test_case_2_conv_plot}
+	\caption{On the left the convergence coefficient $c_k$ for the first test case (see table), and on the right the convergence coefficient for the second test case.}
+\end{figure}
+The pictures of the overall solution are not provided here, but they match the expected solutions in all test cases. Hence we can conclude that for these simple test cases the set up of the least squares formulation as well as the multigrid implementation work \textit{reasonably} well.
+
+
+
+
 \subsection{Heat Equation}
 
-After having discussed the individual multigrid terms let us look at the overall multigrid performance for a heat equation using the derived LSFEM space-time discretisation. 
-\bigskip
-\\
+ for a heat equation using the derived LSFEM space-time discretisation.
+ Variety of parameters to be tuned. 
+ diffusion constant \\
+ mesh size, ratios \\
+  initial conditions? \\
+  play with $c_1, c_2$? \\
+  smoothers, more before? \\
+  boundary conditions \\
+  galerkin, not galerkin assembly \\
+  
+The choice of the parameters $c_1$ and $c_2$ has a major influence on the convergence speed of the multigrid algorithm. As we assume equivalence to the original partial differential equation the continuous optimisation problem $J$ as well as $\nabla J$ are equal to zero at the solution $[\sigma, u]$. However as we minimise the residual in a finite dimensional subspace and need to be taking rounding errors into account this is not \textit{necessarily} true for the discretised problem. Therefore when we scale the problem 
+
+\begin{ceqn}
+	\begin{equation}
+	\begin{aligned}
+ J([\sigma, u], 0) = \frac{1}{2} c_1 || u_t - div(\sigma) ||_{L^2(\Omega)}^2 + \frac{1}{2} c_2 || \sigma - D \nabla u ||_{L^2(\Omega)}^2.
+	\end{aligned}
+	\end{equation}
+\end{ceqn}
+
+on a finite mesh, we converge to a slightly different solution, depending on the parameter of $c_2$, \textit{also because of the inexact convergence criterium? Why does it change solution so much? With increasing number of elements it will tend more and more towards correct solution?!}.  Below we can see the behavior of the residual over iterations as well as the convergence rate for the same problem that only differs in the choice of $c_2$.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.4]{images/implementation/c2_comparison/res_norm}
+	\includegraphics[scale=0.4]{images/implementation/c2_comparison/conv_rate}
+	\caption{created from a fine mesh with 20 by 20 elements on a unit square, $D = 0.1$, block Jacobi smoother with block sizes of $2 \times 2$, $u_0 = max(1-2x, 0)$ and Neumann boundary conditions in time}
+\end{figure}
+
+\textit{What happens at the end there in case of convergence coefficient? Some trade off between convergence speed and accuracy? Sources? How is this solely related to eigenvalues and how much could it be other things?}
+
 \textit{parameters, boundary conditions, grid sizes, ...}
 \bigskip
 \\
@@ -269,7 +343,7 @@ also how many steps do we need until convergence of the smoothers by itself
 \textit{further analysis? test laplace and $u_t$ independently, what can we see from there?}
 \\
 \textit{Galerkin not Galerkin assembly, try with both}
-
+We have included the boundary values in the problem. 
 
 % do analysis of coarse grid correction
  for the particular problem one is looking 
@@ -277,34 +351,20 @@ also how many steps do we need until convergence of the smoothers by itself
 % block Jacobi, write different version
 % analyse difference, error doesnt seem smooth in space, but can't really see it when looking at solution ... 
 
-\subsection{Linearisation of a Monodomain Equation}
+\textbf{Eigenvalues + condition number}
+We looked at the eigenvalues of the hessian in order to better understand why the convergence is so slow. Below we can see the eigenvalues for the symmetrised hessian. 
 
-Before considering the full nonlinear problem we draw our attention to its linearisation in a neighbourhood of the solution $s$, the full description of how to obtain this solution we refer to the next section. Under the assumption that we have a unique local minimiser of the problem, we know that we have convexity close to the solution, that is the hessian $H_s = H(s)$ is positive definite and the gradient is very close to zero. \\
-In order to better understand the behavior of the hessian around the solution we perform an error analysis using a Jacobi smoother on the linearised system. More specifically we want to see how small pertubations in the solution in areas of the wavefront and the constant regions behave under the iteration of the smoother. \textit{This could be in order to construct adapted coarse spaces that take these different local behaviors into account.} \\
-We consider the following iteration 
-\begin{ceqn}
-	\begin{equation}
-	\begin{aligned}
-e_{k+1} &= e_k + P(\nabla J - H_s e_k) \quad \text{ or} \\
-e_{k+1} &= e_k - P H_s e_k 
-	\end{aligned}
-	\end{equation}
-\end{ceqn}
-if we assume exactly that $\nabla J = 0$, and where $P$ describes the preconditioner. We now let $e_0$ equal to zero except for a small pertubation either in the area of the wavefront or the constant regions and see how this behaves under iteration.
+In comparison the eigenvalues of the one-dimensional Laplace equation describe a sine function [source]. We even have that the condition number here is higher. 
 
-\begin{ceqn}
-	\begin{equation}
-	\begin{aligned}
-u_{k+1} &= u_k - H_k^{-1}(\nabla J_k) \\
-H_k u_{k+1} &= H_k u_k - \nabla J_k, \\ 
-\\
-\text{ let } r_k := H_k u_k - \nabla J_k
-\text{ and solve } H_k u_{k+1} = r_k \quad \text{using multigrid}
-	\end{aligned}
-	\end{equation}
-\end{ceqn}
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[scale=0.4]{images/implementation/eigenvalues/eigenvalues_11by11elem}
+	\includegraphics[scale=0.4]{images/implementation/eigenvalues/eigenvalues_24by44elem}
+	\caption{Left--Panel: Sorted eigenvalues of the Hessian using 11 elements in both space and time with $\kappa(H)=1.5\cdot10^3$. Right--Panel:   Sorted eigenvalues of the Hessian using 24 in space and 44 in time  with $\kappa(H)=23\cdot10^3$. In both cases $\Omega = [0,1]^2$.}
+\end{figure}
 
-
+We can see that all eigenvalues are positive, as they have to be when arising from a least squares approach. And although it does not seem like the eigenvalues here can be described by a smooth function, they seem to be distributed fairly regularly and give rise to a \textit{reasonable} condition number. \textit{So that one would expect the multigrid to behave better}
+\textit{What else does this tell us? What else can I say?}
 
 \subsection{Monodomain Equation}
 
@@ -313,27 +373,28 @@ The simplified monodomain equation that shows the movement of an excitation fron
 \begin{ceqn}
 	\begin{equation}
 	\begin{aligned}
-\partial_t u - div(D \nabla u) &= u (1 - u ) (\alpha - u), \qquad &D > 0, \ 0 < \alpha < 1 \\
-u(x, 0) &= u_0(x) &\forall \ x \in S \\
-\nabla u \cdot n &= 0 \qquad &\forall \ (x,t) \in \{ x \in \{0,S\}, t \in (0,T) \} 
+	\partial_t u - div(D \nabla u) &= u (1 - u ) (\alpha - u), \qquad &D > 0, \ 0 < \alpha < 1 \\
+	u(x, 0) &= u_0(x) &\forall \ x \in S \\
+	\nabla u \cdot n &= 0 \qquad &\forall \ (x,t) \in \{ x \in \{0,S\}, t \in (0,T) \} 
 	\end{aligned}
-		\end{equation}
+	\end{equation}
 \end{ceqn}
 We can see that the right-hand side is clearly nonlinear as it describes a third order polynomial. It can be shown that the equation has 3 fixed points, two stable fixed in zero and one, and an unstable fixed point in $\alpha$ \cite{deuflhard2011adaptive}. Hence depending on the initial conditions $u_0$ the solution will tend to either zero or one, unless it is exactly $\alpha$ and then through diffusion, very much dependent on diffusion constant though, if there is values larger than $\alpha$ eventually lead to an activation of entire domain. Below we can see approximations of the solution.
 
-talk about non convexity, therefore using a direct solver \\
-Show what solution looks like, wavefront with initial conditions \\
-we can clearly see that this is only the excitation and not the depolarisation, (is maybe less of an interest as long as is it depolarises again eventually)
+We can see that this is only the excitation and not the depolarisation, (is maybe less of an interest as long as is it depolarises again eventually)
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[scale=0.3]{images/implementation/sol_d0_001_1by20_20by40elem}
-	\includegraphics[scale=0.3]{images/implementation/sol_d0_003_1by20_20by40elem}
+	\includegraphics[scale=0.4]{images/implementation/sol_d0_001_1by20_20by40elem}
+	\includegraphics[scale=0.4]{images/implementation/sol_d0_003_1by20_20by40elem}
 	\caption{For both graphs we have $u_0 = max(1-2x, 0)$, homogeneous Neumann boundary conditions on the spatial boundaries of the domain, for 20 elements in space and 40 in time. On the left we have a diffusion constant $D= 10^{-3}$, whereas on the right we have $D=3 \cdot 10^{-3}$.}
 \end{figure}
+\textit{Picture earlier? What order?} 
+\smallskip
+\\
 The two equations giving rise to the above solutions only differ in the choice of the diffusion constant $D$. As to be expected we can see that with a larger value of $D$, the activation happens much more quickly. We can also see that the front is not as steep, as we have a faster transport of electric potential through space. 
 \smallskip
 \\
-As previously mentioned the solutions are obtained using a dogleg trust region method for the nonlinear iteration, which is a combination of a gradient descent and a Newton iteration. \textit{More specifically we have ... description of the algorithm. ONLY WORKS FOR LOCALLY POS DEF.....	which we have. WHY NOT NEWTON UNLESS NOT SPD THEN GRADIENT DESCENT, maybe i can check for convexity in a point and if not just do gradient descent?!!} 	
+As previously mentioned the solutions are obtained using a dogleg trust region method for the nonlinear iteration, which is a combination of a gradient descent and a Newton iteration. This is necessary as with a simple Newton method we have run into iterates that do not lead to a decrease but instead an increase of the functional, hence were tending towards a local maximum.  \textit{More specifically we have ... description of the algorithm. ONLY WORKS FOR LOCALLY POS DEF.....	which we have. WHY NOT NEWTON UNLESS NOT SPD THEN GRADIENT DESCENT, maybe i can check for convexity in a point and if not just do gradient descent?!!} 	
 \smallskip
 \\
 We are using a quadratic model to approximate the functional $J$, that is we solve
@@ -341,7 +402,7 @@ We are using a quadratic model to approximate the functional $J$, that is we sol
 \begin{ceqn}
 	\begin{equation}
 	\begin{aligned}
-\min_p m(p) = f + g^T p + \frac{1}{2} p^T H p \qquad s.t. \ ||p|| \leq \Delta, \ p \in span\{g, H^{-1}g\}. 
+	\min_p m(p) = f + g^T p + \frac{1}{2} p^T H p \qquad s.t. \ ||p|| \leq \Delta, \ p \in span\{g, H^{-1}g\}. 
 	\end{aligned}
 	\end{equation}
 \end{ceqn}
@@ -349,7 +410,7 @@ We are using a quadratic model to approximate the functional $J$, that is we sol
 \begin{ceqn}
 	\begin{equation}
 	\begin{aligned}
-p^U = - \frac{g^Tg}{g^T H g} g
+	p^U = - \frac{g^Tg}{g^T H g} g
 	\end{aligned}
 	\end{equation}
 \end{ceqn}
@@ -365,61 +426,107 @@ p^U = - \frac{g^Tg}{g^T H g} g
 	\end{equation}
 \end{ceqn}
 
- 
+In the dogleg algorithm there are many parameters that need to be chosen, and could potentially be chosen to give better convergence results, here we have restricted ourselves to some that have shown themselves to perform well on previous problem [source] and not done an extensive amount of parameter tuning, as the overall aim was to develop a working nonlinear solver for now, but there are definitely many \textit{opportunities} for further testing to improve the overall performance, which we will discuss in more details in the following chapter. \\
 The discretisation of the least squares formulation uses the same approximation spaces and basis as introduced in the previous sections. The nonlinear part is computed as described in section 4.5 and 4.6. \textit{MORE....?}
 \smallskip
 \\
 \\
-at the end, convex, quadratic model good fit, show table
-
-\begin{figure}
-\begin{center}
-	\begin{tabular}{||c | c | c | c | c ||} 
-		\hline
-		accepted Iter & overall Iter & $ || J || $ & $|| \nabla J ||$ & TR Radius \\ [0.5ex] 
-		\hline\hline
-		1 & 6 & 87837 & 787 & \\ 
-		\hline
-		2 & 7 & 78 & 5415 & \\
-		\hline
-		3 & 545 & 778 & 7507 & \\
-		\hline
-		4 & 545 & 18744 & 7560 & \\
-		\hline
-		5 & 88 & 788 & 6344 & \\ [1ex] 
-		\hline
-	\end{tabular}
-\end{center}
-\caption{Last steps of the Iteration, where $\mathcal{S} = (0, 1), \mathcal{T} = (0, 20)$, 20 elements in space, 40 elements in time, diffusion constant $d=10^{-3}$, }
-\end{figure}
-
-\begin{figure}
+Below we can see two tables for the last iteration steps of the trust region method before reaching the convergence criterion. We can see that in a neighbourhood of the respective solutions, the quadratic model seems to be a good fit to the solution, as $\rho$ is close to 1, which leads to a continually increasing trust region radius. We can also see that norm of the residual, that is $\nabla J$ \textit{decreases at ... rate. how to check that?!}. The contains the number of accepted iterations, that is each iterations where an update took place, as well as the number of attempted iterations, this way one can get an insight into how often the model was determined to not be a good fit and the trust region radius was reduced without performing an update on the solution. 
+\begin{figure}[ht!]
 	\begin{center}
-		\begin{tabular}{||c | c | c | c | c ||} 
-			\hline
-			accepted Iter & overall Iter & $ || J || $ & $|| \nabla J ||$ & TR Radius \\ [0.5ex] 
-			\hline\hline
-			1 & 6 & 87837 & 787 & \\ 
-			\hline
-			2 & 7 & 78 & 5415 & \\
-			\hline
-			3 & 545 & 778 & 7507 & \\
-			\hline
-			4 & 545 & 18744 & 7560 & \\
-			\hline
-			5 & 88 & 788 & 6344 & \\ [1ex] 
-			\hline
+		\begin{tabular}{c | c | c | c | c  | c } 
+			\toprule
+			Accepted Iter & Overall Iter & $ || J || $ & $|| \nabla J ||$ & $\rho$ &TR Radius  \\
+			\toprule
+			111 & 152 & $7.520771 \cdot 10^{-5}$  & $2.3748 \cdot 10^{-4}$ & 0.835 & 192 \\ 
+		%	\hline
+			112 & 153 & $7.520542 \cdot 10^{-5}$ & $2.3489 \cdot 10^{-6}$ & 1.0189 & 384 \\
+		%	\hline
+			113 & 154 & $7.520539 \cdot 10^{-5}$ & $1.2572 \cdot 10^{-6}$ & 1.0053 & 768\\
+		%	\hline
+			114 & 155 & $7.520539 \cdot 10^{-5}$ & $7.1719 \cdot 10^{-11}$ & 0.9991 & 1536 \\
+			\bottomrule
 		\end{tabular}
 	\end{center}
-	\caption{Last steps of the Iteration, where $\mathcal{S} = (0, 1), \mathcal{T} = (0, 20)$, 20 elements in space, 40 elements in time, diffusion constant $d=10^{-3}$, }
+	\caption{Last steps of the Iteration, where $\mathcal{S} = (0, 1), \mathcal{T} = (0, 20)$, 20 elements in space, 40 elements in time, diffusion constant $d=1 \cdot 10^{-3}$, $u_{\text{init}} (\cdot,t)= u_0$ for all time steps, and $\sigma_{\text{init}} = 0$, boundary conditions as before}
+\end{figure}
+\textit{better to make graphs?!}
+\begin{table}[ht!]
+	\begin{center}
+		\begin{tabular}{|c | c | c | c | c | c |} 
+			\hline
+			accepted Iter & overall Iter & $ \| J \|  $ & $|| \nabla J ||$ & $\rho $ & TR Radius \\ 
+			\hline\hline
+			62 & 84 & $1.50271 \cdot 10^{-4}$ & $1.9825 \cdot 10^{-5}$ &  1.029 & 96 \\ 
+			\hline
+			63 & 85 & $1.50269 \cdot 10^{-4}$ & $2.653 \cdot 10^{-5}$ & 1.0002 & 192 \\
+			\hline
+			64 & 86 & $1.50268 \cdot 10^{-4}$ & $6.582 \cdot 10^{-9}$ & 1.00045 & 384 \\
+			\hline
+			65 & 87 & $1.50268 \cdot 10^{-4}$ & $7.061 \cdot 10^{-12}$ & 1.14 & 768 \\
+			\hline
+			
+		\end{tabular}
+	\end{center}
+	\caption{Last steps of the Iteration, where $\mathcal{S} = (0, 1), \mathcal{T} = (0, 20)$, 20 elements in space, 40 elements in time, diffusion constant $d=3 \cdot 10^{-3}$, $u_{\text{init}} (\cdot,t)= u_0$ for all time steps, and $\sigma_{\text{init}} = 0$, boundary conditions as before}
+\end{table}
+
+As before the two problems differ only in the diffusion constant. We can see that with a higher diffusion constant the problem converges faster. \textit{Problem becomes more elliptic?!}.
+
+\subsection{Linearisation of a Monodomain Equation}
+
+After considering the full nonlinear problem we particularly draw our attention to its linearisation in a neighbourhood of the solution $s$, the full description of how to obtain this solution we refer to the next section. Under the assumption that we have a unique local minimiser of the problem, we know that we have convexity close to the solution, that is the hessian $H_s = H(s)$ is positive definite and the gradient is very close to zero. \\
+In order to better understand the behavior of the hessian around the solution we perform an error analysis using a Jacobi smoother on the linearised system. More specifically we want to see how small pertubations in the solution in areas of the wavefront and the constant regions behave under the iteration of the smoother. \textit{This could be in order to construct adapted coarse spaces that take these different local behaviors into account.} \textit{talk more about why we have been looking at this}. \\ 
+We consider the following iteration 
+\begin{ceqn}
+	\begin{equation}
+	\begin{aligned}
+e_{k+1} &= e_k + P(\nabla J - H_s e_k) \quad \text{ or} \\
+e_{k+1} &= e_k - P H_s e_k 
+	\end{aligned}
+	\end{equation}
+\end{ceqn}
+if we assume exactly that $\nabla J = 0$, and where $P$ describes the preconditioner. We now let $e_0$ equal to zero except for a small pertubation either in the area of the wavefront or the constant regions and see how this behaves under iteration.
+
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[scale=0.4]{images/implementation/lin_hessian/subsets_on_sol}
+	\includegraphics[scale=0.4]{images/implementation/lin_hessian/res_norm}
+	\caption{On the left, subsets of grid points on the constant zone, using solution for $d=1 \cdot 10^{-3}$, and on the wavefront where we set the pertubations. On the right the residual norms after each iteration for one of the random test sets.}
+	\label{fig:pertubations}
 \end{figure}
 
-could also talk a little bit about how with an increase of diffusion constant problem seems to become more "elliptic" or more "convex", better behaved ... 
-\begin{itemize}
-	\item general construction
-	\item talk about non-convexity 
-	\item then about nonlinear solvers
-	
-\end{itemize}
+On average the residual norm of the perturbed areas decrease by the following contraction factors
+
+\begin{ceqn}
+	\begin{equation}
+	\begin{aligned}
+|| e_k^{const} || \leq 0.075 \cdot 0.756^k, \qquad || e_k^{wf} || \leq 0.068 \cdot 0.801^k, \quad 0 \leq k \leq 10
+	\end{aligned}
+	\end{equation}
+\end{ceqn}
+\textit{better to do a graph?!} 
+\smallskip
+\\
+where $k$ describes the number of iterations, $e^{const}$ the perturbed vector on the constant area and $e^{wf}$ on the wavefront, with random pertubations between $0$ and $0.1$ on the marked areas respectively. The numbers were computed averaging over a sample test set of size $100$. We can see that pertubations on the wavefront are damped slower, which we can also see in figure \ref{fig:pertubations}, however this effect is not as drastic. Further experiments for differently sized patches and areas were conducted which lead to similar results. 
+
+
+
+\begin{ceqn}
+	\begin{equation}
+\begin{aligned}
+	u_{k+1} &= u_k - H_k^{-1}(\nabla J_k) \\
+	H_k u_{k+1} &= H_k u_k - \nabla J_k, \\ 
+	\text{ let } r_k &:= H_k u_k - \nabla J_k
+\end{aligned}
+\end{equation}
+\end{ceqn}
+%	\text{ and solve } H_k u_{k+1} = r_k \quad \text{using multigrid}
+
+
+
+
+As with most other numerical approximations there is a great number of paramters that could be tuned, choices that could have been made differently, which will be discussed in the following chapter.
 
 \end{document}
