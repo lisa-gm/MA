@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/MacPorts 2017_2) (preloaded format=pdflatex 2018.3.21)  10 JAN 2019 18:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/MacPorts 2017_2) (preloaded format=pdflatex 2018.3.21)  19 JAN 2019 18:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -524,6 +524,29 @@ ions.pathreplacing.code.tex))
 ydecorations.shapes.code.tex
 (/opt/local/share/texmf/tex/generic/pgf/libraries/decorations/pgflibrarydecorat
 ions.shapes.code.tex)))
+(/opt/local/share/texmf-texlive/tex/latex/placeins/placeins.sty
+Package: placeins 2005/04/18  v 2.2
+)
+(/opt/local/share/texmf-texlive/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2016/04/27 v1.618033 publication quality tables
+\heavyrulewidth=\dimen172
+\lightrulewidth=\dimen173
+\cmidrulewidth=\dimen174
+\belowrulesep=\dimen175
+\belowbottomsep=\dimen176
+\aboverulesep=\dimen177
+\abovetopsep=\dimen178
+\cmidrulesep=\dimen179
+\cmidrulekern=\dimen180
+\defaultaddspace=\dimen181
+\@cmidla=\count122
+\@cmidlb=\count123
+\@aboverulesep=\dimen182
+\@belowrulesep=\dimen183
+\@thisruleclass=\count124
+\@lastruleclass=\count125
+\@thisrulewidth=\dimen184
+)
 (/opt/local/share/texmf-texlive/tex/latex/fancyhdr/fancyhdr.sty
 Package: fancyhdr 2016/09/06 3.8 Extensive control of page headers and footers
 \fancy@headwidth=\skip51
@@ -538,7 +561,7 @@ Package: fancyhdr 2016/09/06 3.8 Extensive control of page headers and footers
 )
 (/opt/local/share/texmf-texlive/tex/latex/ncctools/nccmath.sty
 Package: nccmath 2005/02/21 v1.2 Additional Math Commands (NCC)
-\NCC@fracrulewidth=\dimen172
+\NCC@fracrulewidth=\dimen185
 )
 (/opt/local/share/texmf-texlive/tex/latex/subfiles/subfiles.sty
 Package: subfiles 2012/05/23 Federico Garcia
@@ -549,14 +572,24 @@ Package: verbatim 2014/10/28 v1.5q LaTeX2e package for verbatim enhancements
 \verbatim@line=\toks39
 \verbatim@in@stream=\read2
 ))
-
-Package Fancyhdr Warning: \fancyhead's `E' option without twoside option is use
-less on input line 23.
-
-
-Package Fancyhdr Warning: \fancyhead's `E' option without twoside option is use
-less on input line 25.
-
+(/opt/local/share/texmf-texlive/tex/latex/titlesec/titlesec.sty
+Package: titlesec 2016/03/21 v2.10.2 Sectioning titles
+\ttl@box=\box60
+\beforetitleunit=\skip60
+\aftertitleunit=\skip61
+\ttl@plus=\dimen186
+\ttl@minus=\dimen187
+\ttl@toksa=\toks40
+\titlewidth=\dimen188
+\titlewidthlast=\dimen189
+\titlewidthfirst=\dimen190
+)
+(/opt/local/share/texmf-texlive/tex/latex/tools/afterpage.sty
+Package: afterpage 2014/10/28 v1.08 After-Page Package (DPC)
+\AP@output=\toks41
+\AP@partial=\box61
+\AP@footins=\box62
+)
 
 LaTeX Warning: Unused global option(s):
     [bibliography=totoc].
@@ -564,32 +597,32 @@ LaTeX Warning: Unused global option(s):
 (./draft_1.aux)
 \openout1 = `draft_1.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
 
 (/opt/local/share/texmf-texlive/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count122
-\scratchdimen=\dimen173
-\scratchbox=\box60
-\nofMPsegments=\count123
-\nofMParguments=\count124
-\everyMPshowfont=\toks40
-\MPscratchCnt=\count125
-\MPscratchDim=\dimen174
-\MPnumerator=\count126
-\makeMPintoPDFobject=\count127
-\everyMPtoPDFconversion=\toks41
+\scratchcounter=\count126
+\scratchdimen=\dimen191
+\scratchbox=\box63
+\nofMPsegments=\count127
+\nofMParguments=\count128
+\everyMPshowfont=\toks42
+\MPscratchCnt=\count129
+\MPscratchDim=\dimen192
+\MPnumerator=\count130
+\makeMPintoPDFobject=\count131
+\everyMPtoPDFconversion=\toks43
 ) (/opt/local/share/texmf-texlive/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -640,40 +673,41 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 ABD: EveryShipout initializing macros
-\c@Definition=\count128
-\c@Theorem=\count129
-LaTeX Font Info:    Try loading font information for U+msa on input line 35.
+\c@Definition=\count132
+\c@Theorem=\count133
+ (./titlepage.tex
+LaTeX Font Info:    Try loading font information for U+msa on input line 12.
 
 (/opt/local/share/texmf-texlive/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 35.
+LaTeX Font Info:    Try loading font information for U+msb on input line 12.
 
 (/opt/local/share/texmf-texlive/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
-{/opt/local/var/db/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./draft_1.toc [1
-
-])
-\tf@toc=\write5
-\openout5 = `draft_1.toc'.
-
-
+{/opt/local/var/db/texmf/fonts/map/pdftex/updmap/pdftex.map}])
+(./eigenstaendigkeitserklaerung.tex)
 
 Package Fancyhdr Warning: \headheight is too small (0.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[2] (./chapters/prologue.tex
+[2] [2
+
+] (./draft_1.toc)
+\tf@toc=\write5
+\openout5 = `draft_1.toc'.
+
+ (./chapters/prologue.tex [3] [3
+
+]
 Chapter 1.
-[3
-
-
-] [4]) (./chapters/electrophysiology.tex [5]
+[4] [5]) (./chapters/electrophysiology.tex [6]
 Chapter 2.
-<images/electrophysiology/heart_structure.png, id=34, 578.16pt x 670.505pt>
+<images/electrophysiology/heart_structure.png, id=40, 578.16pt x 670.505pt>
 File: images/electrophysiology/heart_structure.png Graphic file (type png)
 
 <use images/electrophysiology/heart_structure.png>
@@ -681,18 +715,20 @@ Package pdftex.def Info: images/electrophysiology/heart_structure.png used on i
 nput line 12.
 (pdftex.def)             Requested size: 173.44933pt x 201.15305pt.
 
-<images/electrophysiology/conduction_system.png, id=35, 672.5125pt x 388.45125p
+<images/electrophysiology/conduction_system.png, id=41, 672.5125pt x 388.45125p
 t>
 File: images/electrophysiology/conduction_system.png Graphic file (type png)
  <use images/electrophysiology/conduction_system.png>
 Package pdftex.def Info: images/electrophysiology/conduction_system.png used on
  input line 21.
 (pdftex.def)             Requested size: 336.25542pt x 194.22514pt.
- [6
+ [7
 
- <./images/electrophysiology/heart_structure.png>] [7 <./images/electrophysiolo
-gy/conduction_system.png>]
-<images/electrophysiology/cardiac_action_pot_franzone.png, id=45, 920.43875pt x
+ <./images/electrophysiology/heart_structure.png>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [8 <./images/electrophysiology/conduction_system.png>]
+<images/electrophysiology/cardiac_action_pot_franzone.png, id=50, 920.43875pt x
  584.1825pt>
 File: images/electrophysiology/cardiac_action_pot_franzone.png Graphic file (ty
 pe png)
@@ -701,134 +737,306 @@ Package pdftex.def Info: images/electrophysiology/cardiac_action_pot_franzone.p
 ng used on input line 33.
 (pdftex.def)             Requested size: 276.13376pt x 175.25609pt.
 
-[8 <./images/electrophysiology/cardiac_action_pot_franzone.png>] [9])
-(./chapters/mathematical_ingredients.tex [10]
+[9 <./images/electrophysiology/cardiac_action_pot_franzone.png>] [10])
+(./chapters/mathematical_ingredients.tex [11]
 Chapter 3.
-[11
+[12
 
-] [12] [13] [14] [15]
+] [13] [14] [15] [16]
 
-LaTeX Warning: Citation `lions2001resolutionions2001resolution' on page 16 unde
+LaTeX Warning: Citation `lions2001resolutionions2001resolution' on page 17 unde
 fined on input line 228.
 
-[16] [17] [18] [19] [20]) (./chapters/problem_formulation.tex [21]
+[17] [18] [19] [20]) (./chapters/problem_formulation.tex [21]
 Chapter 4.
 [22
 
-] [23] [24] [25]
-Overfull \hbox (7.03162pt too wide) in paragraph at lines 237--237
+] [23] [24]
+Underfull \hbox (badness 10000) in paragraph at lines 162--166
+
+ []
+
+
+Overfull \hbox (14.25386pt too wide) detected at line 184
+[][]
+ []
+
+[25]
+Overfull \hbox (8.01224pt too wide) in paragraph at lines 247--247
 [] 
  []
 
-[26] [27] [28]
-Overfull \hbox (43.58923pt too wide) detected at line 342
-$[][]$  
+[26] [27]
+Overfull \hbox (7.52347pt too wide) in paragraph at lines 338--338
+[] 
  []
 
-
-Overfull \hbox (6.10196pt too wide) detected at line 348
-$[][]$  
- []
-
-[29] [30]) (./chapters/multigrid_methods.tex [31]
+[28] [29]) (./chapters/multigrid_methods.tex [30]
 Chapter 5.
-[32
+
+Underfull \vbox (badness 2922) has occurred while \output is active []
+
+ [31
 
 ]
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 51.
- (/opt/local/share/texmf-texlive/tex/latex/base/omscmr.fd
+
+(/opt/local/share/texmf-texlive/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 51.
- [33]
+
 Underfull \hbox (badness 10000) in paragraph at lines 93--96
 
  []
 
-) (./chapters/implementation.tex [34]
+[32]) (./chapters/implementation.tex [33]
 Chapter 6.
 
-Underfull \hbox (badness 10000) in paragraph at lines 13--16
+Underfull \hbox (badness 10000) in paragraph at lines 14--17
 
  []
 
-[35
+
+Underfull \hbox (badness 10000) in paragraph at lines 62--66
+
+ []
+
+[34
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 61--65
+Underfull \hbox (badness 10000) in paragraph at lines 114--117
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 113--116
-
- []
-
-[36]
-<images/implementation/sol_heat_eqn_interpol.png, id=145, 1644.1425pt x 837.127
+<images/implementation/sol_heat_eqn_interpol.png, id=140, 1644.1425pt x 837.127
 5pt>
 File: images/implementation/sol_heat_eqn_interpol.png Graphic file (type png)
  <use images/implementation/sol_heat_eqn_interpol.png>
 Package pdftex.def Info: images/implementation/sol_heat_eqn_interpol.png used o
-n input line 132.
+n input line 133.
 (pdftex.def)             Requested size: 411.03462pt x 209.28136pt.
- [37 <./images/implementation/sol_heat_eqn_interpol.png (PNG copy)>]
-<images/implementation/contour_plot_1_blk_size1by1.png, id=149, 1328.965pt x 94
-3.525pt>
+ [35] [36 <./images/implementation/sol_heat_eqn_interpol.png (PNG copy)>]
+<images/implementation/contour_plot_1_blk_size1by1.png, id=148, 1383.1675pt x 1
+194.4625pt>
 File: images/implementation/contour_plot_1_blk_size1by1.png Graphic file (type 
 png)
  <use images/implementation/contour_plot_1_blk_size1by1.png>
 Package pdftex.def Info: images/implementation/contour_plot_1_blk_size1by1.png 
-used on input line 189.
-(pdftex.def)             Requested size: 372.10767pt x 264.1852pt.
+used on input line 191.
+(pdftex.def)             Requested size: 387.28426pt x 334.44722pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 193--194
+<images/implementation/contour_plot_1_blk_size3by4.png, id=149, 1387.1825pt x 1
+198.4775pt>
+File: images/implementation/contour_plot_1_blk_size3by4.png Graphic file (type 
+png)
+ <use images/implementation/contour_plot_1_blk_size3by4.png>
+Package pdftex.def Info: images/implementation/contour_plot_1_blk_size3by4.png 
+used on input line 199.
+(pdftex.def)             Requested size: 407.66833pt x 352.21283pt.
 
- []
-
-[38]
-<images/implementation/contour_plot_1_lineSm.png, id=153, 1124.2pt x 995.72pt>
+<images/implementation/contour_plot_1_lineSm.png, id=150, 1284.8pt x 1076.02pt>
 File: images/implementation/contour_plot_1_lineSm.png Graphic file (type png)
-
 <use images/implementation/contour_plot_1_lineSm.png>
 Package pdftex.def Info: images/implementation/contour_plot_1_lineSm.png used o
-n input line 250.
-(pdftex.def)             Requested size: 314.77385pt x 278.7997pt.
- [39 <./images/implementation/contour_plot_1_blk_size1by1.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 291--293
+n input line 246.
+(pdftex.def)             Requested size: 359.74155pt x 301.28355pt.
+ [37] [38 <./images/implementation/contour_plot_1_blk_size1by1.png (PNG copy)>]
+ [39 <./images/implementation/contour_plot_1_blk_size3by4.png (PNG copy)>] [40 
+<./images/implementation/contour_plot_1_lineSm.png (PNG copy)>]
+<images/implementation/poisson/test_case_1_conv_plot.png, id=163, 562.0197pt x 
+421.575pt>
+File: images/implementation/poisson/test_case_1_conv_plot.png Graphic file (typ
+e png)
+ <use images/implementation/poisson/test_case_1_conv_plot.png>
+Package pdftex.def Info: images/implementation/poisson/test_case_1_conv_plot.pn
+g used on input line 293.
+(pdftex.def)             Requested size: 203.83417pt x 152.8926pt.
+
+<images/implementation/poisson/test_case_2_conv_plot.png, id=164, 562.0197pt x 
+421.575pt>
+File: images/implementation/poisson/test_case_2_conv_plot.png Graphic file (typ
+e png)
+ <use images/implementation/poisson/test_case_2_conv_plot.png>
+Package pdftex.def Info: images/implementation/poisson/test_case_2_conv_plot.pn
+g used on input line 294.
+(pdftex.def)             Requested size: 203.83417pt x 152.8926pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[41
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 304--308
 
  []
 
-[40 <./images/implementation/contour_plot_1_lineSm.png (PNG copy)>])
-(./chapters/conclusions.tex [41]
+
+Underfull \hbox (badness 10000) in paragraph at lines 309--311
+
+ []
+
+
+LaTeX Warning: No positions in optional float specifier.
+               Default added (so using `tbp') on input line 313.
+
+
+<images/implementation/multigrid_scaling/scaling_residual_mg.png, id=169, 562.0
+197pt x 421.575pt>
+File: images/implementation/multigrid_scaling/scaling_residual_mg.png Graphic f
+ile (type png)
+
+<use images/implementation/multigrid_scaling/scaling_residual_mg.png>
+Package pdftex.def Info: images/implementation/multigrid_scaling/scaling_residu
+al_mg.png used on input line 368.
+(pdftex.def)             Requested size: 224.8039pt x 168.627pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 372--376
+
+ []
+
+[42 <./images/implementation/poisson/test_case_1_conv_plot.png (PNG copy)> <./i
+mages/implementation/poisson/test_case_2_conv_plot.png (PNG copy)> <./images/im
+plementation/multigrid_scaling/scaling_residual_mg.png (PNG copy)>] [43]
+<images/implementation/c2_comparison/res_norm.png, id=176, 562.0197pt x 421.575
+pt>
+File: images/implementation/c2_comparison/res_norm.png Graphic file (type png)
+ <use images/implementation/c2_comparison/res_norm.png>
+Package pdftex.def Info: images/implementation/c2_comparison/res_norm.png used 
+on input line 391.
+(pdftex.def)             Requested size: 224.8039pt x 168.627pt.
+
+<images/implementation/c2_comparison/conv_rate.png, id=177, 562.0197pt x 421.57
+5pt>
+File: images/implementation/c2_comparison/conv_rate.png Graphic file (type png)
+
+ <use images/implementation/c2_comparison/conv_rate.png>
+Package pdftex.def Info: images/implementation/c2_comparison/conv_rate.png used
+ on input line 392.
+(pdftex.def)             Requested size: 224.8039pt x 168.627pt.
+ [44 <./images/implementation/c2_comparison/res_norm.png (PNG copy)> <./images/
+implementation/c2_comparison/conv_rate.png (PNG copy)>]
+<images/implementation/eigenvalues/eigenvalues_11by11elem.png, id=181, 562.0197
+pt x 421.575pt>
+File: images/implementation/eigenvalues/eigenvalues_11by11elem.png Graphic file
+ (type png)
+
+<use images/implementation/eigenvalues/eigenvalues_11by11elem.png>
+Package pdftex.def Info: images/implementation/eigenvalues/eigenvalues_11by11el
+em.png used on input line 440.
+(pdftex.def)             Requested size: 224.8039pt x 168.627pt.
+
+<images/implementation/eigenvalues/eigenvalues_24by44elem.png, id=182, 562.0197
+pt x 421.575pt>
+File: images/implementation/eigenvalues/eigenvalues_24by44elem.png Graphic file
+ (type png)
+
+<use images/implementation/eigenvalues/eigenvalues_24by44elem.png>
+Package pdftex.def Info: images/implementation/eigenvalues/eigenvalues_24by44el
+em.png used on input line 441.
+(pdftex.def)             Requested size: 224.8039pt x 168.627pt.
+
+<images/implementation/eigenvalues/some_eigenvalues_logy.png, id=183, 562.0197p
+t x 421.575pt>
+File: images/implementation/eigenvalues/some_eigenvalues_logy.png Graphic file 
+(type png)
+
+<use images/implementation/eigenvalues/some_eigenvalues_logy.png>
+Package pdftex.def Info: images/implementation/eigenvalues/some_eigenvalues_log
+y.png used on input line 449.
+(pdftex.def)             Requested size: 224.8039pt x 168.627pt.
+ [45 <./images/implementation/eigenvalues/eigenvalues_11by11elem.png (PNG copy)
+> <./images/implementation/eigenvalues/eigenvalues_24by44elem.png (PNG copy)>]
+<images/implementation/sol_d0_001_1by20_20by40elem.png, id=187, 562.0197pt x 48
+3.7272pt>
+File: images/implementation/sol_d0_001_1by20_20by40elem.png Graphic file (type 
+png)
+ <use images/implementation/sol_d0_001_1by20_20by40elem.png>
+Package pdftex.def Info: images/implementation/sol_d0_001_1by20_20by40elem.png 
+used on input line 495.
+(pdftex.def)             Requested size: 224.8039pt x 193.48744pt.
+
+<images/implementation/sol_d0_003_1by20_20by40elem.png, id=188, 562.0197pt x 48
+1.8pt>
+File: images/implementation/sol_d0_003_1by20_20by40elem.png Graphic file (type 
+png)
+ <use images/implementation/sol_d0_003_1by20_20by40elem.png>
+Package pdftex.def Info: images/implementation/sol_d0_003_1by20_20by40elem.png 
+used on input line 496.
+(pdftex.def)             Requested size: 224.8039pt x 192.71658pt.
+ [46 <./images/implementation/eigenvalues/some_eigenvalues_logy.png (PNG copy)>
+]
+Underfull \hbox (badness 10000) in paragraph at lines 537--581
+
+ []
+
+[47 <./images/implementation/sol_d0_001_1by20_20by40elem.png (PNG copy)> <./ima
+ges/implementation/sol_d0_003_1by20_20by40elem.png (PNG copy)>]
+<images/implementation/lin_hessian/subsets_on_sol.png, id=196, 562.0197pt x 449
+.7603pt>
+File: images/implementation/lin_hessian/subsets_on_sol.png Graphic file (type p
+ng)
+ <use images/implementation/lin_hessian/subsets_on_sol.png>
+Package pdftex.def Info: images/implementation/lin_hessian/subsets_on_sol.png u
+sed on input line 605.
+(pdftex.def)             Requested size: 224.8039pt x 179.90092pt.
+
+<images/implementation/lin_hessian/res_norm.png, id=197, 562.0197pt x 421.575pt
+>
+File: images/implementation/lin_hessian/res_norm.png Graphic file (type png)
+ <use images/implementation/lin_hessian/res_norm.png>
+Package pdftex.def Info: images/implementation/lin_hessian/res_norm.png used on
+ input line 606.
+(pdftex.def)             Requested size: 224.8039pt x 168.627pt.
+ [48])
+(./chapters/conclusions.tex [49 <./images/implementation/lin_hessian/subsets_on
+_sol.png (PNG copy)> <./images/implementation/lin_hessian/res_norm.png (PNG cop
+y)>]
 Chapter 7.
-) (./chapters/epilogue.tex [42
+) (./chapters/epilogue.tex [50
 
 ]
 Chapter 8.
-) (./draft_1.bbl [43
+) (./chapters/appendix.tex [51
 
-] [44
+]
+Appendix A.
+[52
+
+]
+Overfull \hbox (43.58923pt too wide) detected at line 90
+$[][]$  
+ []
+
+
+Overfull \hbox (6.10196pt too wide) detected at line 96
+$[][]$  
+ []
+
+[53]) (./draft_1.bbl [54]
+Missing character: There is no Ì in font cmr10!
+Missing character: There is no ˆ in font cmr10!
+ [55
 
 ]
 Missing character: There is no Ì in font cmr10!
 Missing character: There is no ˆ in font cmr10!
-Missing character: There is no Ì in font cmr10!
-Missing character: There is no ˆ in font cmr10!
-) [45] (./draft_1.aux)
+) [56] (./draft_1.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 15627 strings out of 494108
- 332733 string characters out of 6155655
- 492409 words of memory out of 5000000
- 18623 multiletter control sequences out of 15000+600000
- 13531 words of font info for 50 fonts, out of 8000000 for 9000
+ 16084 strings out of 494108
+ 341514 string characters out of 6155655
+ 506129 words of memory out of 5000000
+ 19039 multiletter control sequences out of 15000+600000
+ 13933 words of font info for 51 fonts, out of 8000000 for 9000
  430 hyphenation exceptions out of 8191
- 55i,16n,76p,2504b,724s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 55i,16n,76p,2494b,765s stack positions out of 5000i,500n,10000p,200000b,80000s
 </opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx10.pfb></o
 pt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb></opt/lo
 cal/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/local/s
@@ -837,17 +1045,17 @@ texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi6.pfb></opt/local/share/texmf-
 texlive/fonts/type1/public/amsfonts/cm/cmmi8.pfb></opt/local/share/texmf-texliv
 e/fonts/type1/public/amsfonts/cm/cmr10.pfb></opt/local/share/texmf-texlive/font
 s/type1/public/amsfonts/cm/cmr12.pfb></opt/local/share/texmf-texlive/fonts/type
-1/public/amsfonts/cm/cmr17.pfb></opt/local/share/texmf-texlive/fonts/type1/publ
-ic/amsfonts/cm/cmr6.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsf
-onts/cm/cmr8.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm
-/cmsy10.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy
-6.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-</opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti10.pfb></opt
-/local/share/texmf-texlive/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on draft_1.pdf (46 pages, 1834292 bytes).
+1/public/amsfonts/cm/cmr6.pfb></opt/local/share/texmf-texlive/fonts/type1/publi
+c/amsfonts/cm/cmr8.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfo
+nts/cm/cmsy10.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/c
+m/cmsy6.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy
+8.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti10.pfb
+></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/symbols/msbm10.pfb
+>
+Output written on draft_1.pdf (58 pages, 4376631 bytes).
 PDF statistics:
- 230 PDF objects out of 1000 (max. 8388607)
- 156 compressed objects within 2 object streams
+ 277 PDF objects out of 1000 (max. 8388607)
+ 179 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 43 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 108 words of extra memory for PDF output out of 10000 (max. 10000000)
 

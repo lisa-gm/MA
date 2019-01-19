@@ -2,7 +2,7 @@
 
 \begin{document}
 
-\chapter{Mathematical Ingredients}
+\chapter{Discretisation and Solution Methods}
 
 We will begin this chapter by briefly introducing finite element methods and before particularly focusing on least squares finite element methods. The subsequent sections will then give a general overview of space-time solution methods, before going into more detail about the methodology applied in this thesis. Before finally discussing nonlinear iteration schemes. While these concepts or methods are introduced separately here, we will use chapter 4 to tie them together in a \textit{comprehensive} solver.
 
@@ -15,7 +15,7 @@ In order to find a numerical estimate to the solution of a partial differential 
 
 %FEM: do not directly deal with directly deal differential operators but through weak formulations leads to functional approximation as opposed to operator approximation
 
-\subsection{General Setting}
+\subsection{Variational Formulation}
 
 The foundation of every finite element formulation is finding an appropriate weak formulation which includes the choice of suitable trial and solution spaces. This is especially applicable in the case of a least squares approach and will be discussed in further detail in section [...]. 
 
@@ -40,7 +40,7 @@ So let us assume for now that we have found a suitable weak formulation of the o
 \bigskip
 \\
 $a(v_1, v_2) = a(v_2, v_1)$ for all  $v_1, v_2 \in V$ (symmetry) \\
-$a(v_1, v_2) \leq \beta ||v_1||_V \cdot ||v_2||_V $, for all $v_1, v_2 \in V$ and $\beta > 0$ (boundedness) \\ $a(v_1, v_1) \geq \alpha ||v_1||_V^2$, for all $v_1 \in V$ and $\alpha > 0$ (coercivity)
+$a(v_1, v_2) \leq \beta \|v_1\|_V \cdot \|v_2\|_V $, for all $v_1, v_2 \in V$ and $\beta > 0$ (boundedness) \\ $a(v_1, v_1) \geq \alpha \|v_1\|_V^2$, for all $v_1 \in V$ and $\alpha > 0$ (coercivity)
 \bigskip
 \\
 and $f \in V^*$, the dual space of $V$. Furthermore let us have homogeneous Dirichlet boundary conditions, that is $u = v = 0$ on $\partial \Omega$. Then by \textit{Riesz representation theorem/Lax-Milgram} we obtain that there exists a unique solution $u \in V$ that solves (2.2). And additionally the existence of an operator $\tilde{\mathcal{A}} : V \rightarrow V^*$ given by
@@ -63,7 +63,7 @@ The variational formulation is therefore equivalent to the problem
 \end{ceqn}
 In the special case that $X = U$ and $Y = W^*$ we have that $ \mathcal{A} = \tilde{\mathcal{A}}$ and $ f = \tilde{f}$ but this is generally not the case. 
 
-\subsection{Discretisation}
+\subsection{Galerkin Approach}
 A key element to actually finding a good approximation $u^h$ of $u$ is to choose a suitable finite dimensional (sub)space $V_h$ where we search for the solution. We will consider a \textit{Galerkin approach}, where we indeed have $V_h \subset V$, which itself is again a Hilbert space and therefore the projected finite dimensional problem called Galerkin equation looks as follows
 \begin{ceqn}
 \begin{equation}
@@ -76,26 +76,26 @@ and has a unique solution itself. Since (2.2) holds for all $v \in V$ it also ho
 \begin{ceqn}
 \begin{equation}
 \begin{aligned}
-|| u - u_h ||_a^2 =& \ a(u-u_h, u-u_h) = a(u-u_h, u) + a(u-u_h, v_h) \\
-\leq& \ ||u - u_h ||_a \cdot || u - v_h ||_a \quad \forall v_h \in V_h.
+\| u - u_h \|_a^2 =& \ a(u-u_h, u-u_h) = a(u-u_h, u) + a(u-u_h, v_h) \\
+\leq& \ \|u - u_h \|_a \cdot \| u - v_h \|_a \quad \forall v_h \in V_h.
 \end{aligned}
 \end{equation}
 \end{ceqn}
-We derive the third term from the second by using the Galerkin orthogonality. If we now divide both sides by $|| u - u_h||_a$, we obtain that $|| u - u_h ||_a \leq || u -v_h||_a$ for all $v_h \in V_h$. We also have an estimate on $u - u_h$ in terms of the  norm $|| \cdot ||_V$. Using the coercivity constant $\alpha$ and the bound from above $\beta$, we see that
+We derive the third term from the second by using the Galerkin orthogonality. If we now divide both sides by $\| u - u_h\|_a$, we obtain that $\| u - u_h \|_a \leq \| u -v_h\|_a$ for all $v_h \in V_h$. We also have an estimate on $u - u_h$ in terms of the  norm $\| \cdot \|_V$. Using the coercivity constant $\alpha$ and the bound from above $\beta$, we see that
 \begin{ceqn}
 \begin{equation}
 \begin{aligned}
-\alpha || u - u_h ||_V^2 \leq& \ a(u-u_h, u-u_h) = a(u-u_h, u- u_h) = a(u-u_h, u +v_h - v_h - u_h ) \\
+\alpha \| u - u_h \|_V^2 \leq& \ a(u-u_h, u-u_h) = a(u-u_h, u- u_h) = a(u-u_h, u +v_h - v_h - u_h ) \\
 =& \ a(u-u_h, u - v_h) + a(u - u_h, v_h - u_h) = a(u-u_h, u - v_h) \\
-\leq& \ \beta || u - u_h ||_V \cdot || u - v_h||_V  \quad \forall v_h \in V_h.
+\leq& \ \beta \| u - u_h \|_V \cdot \| u - v_h\|_V  \quad \forall v_h \in V_h.
 \end{aligned}
 \end{equation}
 \end{ceqn}
-Dividing by $\alpha || u - u_h || $ we have shown \textit{C\'{e}a's lemma}, which states that (accuracy ... constant thing):
+Dividing by $\alpha \| u - u_h \| $ we have shown \textit{C\'{e}a's lemma}, which states that (accuracy ... constant thing):
 \begin{ceqn}
 \begin{equation}
 \begin{aligned}
-|| u - u_h ||_V \leq \inf_{v_h \in V_h} \frac{\beta}{\alpha} || u - v_h ||_V, \quad u \in V, u_h \in V_h
+\| u - u_h \|_V \leq \inf_{v_h \in V_h} \frac{\beta}{\alpha} \| u - v_h \|_V, \quad u \in V, u_h \in V_h
 \end{aligned}
 \end{equation}
 \end{ceqn}
@@ -106,11 +106,11 @@ If we assume that we have a discretisation $\Omega_h$ of our domain $\Omega$, wh
 \begin{ceqn}
 \begin{equation}
 \begin{aligned}
-\forall v \in V : \quad \inf_{v_h \in V_h} || v - v_h||_V \rightarrow 0 \ \text{as } h \rightarrow 0.
+\forall v \in V : \quad \inf_{v_h \in V_h} \| v - v_h\|_V \rightarrow 0 \ \text{as } h \rightarrow 0.
 \end{aligned}
 \end{equation}
 \end{ceqn}
-That is with a mesh size tending to zero there exist increasingly precise approximations for every $v \in V$, whose infimum tends to zero as the mesh size does. But then we can also conclude by  the beforementioned properties (3.24) and (3.25) that $|| u - u_h||_V \rightarrow 0 \text{ as } h \rightarrow 0$. Hence our approximate solution $u_h$ will converge to the weak solution $u$. 
+That is with a mesh size tending to zero there exist increasingly precise approximations for every $v \in V$, whose infimum tends to zero as the mesh size does. But then we can also conclude by  the beforementioned properties (3.24) and (3.25) that $\| u - u_h\|_V \rightarrow 0 \text{ as } h \rightarrow 0$. Hence our approximate solution $u_h$ will converge to the weak solution $u$. 
 
 \subsection{Matrix Formulation}
 After establishing these theoretical properties our aim is now to construct a linear system of equations that can be solved efficiently. Since $V_h$ is a finite dimensional Hilbertspace, it has a countable basis $\{\phi_1, \phi_2, ..., \phi_n \}$ and we can write every element in $V_h$ as a linear combination of such, that is we also have $u_h = \sum_{j=1}^{n} u_j \phi_j$, where $u_1, ..., u_n$ are constant coefficients. Writing (3.21) in terms of the basis we obtain by linearity
@@ -135,9 +135,9 @@ In this section which is based on (\cite{bochev2009least}, mainly ch. 2.1) we wo
 	\item conforming finite element spaces are sufficient to guarantee stability and optimal accuracy of the approximate solutions
 	\item all variables can be approximated using the same finite element space, e.g. the space of degree $n$ piecewise polynomials on a particular grid
 	\item the arising linear systems are 
-	\subitem (i) sparse
-	\subitem (ii) symmetric
-	\subitem (iii) positive definite
+	\subitem \textit{(i)}  \ \ sparse
+	\subitem \textit{(ii)}  \ symmetric
+	\subitem \textit{(iii)} positive definite
 \end{enumerate}
 
 Hence finite element methods originally emerged in the environment of an optimisation setting but have since then been extended to much broader classes of problems that are not necessarily associated to a minimisation problem anymore and generally lose the desirable features of the Rayleigh-Ritz setting except for 1 and 4 (iii). Least squares finite element methods can be seen as a new attempt to re-establishing as many advantageous aspects of the Rayleigh-Ritz setting as possible, if not all, for more general classes of problems. In the following section we will have a look at a classical straightforward Rayleigh-Ritz setting to familiarise ourselves with the set up before extending it to the more complicated class of problems introduced in [...]. 
@@ -146,7 +146,7 @@ Hence finite element methods originally emerged in the environment of an optimis
 We will consider a similar set up as in the finite element section (3.3.1) but with $X$ and $Y$ being Hilbert spaces, $f \in Y$ and a bounded, coercive linear operator $\mathcal{A}: X \rightarrow Y$, that is for some  $\alpha, \beta > 0$:
 \begin{ceqn}
 \begin{align}
-\quad \alpha || u ||_X^2 \leq || \mathcal{A} u ||_Y^2 \leq \beta || u ||_X^2 \quad \forall u \in Y.
+\quad \alpha \| u \|_X^2 \leq \| \mathcal{A} u \|_Y^2 \leq \beta \| u \|_X^2 \quad \forall u \in Y.
 \end{align} 
 \end{ceqn}
 We consider the problem and the least squares functional:
@@ -156,7 +156,7 @@ We consider the problem and the least squares functional:
 \end{align}
 
 \begin{align}
-J(u; f) = || \mathcal{A} u - f ||_Y^2
+J(u; f) = \| \mathcal{A} u - f \|_Y^2
 \end{align}
 \end{ceqn}
 which poses the minimisation problem:
@@ -168,7 +168,7 @@ which poses the minimisation problem:
 where we can see that the least squares functional (3.21) measures the residual of (3.20) in the norm of $Y$ while seeking in for a solution in the space $X$. It follows that if a solution of the the problem (3.20) exists it will also be a solution of the minimisation problem. And a solution of the minimisation problem due to the definition of a norm will be a solution to (3.20) if the minimum is zero. If we consider $f = 0$, and using (3.19) we obtain that 
 \begin{ceqn}
 	\begin{align}
-	\quad \alpha^2 || u ||_X^2 \leq J(u; 0)  ||_Y^2 \leq \beta^2 || v ||_X^2 \quad \forall u \in X
+	\quad \alpha^2 \| u \|_X^2 \leq J(u; 0)  \|_Y^2 \leq \beta^2 \| v \|_X^2 \quad \forall u \in X
 	\end{align} 
 \end{ceqn}
 a property of $J(\cdot, \cdot)$ which we will call norm equivalence, which is an important property when defining least squares functionals. We can derive a candidate for a variational formulation of the following form 
@@ -199,14 +199,14 @@ which is due to the fact that $X^h$ is again a Hilbert space and therefore the s
 The following theorem establishes that this problem formulation actually gives rise to finite element set up. 
 
 \begin{Theorem}
-	Let $\alpha || u ||_X^2 \leq || \mathcal{A} u ||_Y^2 \leq \beta || u ||_X^2$ for all $u \in X$ hold, under the same assumptions as established in this section and let $X^h \subset X$. Then, 
+	Let $\alpha \| u \|_X^2 \leq \| \mathcal{A} u \|_Y^2 \leq \beta \| u \|_X^2$ for all $u \in X$ hold, under the same assumptions as established in this section and let $X^h \subset X$. Then, 
 	\begin{itemize}
 		\item[(i)] the bilinear form $a(\cdot, \cdot)$ defined in (3.21) is continuous, symmetric and coercive
 		\item[(ii)] the linear functional $L_f(\cdot)$ defined in (3.21) is continuous
 		\item[(iii)] the variational formulation (3.21) is of the form (3.9) and has a unique solution $u \in X$ which is also the unique solution of the minimisation problem (3.19)
 		\item[(iv)] there exists a constant $c > 0$, such that $u$ and $u_h$ satisfy 
 		\begin{align}
-		|| u - u^h ||_X \leq c \inf_{v^h \in X^h} || u - v^h||_X
+		\| u - u^h \|_X \leq c \inf_{v^h \in X^h} \| u - v^h\|_X
 		\end{align}
 	    \item[(v)]	the matrix $A^h$ is symmetric positive definite	
 	\end{itemize}
@@ -217,7 +217,7 @@ The following theorem establishes that this problem formulation actually gives r
 \\
 We therefore obtain that this least squares problem formulation has all the advantageous featurs of the Raleigh-Ritz setting without requiring $\mathcal{A}$ to be self-adjoint or symmetric which was our initial goal. However it is worth noting that the differential operator $\tilde{\mathcal{A}} = \mathcal{A}^* \mathcal{A}$ is of higher order than the one in the original formulation, which therefore requires higher regularity assumptions which might be unpreferrable as well as impractical. Potential ways to overcome this problem will be discussed in the following section as it is also an issue that arises in the problem formulation of the subsequent chapter.
 
-\section{Space-Time Solution Methods}
+\section{Space-Time Approaches}
 
 Most solution methods for partial differential equations  do not use the time direction for parallelisation. But with increasingly complex models, especially when many small steps in time are required and the rise of massively parallel computers, the idea of a parallelisation of the time axis has experienced a growing interest. Once parallelisation in space saturates it only seems natural to consider this remaining axis for parallelisation, after all, time is just another dimension \cite{gander201550}. However evolution over time behaves differently from the spatial dimensions, in the sense that it follows the causality principle. It means that the solution at later times is determined through earlier times whereas the opposite does not hold. This is not the case in the spatial domain. 
 \smallskip
@@ -350,7 +350,7 @@ The discretisation of the domain which will also be referred to in the following
 
 where one has $n+1$ points in space and $m+1$ points in time. The tuples $(x_k, t_l)$ are then organized in the following manner, the $i$-th entry references $i = (n+1) \cdot l + k$. That is we first label all elements of a certain time step before moving on to the next time step which will then be assembled into one overall system. Details of how this is done will follow in the implementation section. %For simplicity we will only consider equidistant grids in each direction, where $h_t$ denotes the size (better word?) of a mesh cell in time direction and $h_{x_i}$ denote the size in the respective space dimension.
 
-\section{Iterative Methods for Nonlinear Systems}
+\section{Iterative Methods for Nonlinear Systems and Minimisation Problems}
 
 Our original problem (1.1) is as mentioned before potentially nonlinear, but so far we have only been discussing ways of how to discretise linear problems. Let us therefore now undertake a short excursion of how to solve non-linear problems, which in each iteration step will include solving linearisations that are of the beforementioned type. We assume that we can write the nonlinear problem in the subsequent form and are therefore interested in solving questions of the following type 
 
@@ -369,7 +369,7 @@ The method of gradient descent is a computationally inexpensive iterative optimi
 	s_{k+1} = s_k + \alpha_k (- \nabla J(s_k))
 	\end{align}
 \end{ceqn}
-If the scaling parameter $\alpha_k > 0 $ is chosen sufficiently small, we know that $J(s_{k-1}) \geq J(s_{k})  \geq J(s_{k+1})$. If $ || \nabla J(s_k) || = 0$ we have found a local minimum and hence $s_{k+1} = s_k$. There are a number of strategies that try to select a suitable value for $\alpha_k$, one of them is for example a line search algorithm using the Wolfe conditions \cite{NoceWrig99}.
+If the scaling parameter $\alpha_k > 0 $ is chosen sufficiently small, we know that $J(s_{k-1}) \geq J(s_{k})  \geq J(s_{k+1})$. If $ \| \nabla J(s_k) \| = 0$ we have found a local minimum and hence $s_{k+1} = s_k$. There are a number of strategies that try to select a suitable value for $\alpha_k$, one of them is for example a line search algorithm using the Wolfe conditions \cite{NoceWrig99}.
 \smallskip
 \\
 Under the assumption that $J \in C^1(\Omega)$, bounded and convex and particular choices for the $\alpha_k$, e.g. using an above mentioned line search, the method is guaranteed to converge to a local minimum which is due to the convexity of $J$ the unique global minimiser. However the speed of convergence is dependent on the condition number of the linearised hessian, and can therefore be extremely low if the condition number is high, even when performing an exact line search in every step. Consequently for inexact line search algorithms we cannot expect better convergence rates, and sometimes even have poor convergence rates for relatively well-conditioned problems \cite{NoceWrig99}. Gradient Descent represents a first-order Taylor approximation of $J$ in $s_k$ and gives an updated solution based on this local linear model. A more sophisticated approach than this is for example Newton's method which uses a second order Taylor approximation. 
@@ -379,7 +379,7 @@ It is one of the most well-known and most commonly used methods to solve non-lin
 \begin{ceqn}
 \begin{equation}
 \begin{aligned}
-\nabla J(s_0 + h) = \nabla J(s_0) + \nabla^2 J(s_0) \cdot h + o(||h||^2), \quad s_0 \in \Omega.
+\nabla J(s_0 + h) = \nabla J(s_0) + \nabla^2 J(s_0) \cdot h + o(\|h\|^2), \quad s_0 \in \Omega.
 \end{aligned}
 \end{equation}
 \end{ceqn}
@@ -403,7 +403,7 @@ Hence, a quadratic approximation to find a minimiser only makes sense for a loca
 Trust region methods is a generic term that comprises globalisation strategies to approximate minima of potentially non-convex optimisation problems. The objective function $J$ is approximated using a model function in a subset of the domain, the so-called trust region. If the model function seems to be a good local fit to the function, the size of the region is expanded, if it is not, the size of the region is reduced. The fit of the model is assessed by comparing the ratio $\rho_k$ of the expected reduction of the objective function by the model and the actual reduction of the function. 
 \smallskip
 \\
-A typical iteration step $k$ can be described in the following way. We have a current trust region that is usually defined as a spherical area of radius $\Delta_k$ and a model function $m_k(p)$ that is supposed to locally approximate $J$ and where $p$ describes the update to the current solution, that is the new step to be taken. We therefore want to solve for $p$, hence we minimise over $p$ within the trust region radius to obtain a solution $p_k$ and can thus determine $\rho_k$, the ratio of the expected compared to the actual reduction. Depending on its value and the parameter thresholding we either reduce $\Delta_k$ if the approximation does not seem like a good fit, and then solve $m_k$ again for $p$ with a smaller $\Delta_{k+1}$. Otherwise we either enlarge it, if $|| p_k || = \Delta_k$, i.e. it is maximal or else leave it the same. If $\rho_k$ is not too small we compute the new solution $s_{k+1} = s_k + p_k$. 
+A typical iteration step $k$ can be described in the following way. We have a current trust region that is usually defined as a spherical area of radius $\Delta_k$ and a model function $m_k(p)$ that is supposed to locally approximate $J$ and where $p$ describes the update to the current solution, that is the new step to be taken. We therefore want to solve for $p$, hence we minimise over $p$ within the trust region radius to obtain a solution $p_k$ and can thus determine $\rho_k$, the ratio of the expected compared to the actual reduction. Depending on its value and the parameter thresholding we either reduce $\Delta_k$ if the approximation does not seem like a good fit, and then solve $m_k$ again for $p$ with a smaller $\Delta_{k+1}$. Otherwise we either enlarge it, if $\| p_k \| = \Delta_k$, i.e. it is maximal or else leave it the same. If $\rho_k$ is not too small we compute the new solution $s_{k+1} = s_k + p_k$. 
 \smallskip
 \\
 There are many options what to choose as a model function. Among the simplest approaches is the Cauchy point calculation that stems from gradient descent, other popular ones include steihaug's method or the so-called dogleg method \cite{NoceWrig99}. The former uses a conjugate gradient method for a quadratic model function and the later includes a mixture of using information of the first and second derivative of $J$, which is what we used and which will be explained in more detail in the chapter on the implementation [see 6.6.3].

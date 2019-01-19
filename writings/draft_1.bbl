@@ -99,6 +99,15 @@ W.~L. Briggs, S.~F. McCormick, {\em et~al.}, {\em A multigrid tutorial},
   vol.~72.
 \newblock Siam, 2000.
 
+\bibitem{conway2013course}
+J.~B. Conway, {\em A course in functional analysis}, vol.~96.
+\newblock Springer Science \& Business Media, 2013.
+
+\bibitem{tartar2007introduction}
+L.~Tartar, {\em An introduction to Sobolev spaces and interpolation spaces},
+  vol.~3.
+\newblock Springer Science \& Business Media, 2007.
+
 \bibitem{cai1994first}
 Z.~Cai, R.~Lazarov, T.~A. Manteuffel, and S.~F. McCormick, ``First-order system
   least squares for second-order partial differential equations: Part i,'' {\em
@@ -112,5 +121,10 @@ W.~Hackbusch, {\em Multi-grid methods and applications}, vol.~4.
 M.~F. Adams, ``A distributed memory unstructured gauss-seidel algorithm for
   multigrid smoothers,'' in {\em Proceedings of the 2001 ACM/IEEE conference on
   Supercomputing}, pp.~4--4, ACM, 2001.
+
+\bibitem{deuflhard2011adaptive}
+P.~Deuflhard and M.~Weiser, {\em Adaptive L{\"o}sung partieller
+  Differentialgleichungen}.
+\newblock Walter de Gruyter, 2011.
 
 \end{thebibliography}

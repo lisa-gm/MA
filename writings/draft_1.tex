@@ -1,4 +1,4 @@
-\documentclass[fleqn, a4paper, 11pt, bibliography=totoc]{report}
+\documentclass[fleqn, a4paper, 11pt,twoside, bibliography=totoc]{report}
 \usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
 \usepackage{lipsum} %This package just generates Lorem Ipsum filler text. 
 \usepackage{fullpage} % changes the margin
@@ -10,19 +10,55 @@
 \usepackage{tikz}
 \usetikzlibrary{shapes,snakes}
 
+\usepackage[section]{placeins}
+
+\usepackage{booktabs}
+
 \usepackage{fancyhdr}
 
 \usepackage{nccmath}
 \usepackage{subfiles}
 
+% per la distanza del titolo da top
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+% this changes the distance from the chapter number to the first chapter title
+{\normalfont\huge\bfseries} {\chaptertitlename\ \thechapter} {20pt}{\huge}
+
+% chapter margins left-space , top-space , bottom-space
+\titlespacing*{\chapter}{0pt}{-10pt}{20pt}
+
+
 
 \setlength\parindent{0pt}
 
+% distance space from header
+\setlength{\headsep}{7pt}
+
+
+% create blank page
+\usepackage{afterpage}
+\newcommand{\blankpage}{%
+	\null
+	\thispagestyle{empty}%
+	\addtocounter{page}{-1}%
+	\newpage
+}
+
 \pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter\ #1}{}}
+%\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+
+%\renewcommand{\cref}{\Cref}
+
+\newcommand{\di}{\mathop{}\!\mathrm{div}}
+
 \fancyhf{}
-\fancyhead[EL, OR]{\thepage}
-\fancyhead[OL]{\nouppercase\rightmark}
-\fancyhead[ER]{\nouppercase\lefttmark}
+%\fancyhead[EL,OR]{\thepage}
+\fancyhead[LE, RO]{\thepage}
+\fancyhead[OL, RE]{\nouppercase\leftmark}
+%\fancyhead[ER]{\leftmark}
+
 
 \begin{document}
 \setlength{\mathindent}{0pt}
@@ -32,14 +68,11 @@
 \title{Adaptive Multigrid Solvers for Space-Time Discretisations} 
 \author{Lisa Gaedke-Merzh\"auser}
 	
-\maketitle 
+\subfile{titlepage}
+\afterpage{\blankpage}
+\subfile{eigenstaendigkeitserklaerung}
 \tableofcontents
-
-
-
-\cleardoublepage
-\pagebreak
-	
+\afterpage{\blankpage}	
 \subfile{chapters/prologue}
 \subfile{chapters/electrophysiology}
 \subfile{chapters/mathematical_ingredients}
@@ -48,7 +81,7 @@
 \subfile{chapters/implementation}
 \subfile{chapters/conclusions}
 \subfile{chapters/epilogue}
-
+\subfile{chapters/appendix}
 
 \bibliographystyle{ieeetr}
 \bibliography{bibfile}

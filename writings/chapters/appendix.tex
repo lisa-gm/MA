@@ -1,0 +1,134 @@
+\documentclass[../draft_1.tex]{subfiles}
+
+\begin{document}
+\appendix
+
+\chapter{Full Computation of the Hessian}
+
+
+For brevity and clarity we split the functional $J$ in three different terms that will be considered separately dividing it into the linear and nonlinear terms which is possible due to the linearity of the inner product. 
+
+\begin{equation}
+\begin{aligned}
+J_1(\sigma, u) &= \frac{1}{2}c_1\langle u_t - div(\sigma), u_t - div(\sigma) \rangle \\
+J_2(\sigma, u) &= \frac{1}{2} c_1 \langle 2 u_t - 2 div(\sigma) - f(u), - f(u) \rangle \\
+J_3(\sigma, u) &= \frac{1}{2} c_2\langle \sigma - D(x) \nabla u, \sigma  - D(x) \nabla u \rangle
+\end{aligned}
+\end{equation}
+We can check that $J(\sigma, u) = J_1(\sigma, u) + J_2(\sigma, u) + J_3(\sigma, u)$. 
+\smallskip
+\\
+Since $u \in H^1(\Omega)$ and $\sigma \in H_{DIV}(\Omega)$ they are not defined pointwise which we have to take into account for the subsequent computations.
+\smallskip
+\\
+\textit{What changes, what doesn't? Weak derivatives.}
+\smallskip
+\\
+The partial directional derivatives of $J_1$ can be determined by once again taking the linearity of the inner product as well as its symmetry into account
+\begin{equation}
+\begin{aligned}
+\frac{\partial J_1}{\partial \sigma} &= \lim_{\epsilon \rightarrow 0} \frac{J_1(\sigma + \epsilon \tau, u) - J_1(\sigma, u)}{\epsilon}  \\ 
+&= \lim_{\epsilon \rightarrow 0} \frac{c_1}{2 \epsilon} (\langle u_t - div(\sigma + \epsilon \tau), u_t - div(\sigma + \epsilon \tau) \rangle - \langle u_t - div(\sigma), u_t - div(\sigma) \rangle) \\
+&=  \lim_{\epsilon \rightarrow 0} \frac{c_1}{2 \epsilon} (\langle u_t, u_t \rangle - \langle u_t, div(\sigma) \rangle - \epsilon \langle u_t, div(\tau) \rangle - \langle div(\sigma), u_t \rangle + \langle div(\sigma), div(\sigma) \rangle \\ &+ \epsilon \langle div(\sigma), div(\tau) \rangle - \epsilon \langle div(\tau), u_t \rangle + \epsilon \langle div(\tau), div(\sigma) \rangle + \epsilon^2 \langle div(\tau), div(\tau) \rangle \\
+& - \langle u_t, u_t \rangle + \langle u_t, div(\sigma) \rangle + \langle div(\sigma), u_t \rangle - \langle div(\sigma), div(\sigma) \rangle) \\
+&= \lim_{\epsilon \rightarrow 0} \frac{c_1}{2 \epsilon} (- 2 \epsilon \langle u_t, div(\tau) \rangle + 2 \epsilon \langle div(\sigma), div(\tau) \rangle + \epsilon^2 \langle div(\tau), div(\tau) \rangle )
+\\
+\\
+&= - c_1 \langle u_t, div(\tau) \rangle + c_1 \langle div(\sigma), div(\tau) \rangle
+\end{aligned}
+\end{equation}
+%We can see that the terms only containing $\sigma$ or $u$ cancel. We end up with a number of mixed terms as well as the terms containing purely $\tau$ and $v$. Due to the factor of $\frac{1}{2}$ in front of the inner products in $J$ and the symmetry of the inner product, the mixed terms add up 1 or $-1$ respectively. Again because of the bilinearity of the inner product we can write $\epsilon$ in front of the individual terms, often they will cancel with the factor of $\frac{1}{\epsilon}$ in front. If we now take the limit with respect to $\epsilon$ going to zero all terms with an $\epsilon$ in both arguments will tend to zero which gives us the remaining result. 
+
+By proceeding analogously for equation $J_2$ and $J_3$ we obtain in these cases: 
+
+\begin{align}
+\frac{\partial J_2}{\partial \sigma} &= c_1 \langle div(\tau), f(u) \rangle \\
+\frac{\partial J_3}{\partial \sigma} &= c_2 \langle \sigma, \tau \rangle - c_2 \beta \langle \tau, \nabla u \rangle
+\end{align}
+
+
+Let us now turn to the partial derivatives with respect to $u$. Here we obtain the following for $J_1$ and $J_3$:
+
+\begin{equation}
+\begin{aligned}
+\frac{\partial J_1}{\partial u} &=   \lim_{\epsilon \rightarrow 0} \frac{J_1(\sigma, u + \epsilon v) - J_1(\sigma, u)}{\epsilon}  \\
+&= \lim_{\epsilon \rightarrow 0} \frac{c_1}{2 \epsilon} (\langle (u + \epsilon v)_t - div(\sigma), (u + \epsilon v)_t - div(\sigma) \rangle - \langle u_t - div(\sigma), u_t - div(\sigma) \rangle) \\
+&= c_1 \langle u_t, v_t \rangle - c_1 \langle v_t, div(\sigma) \rangle \\
+\\
+\frac{\partial J_3}{\partial u} &= - c_2 \langle \sigma, D(x) \nabla v \rangle + c_2 \langle D(x) \nabla u, D(x) \nabla v \rangle
+\end{aligned}
+\end{equation}
+\textit{Repeat assumptions on D(x). But can leave it where it is for now?} 
+\smallskip 
+\\
+In the case of $J_2$, we have to take the non-linearity of $f$ into account. If we assume that $f$ sufficiently smooth (what do we need exactly?!) that is 
+\begin{align}  
+\lim_{\epsilon \rightarrow 0} f(u + \epsilon v) &= f(u) \text{ and } \\
+\lim_{\epsilon \rightarrow 0} \langle f(u+ \epsilon v), f(u + \epsilon v) \rangle - \langle f(u), f(u) \rangle &= \langle f'(u) \cdot v, f(u) \rangle + \langle f(u), f'(u) \cdot v \rangle
+\end{align} 
+which can be added due to symmetry.
+
+\begin{equation}
+\begin{aligned}
+\frac{\partial J_2}{\partial u} &= \lim_{\epsilon \rightarrow 0} \frac{J_2(\sigma, u + \epsilon v) - J_2(\sigma, u)}{\epsilon}  \\
+&= \lim_{\epsilon \rightarrow 0} \frac{c_1}{2 \epsilon} (\langle 2(u+ \epsilon v)_t - 2 div(\sigma) - f(u + \epsilon v), - f(u + \epsilon v) \rangle - \langle 2u_t - 2 div(\sigma) - f(u), -f(u) \rangle) \\
+&= \lim_{\epsilon \rightarrow 0} \frac{c_1}{2 \epsilon}  (-2 \langle u_t, f(u+ \epsilon v) \rangle + 2 \langle u_t, f(u) \rangle \\
+& - 2 \epsilon \langle v_t, f(u+ \epsilon v) \rangle \\
+&+ 2 \langle div(\sigma), f(u + \epsilon v \rangle - 2 \langle div(\sigma), f(u) \rangle \\
+&+ \langle f(u+ \epsilon v), f(u + \epsilon v) \rangle - \langle f(u), f(u) \rangle) \\
+\\
+&= - c_1 \langle u_t, f'(u) \cdot v \rangle - c_1 \langle v_t, f(u) \rangle + c_1 \langle div(\sigma), f'(u) \cdot v \rangle + c_1 \langle f(u), f'(u) \cdot v \rangle
+\end{aligned}
+\end{equation}
+
+Hence we obtain the following partial first order directional derivatives. 
+
+\begin{equation}
+\begin{aligned}
+J_{\sigma}[\tau] = \frac{\partial}{\partial \sigma}J(\sigma, u)[\tau] =& c_2 \langle \sigma, \tau \rangle + c_1 \langle div(\sigma), div(\tau) \rangle - c_2 \langle D(x) \nabla u, \tau \rangle - c_1 \langle u_t, div(\tau) \rangle - c_1 \langle f(u), div(\tau) \rangle
+\end{aligned}
+\end{equation}
+\begin{equation}
+\begin{aligned}
+J_{u} [v]= \frac{\partial}{\partial u} J(\sigma, u)[v] =&  c_1 \langle u_t, v_t \rangle - c_1 \langle v_t, div(\sigma) \rangle - c_2 \langle \sigma, D(x) \nabla v \rangle + c_2 \langle D(x) \nabla u, D(x) \nabla v \rangle  \\  
+&- c_1 \langle u_t, f'(u) \cdot v \rangle  - c_1 \langle v_t, f(u) \rangle  - c_1 \langle div(\sigma), f'(u) \cdot v \rangle + c_1 \langle f(u), f'(u) \cdot v \rangle 
+\end{aligned}
+\end{equation}
+Following the same principles one can determine the second order partial derivatives whose derivation will only be briefly outlined here for the most difficult terms which are those including $f$.  
+
+\begin{equation}
+\begin{aligned}
+\frac{\partial^2}{\partial \sigma^2} J [\tau] [\rho] =& c_2 \langle \rho, \tau \rangle + c_1 \langle div(\rho), div(\tau) \rangle  \\
+\end{aligned}
+\end{equation}
+\begin{equation}
+\begin{aligned}
+\frac{\partial^2}{\partial \sigma \partial u} [v][\tau] = \frac{\partial^2 }{\partial u \partial \sigma} [\tau] [v]=& - \langle \tau, \nabla v \rangle - \langle v_t, div(\tau) \rangle - \langle div(\tau), f'(u) v \rangle \\
+\end{aligned}
+\end{equation}
+
+\begin{equation}
+\begin{aligned}
+\frac{\partial^2 J}{\partial u^2} [v][w]&= \lim_{\epsilon \rightarrow 0} \frac{1}{\epsilon} (J_u(\sigma, u+ \epsilon w)[v] - J_u(\sigma, u)[v]) \\
+&= \lim_{\epsilon \rightarrow 0} \frac{1}{\epsilon} ( c_1 \langle (u + \epsilon w)_t, v_t \rangle + c_2 \langle \nabla (u + \epsilon w), \nabla v \rangle - c_1 \langle (u + \epsilon w)_t, f'(u + \epsilon w) \cdot v \rangle \\
+&- c_1 \langle v_t, f(u + \epsilon w) \rangle - c_1 \langle div(\sigma), f'(u + \epsilon w) \cdot v \rangle + c_1 \langle f(u + \epsilon w), f'(u + \epsilon w) \cdot v \rangle  \\
+&- J_u(\sigma, u)[v]) \\
+&= c_1 \langle w_t, v_t \rangle + c_2 \langle \nabla w, \nabla v \rangle \\
+&+ \lim_{\epsilon \rightarrow 0} \frac{1}{\epsilon}  (c_1 \langle u_t, f'(u+ \epsilon w) \cdot v \rangle - c_1  \langle u_t, f'(u) \cdot v \rangle \\
+&- \epsilon \cdot c_1 \langle w_t,  f'(u + \epsilon w) \cdot v \rangle \\
+&- c_1 \langle v_t, f(u + \epsilon w) \rangle + c_1 \langle v_t, f(u) \rangle \\
+& - c_1 \langle div(\sigma), f'(u + \epsilon w) \cdot v \rangle +  c_1 \langle div(\sigma), f'(u) \cdot v \rangle \\
+& +  c_1 \langle f(u + \epsilon w), f'(u + \epsilon w) \cdot v \rangle - c_1 \langle f(u), f'(u) \cdot v \rangle) \\
+\\
+\frac{\partial^2 J}{\partial u^2} [v][w] &= c_1 \langle w_t, v_t \rangle + c_2 \langle \nabla w, \nabla v \rangle + c_1 \langle u_t, w^T f''(u) v \rangle - c_1 \langle w_t, f'(u) \cdot v \rangle - c_1 \langle v_t, f'(u) \cdot w \rangle \\
+& - c_1 \langle div(\sigma), w^T f''(u) v \rangle + c_1 \langle f(u), w^T f''(u) v \rangle + \langle f'(u) \cdot w, f'(u) \cdot v \rangle 
+\end{aligned}
+\end{equation}
+
+\textit{Yet some more on weak derivatives etc.}
+
+Thus we have now computed the necessary terms needed for the gradient as well as the Hessian of $J$. So let us now construct the nonlinear iteration scheme in order to minimse $J$. 
+
+
+
+\end{document}

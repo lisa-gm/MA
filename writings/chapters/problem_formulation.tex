@@ -16,7 +16,7 @@ where $\mathcal{T} $ represents the time domain and $ \mathcal{S}$ the domain in
 \begin{align}
 \begin{aligned}
 \label{strong_form}
-\partial_t u - div (D(x) \nabla u) &= f(u) \qquad \  \text{ in } \Omega \\
+\partial_t u - \di (D(x) \nabla u) &= f(u) \qquad \  \text{ in } \Omega \\
 u &= g_D \quad \qquad \text{ on } \Gamma_D \\
 \nabla u \cdot n &= g_N \quad \qquad \text{ on } \Gamma_N
 \end{aligned}
@@ -26,7 +26,7 @@ It describes a parabolic partial differential equation with a potentially nonlin
 \begin{ceqn}
 	\begin{align*}
 \begin{aligned}
-div(\sigma) = \frac{\partial \sigma}{\partial x_1} + ... + \frac{\partial \sigma}{\partial x_N} \text{  for } \sigma = \sigma(x,t) \text{ and } \nabla u = [\frac{\partial u}{\partial x_1}, ..., \frac{\partial u}{\partial x_N} ]^T \text{  for } u = u(x,t). 
+\di(\sigma) = \frac{\partial \sigma}{\partial x_1} + ... + \frac{\partial \sigma}{\partial x_N} \text{  for } \sigma = \sigma(x,t) \text{ and } \nabla u = [\frac{\partial u}{\partial x_1}, ..., \frac{\partial u}{\partial x_N} ]^T \text{  for } u = u(x,t). 
 \end{aligned}
 \end{align*}
 \end{ceqn}
@@ -39,7 +39,7 @@ The next step will be to derive an equivalent optimisation problem whose solutio
 	\begin{equation}
 	\begin{aligned}
 	\label{mixed_form}
-	 \partial_t u - div(\sigma) \ =& \ f(u) \qquad \qquad \text{ in } \Omega \\
+	 \partial_t u - \di(\sigma) \ =& \ f(u) \qquad \qquad \text{ in } \Omega \\
 	\sigma \ =& \ D(x)  \nabla u \ \qquad \text{ in } \Omega  \\
 	u \ =& \ g_D  \ \ \qquad  \qquad \text{ on } \Gamma_D \\
 	\nabla u \cdot n \ =& \ g_N  \ \ \qquad \qquad \text{ on } \Gamma_N.
@@ -51,7 +51,7 @@ Rearranging this equation into a vector form we obtain in $\Omega$
 	\begin{equation}
 	\begin{pmatrix}
 	I & - D(x) \nabla \\
-	- div & \frac{\partial}{\partial t} 
+	- \di & \frac{\partial}{\partial t} 
 	\end{pmatrix}
 	\begin{pmatrix}
 	\sigma \\
@@ -66,34 +66,35 @@ Rearranging this equation into a vector form we obtain in $\Omega$
 which we will refer to as the mixed strong form of our problem and can be shortened to $\mathcal{A} ([\sigma, u]) = \tilde{f}(u)$, where $\mathcal{A}$ denotes the differential operator and $\tilde{f}(u)$ the right hand side. 
 \smallskip
 \\
-\textbf{Remark.} It is not clear yet in which space we will be looking for a solution. In general when working with strong and weak formulations there is a a number of function spaces involved, problem formulations that are similar but not the same and it is difficult to represent them in clear but short notation. This can easily lead to some confusion. In the current case the situation is even more complicated since we are trying to derive a weak formulation in a least squares setting, while additionally there obviously exist the regular or so-called primal weak formulations of (\ref{strong_form}) or (\ref{mixed_form}). Therefore we will first derive a least squares functional $J$ with a corresponding variational formulation, postponing the definition of appropriate spaces for now but simply assuming them to already be well-defined, and later on show that they indeed exist.
+\textbf{Remark.} It is not clear yet in which space we will be looking for a solution. In general when working with strong and weak formulations there is a a number of function spaces involved, problem formulations that are similar but not the same and it is difficult to represent them in clear but short notation. This can easily lead to some confusion. In the current case the situation is even more complicated since we are trying to derive a weak formulation in a least squares setting, while additionally there obviously exist the regular or so-called primal weak formulations of (\ref{strong_form}) or (\ref{mixed_form}). Therefore we will first derive a least squares functional $J$ with a corresponding variational formulation, postponing the definition of appropriate spaces for now, but simply assuming them to already be well-defined, and later on show that they indeed exist.
 \smallskip
 \\
-So instead of looking for a solution of the strong formulation which is far more restrictive, let us now turn to the derivation of an optimisation problem that we would like to satisfy in a weak sense. The properties that we would like to be fulfilled are the following. We want a solution of (4.3) to be a global minimum of the optimisation problem, independently of the choice of the spaces that we are using and its associated norm, hence we additionally want the least squares functional $J$ to be zero for a solution of (4.3). On the other hand if $J(\sigma, u) = 0$ then the orginial problem (4.3) also has to be satisfied if only in a weak sense with respect to the spaces $U$ and $Y$. We can check that all three properties hold for the functional  
+So instead of looking for a solution of the strong formulation which is far more restrictive, let us now turn to the derivation of an optimisation problem that we would like to satisfy in a weak sense. The properties that we would like to be fulfilled are the following; we want a solution of (4.3) to be a global minimum of the optimisation problem, \textit{independently} of the choice of the spaces that we are using and its associated norm, hence we additionally want the least squares functional $J$ to be zero for a solution of (4.3). On the other hand if $J([\sigma, u], f) = 0$ then the orginial problem (4.3) also has to be satisfied if only in a weak sense with respect to the spaces $U$ and $Y$. We can check that all three properties hold for the functional  
 \begin{ceqn}
 \begin{align}
-\tilde{J}(\sigma, u) =|| u_t - div(\sigma) - f(u) ||_Y^2 + || \sigma - D(x) \nabla u || _Y^2
+\tilde{J}(\sigma, u) =\| u_t - \di(\sigma) - f(u) \|_Y^2 + \| \sigma - D(x) \nabla u \| _Y^2
 \end{align}
 \end{ceqn}
-Furthermore it has shown to be practical to be able to weight the two terms with coefficients [source] which does not affect the overall solution but grants us the possibility to numerically give more importance to one term than the other. We also introduce additional scalars of $\frac{1}{2}$ to simplify further computations of the derivatives as we will see in the following section. Therefore the the minimisation problem then reads
+Furthermore it has shown to be practical to be able to weight the two terms with coefficients [source] which does not affect the solution of the continuous problem but grants us the possibility to numerically give more importance to one term than the other, a further exploration of this will be in section 6.3.2. We also introduce additional scalars of $\frac{1}{2}$ to simplify further computations of the derivatives as we will see in the following section. Therefore the problem then reads
 \begin{ceqn}
 	\begin{align}
-	\min_{(\sigma, u) \in U} J(\sigma, u) = \frac{1}{2} c_1 || u_t - div(\sigma) - f(u) ||_Y^2 + \frac{1}{2} c_2 || \sigma - D(x) \nabla u ||_Y^2.
+	\label{functional}
+  \min_{(\sigma, u) \in U} J([\sigma, u], f) = \frac{1}{2} c_1 \| u_t - \di(\sigma) - f(u) \|_Y^2 + \frac{1}{2} c_2 \| \sigma - D(x) \nabla u \|_Y^2.
 	\end{align}
 \end{ceqn}
-$J$ now defines an energy we can minimise over. If we consider the functional for $ f = 0$ we obtain
+$J$ now defines an energy we can minimise. If we consider the functional for $ f = 0$ we obtain
 \begin{ceqn}
 	\begin{align}
-J([\sigma, u], 0) = \frac{1}{2} c_1 \langle u_t - div(\sigma), u_t - div(\sigma)\rangle_Y + \frac{1}{2} c_2 \langle \sigma - D(x) \nabla u, \sigma - D(x) \nabla u \rangle_Y.
+J([\sigma, u], 0) = \frac{1}{2} c_1 \langle u_t - \di(\sigma), u_t - \di(\sigma)\rangle_Y + \frac{1}{2} c_2 \langle \sigma - D(x) \nabla u, \sigma - D(x) \nabla u \rangle_Y.
 	\end{align}
 \end{ceqn}
-which more specifically gives rise to the following bilinear form if we differentiate $J$ with respect to directional derivatives $\tau$ and $v$, and subsequently sum over them [see section 4.5 for the derivation]. 
+which more specifically gives rise to the following bilinear form if we differentiate $J$ with respect to directional derivatives $\tau$ and $v$, and \textit{subsequently sum over them}, see section 4.5, and Appendix A for further derivations. 
 \begin{ceqn}
 	\begin{equation}
 	\begin{aligned}
 	\mathcal{B} ([\sigma, u], [\tau, v]) = \langle \begin{pmatrix} 
 	I & - D \nabla \\
-	-div & \frac{\partial}{\partial t}
+	-\di & \frac{\partial}{\partial t}
 	\end{pmatrix} 
 	\begin{pmatrix}
 	\sigma \\
@@ -101,7 +102,7 @@ which more specifically gives rise to the following bilinear form if we differen
 	\end{pmatrix}, 
 	\begin{pmatrix}
 	I & - D \nabla \\
-	-div & \frac{\partial}{\partial t}
+	-\di & \frac{\partial}{\partial t}
 	\end{pmatrix}
 	\begin{pmatrix}
 	\tau \\
@@ -110,86 +111,89 @@ which more specifically gives rise to the following bilinear form if we differen
 	\end{aligned}
 	\end{equation}
 \end{ceqn}
-The resulting candidate for a variational formulation can be derived as usual [source] that is as the \textit{sum} of the directional derivatives of $J$, where the \textit{directions} become the testfunctions.
+The resulting candidate for a variational formulation can be derived as usual [source] that is as the \textit{sum} of the directional derivatives of $J$, where the \textit{directions} become the testfunctions from the space $W$.
 
 \begin{ceqn}
 	\begin{align}
 	\begin{aligned}
-	\text{ Find } (\sigma, u) \in U \text{ such that } \mathcal{B} ([\sigma, u], [\tau, v]) = L_{\tilde{f}}(u)(v) \quad \forall (\tau, v) \in W \\
- \text{ with } \mathcal{B} ([\sigma, u], [\tau, v]) = (\mathcal{A} [\sigma, u]^T,  \mathcal{A} [\tau, v]^T) \text{ and } \mathcal{L}_{\tilde{f}}(u)([\tau,v]) = (\mathcal{A}[\tau,v], \tilde{f}(u))_Y
+	\label{var_form}
+	\text{ Find } (\sigma, u) \in U \text{ such that } \mathcal{B} ([\sigma, u], [\tau, v]) = \mathcal{L}_{\tilde{f}}(u)([\tau,v]) \quad \forall [\tau, v] \in W \\
+ \text{ with } \mathcal{B} ([\sigma, u], [\tau, v]) = (\mathcal{A} ([\sigma, u]),  \mathcal{A} ([\tau, v])) \text{ and } \mathcal{L}_{\tilde{f}}(u)([\tau,v]) = (\mathcal{A}[\tau,v], \tilde{f}(u))_Y
 \end{aligned}
 	\end{align}
 \end{ceqn}
-Remark: $L_{\tilde{f}}(u)(v)$ is a linear operator in $v$ but non-linear in $u$. 
-What remains to be determined are the function spaces $U$, $W$, $Y$ which potentially even lead us to a setting where can show norm equivalence in order for \textit{Theorem 3} to hold.
+\textbf{Remark:} $\mathcal{L}_{\tilde{f}}(u)([\tau,v])$ is a linear operator in $v$ but nonlinear in $u$. What remains to be determined are the function spaces $U$, $W$, and $Y$. 
 
 \section{Function Spaces}
 
-In order to define $U$ and $Y$ let us consider the optimisation problem [...] and its variational formulation [...] again. We would like to allow for the broadest class of solutions possible while still ensuring that all terms are well-defined in $U$, and staying away from Sobolev spaces of negative or fractional powers due to the beforementioned practicality reasons. Additionally to guarantee the existence of all terms involved we have to make sure that the present weak derivatives of $\sigma$ and $u$ exist in the induced inner product of $Y$. Let us therefore consider the following spaces 
+In order to define $U$ and $Y$ let us consider the optimisation problem (\ref{functional}) and its variational formulation (\ref{var_form}) again. We would like to allow for the broadest class of solutions possible while still ensuring that all terms are well-defined in $U$, and staying away from Sobolev spaces of negative or fractional powers due to the beforementioned practicality reasons. Additionally to guarantee the existence of all terms involved we have to make sure that the present weak derivatives of $\sigma$ and $u$ exist in the induced inner product of $Y$. Let us therefore consider the following spaces 
 \begin{ceqn}
 	\begin{align}
-	&H_{div}^1(\mathcal{S}) = \{\sigma \in (L^2(\mathcal{S}))^n : div (\sigma) \in L^2(\mathcal{S})\} \\
-    &H_{DIV}^1(\Omega) = H_{div}^1(\mathcal{S}) \times L_2(\mathcal{T}) 
+	&H_{\di}(\mathcal{S}) = \{\sigma \in (L^2(\mathcal{S}))^n : \di (\sigma) \in L^2(\mathcal{S})\} \\
+    &H_{\di}(\Omega) = H_{\di}^1(\mathcal{S}) \times L^2(\mathcal{T}) 
     	\end{align}
 \end{ceqn}
-\textit{where and when to use $\times$, overall notation}
+\textit{where and when to use $\times$, above it means something different from below ... still both direct sums?}
 \begin{ceqn}
 	\begin{align}
-    & U = W = H_{DIV}^1(\Omega) \times H^1(\Omega) \\
+    & U = W = H_{\di}^1(\Omega) \times H^1(\Omega) \\
     & Y = L^2(\Omega)
 	\end{align}
 \end{ceqn}
-that is we require that 
+ And thus we have that
 \begin{ceqn}
+
 	\begin{align}
 	\label{spacesLS}
-\sigma \in H_{DIV}^1(\Omega) \text{  and  } u \in H^1(\Omega) \text { with } \\
-|| \sigma ||_{H_{DIV}^1(\Omega)} = || \sigma ||_{L^2(\Omega)} + || div(\sigma) ||_{L^2(\Omega)}, \\
- ||u ||_{H^1(\Omega)} = || u ||_{L^2(\Omega)} + || \nabla u ||_{L^2(\Omega)} + || u_t ||_{L^2(\Omega)} \text{ and hence } \\
- || (\sigma, u) ||_U = || \sigma ||_{H_{DIV}^1(\Omega)} + || u ||_{H^1(\Omega)} \\
- CORRECT ?!
+	\sigma \in H_{\di}(\Omega) \text{  and  } u \in H^1(\Omega) \text { with } \\
+	\| \sigma \|_{H_{\di}(\Omega)}^2 = \| \sigma \|_{L^2(\Omega)}^2 + \| \di(\sigma) \|_{L^2(\Omega)}^2, \\
+	 \|u \|_{H^1(\Omega)}^2 = \| u \|_{L^2(\Omega)}^2 + \| \nabla u \|_{L^2(\Omega)}^2 + \| u_t \|_{L^2(\Omega)}^2 \text{ and hence } \\
+	 \| (\sigma, u) \|_U^2 = \| \sigma \|_{H_{\di}(\Omega)}^2 + \| u \|_{H^1(\Omega)}^2 \\
 	\end{align}
+
 \end{ceqn}
-We can then check that all above terms in $J([\sigma, u], 0)$ are well defined. If we additionally assume $f(u) \in L^2(\Omega)$ for all $u$, the problem remains to be well-posed. Theoretically one could potentially only require $f \in H^{-1}(\Omega)$ but for the scope of this thesis, we will restrict ourselves to the former. Especially as we will later on have to require $f$ to be twice differentiable to actually solve the problem numerically, [see Newton's method, section ...].\\
+The direct sum of two Hilbert spaces is again a Hilbert space using the inner product induced by the sum of the respective inner products \cite{conway2013course}. We have that $L^2(\mathcal{T})$, $H^1(\Omega)$ and $H_{\di}(\mathcal{S})$ are Hilbert spaces \cite{tartar2007introduction}, and hence we obtain that $U$, $W$, and $Y$ are as well. We can then check that all above terms in $J([\sigma, u], 0)$ are well defined. If we additionally assume $f(u) \in L^2(\Omega)$ for all $u$, the problem remains to be well-posed. Theoretically one could potentially only require $f \in H^{-1}(\Omega)$ but for the scope of this thesis, we will restrict ourselves to the former. Especially as we will later on have to require $f$ to be twice differentiable to actually solve the problem numerically, see chapter 6.
 \smallskip
 \\
-\textit{what do we get on $\mathcal{A}$ with respect to what space? bounded? in previous section would have the bounds from X, how to do this here? how does this even make sense, hilbert space, strong form?}
-\smallskip 
-\\
-Another point that has not been a mentioned so far but will have to be taken into account is the way of how to treat the boundary conditions in least-squares formulations. One possibility is to also include them in the functional as an additional term while another one would be to directly include them in the discretised system of the space. The former one entails the additional definition of an appropriate norm on the boundary while also requiring the treatment of the additional term. Since we have assumed it to be at least $L_2$-regular the appropriate conditions can directly be imposed as part of the discretised system which will be discussed in more detail in the implementation section.
-
-\section{Norm Equivalence}
-
-$\mathcal{B}$ induces an inner product on $U$ and subsequently a norm. It is clearly a symmetric bilinear form. We also have that $ \mathcal{B} ([\sigma, u], [\sigma, u]) \geq 0 $ for all $[\sigma, u] \in U$, it only remains to show that $ \mathcal{B} ([\sigma, u], [\sigma, u]) = 0 \Rightarrow [\sigma, u] = 0 $.  
-Show positive definiteness : \\
-We clearly have $\mathcal{B}([\sigma, u], [\sigma, u]) \geq 0$ for all $(\sigma, u) \in U$ since $J([\sigma, u], 0)$ is the sum of two squared $L^2$-norms. It remains to show that 
+$\mathcal{B}$ induces an inner product and subsequently a norm on $U$, if we assume homogenous boundary conditions on $\sigma$ and $u$. We can check that it is a symmetric bilinear form. In addition we have that $ \mathcal{B} ([\sigma, u], [\sigma, u]) \geq 0 $ for all $[\sigma, u] \in U$, since $ \mathcal{B} ([\sigma, u], [\sigma, u]) = J([\sigma, u], 0)$ is the sum of two squared $L^2$--norms. Therefore it only remains to show that 
 \begin{ceqn}
 	\begin{equation}
-\mathcal{B}([\sigma, u], [\sigma, u]) = 0  \iff (\sigma, u) = 0
-\end{equation}
-\end{ceqn}
-\textit{Can't be right, the point is that $J$ is zero at the solution, so unless the solution is zero ...}
-\bigskip
-\\
-In order to set a theoretical framework for the space induced by the scalarproduct $\mathcal{B}$ we would like to establish norm equivalence comparable to the one in section 3.3 or in the paper of Z. Cai et al. on "First-order system least squares for second-order partial differential equations: Part l", \cite{cai1994first}, where they show ellipticity of their derived functional with respect to their \textit{solution} space. That is we would like to know if there exists constants $\alpha, \beta > 0$ such that
-
-\begin{ceqn}
-	\begin{equation}
-	\alpha ||(\sigma, u)||_U \leq J([\sigma, u], 0) \leq \beta ||(\sigma, u)||_U  \quad \forall \  [\sigma, u] \in U.
+ \mathcal{B} ([\sigma, u], [\sigma, u]) = 0 \iff [\sigma, u] = 0 .  
 	\end{equation}
 \end{ceqn}
+If $[\sigma, u] = 0$ we immediately obtain that $ \mathcal{B} ([\sigma, u], [\sigma, u]) = 0$. Hence only the reverse direction remains to be shown. So let us assume that there exists $0 \neq [\sigma, u] \in U$ \\
+\textit{to be filled}\\
 
-The spaces differ from \cite{cai1994first} in terms of the $H_{DIV}$ definition, therefore we cannot apply their result. However it might still be possible to proceed similarly to them to show that these constants exists, it is however beyond the scope of thesis to fully check this but could be an interesting extension to the topic.
+In order to fully set the theoretical framework that guarantees us all the favourable attributes of the beforementioned Rayleigh--Ritz setting we would like to fulfill the assumptions of \textit{Theorem 1} from section 3.3, which require the usage of conforming discrete subspaces $U^h \subset U$ and the following norm equivalence for some $\alpha, \beta > 0$
+\begin{ceqn}
+	\begin{equation}
+	\alpha \|[\sigma, u]\|_U^2 \leq J([\sigma, u], 0) \leq \beta \|[\sigma, u]\|_U^2  \quad \forall \  [\sigma, u] \in U.
+	\end{equation}
+\end{ceqn}
+In order to show the upper bound on $J$ we use that $Y = L^2(\Omega)$, $D(x)$ is bounded, i.e. there exists $d_{\text{max}} \in \mathbb{R}$ such that $\| D(x) \|_Y \leq d_{\text{max}}$ for all $x \in \mathcal{S}$ and the parallelogram identity which holds in Hilbert spaces. 
+\begin{ceqn}
+	\begin{equation}
+	\begin{aligned}
+	J([\sigma, u], 0) = \  & \| u_t - \di(\sigma) \|_{L^2(\Omega)}^2 + \| \sigma - D(x) \nabla u \|_{L^2(\Omega)}^2 \\  
+	\leq \ & \| u_t - \di(\sigma) \|_{L^2(\Omega)}^2 + \| u_t + \di(\sigma) \|_{L^2(\Omega)}^2 + \| \sigma - D(x) \nabla u \|_{L^2(\Omega)}^2 +  \| \sigma + D(x) \nabla u \|_{L^2(\Omega)}^2 \\
+	\leq \ & 2 \| u_t \|_{L^2(\Omega)}^2 + 2 \| \di(\sigma) \|_{L^2(\Omega)}^2 + 2 \| \sigma \|_{L^2(\Omega)}^2+ 2 d_{\max}^2 \| \nabla u \|_{L^2(\Omega)}^2  \\
+	\leq \ & 2 \| u \|_{L^2(\Omega)}^2 + 2 \| u_t \|_{L^2(\Omega)}^2 + 2 d_{\max}^2 \| \nabla u \|_{L^2(\Omega)}^2 + 2 \| \di(\sigma) \|_{L^2(\Omega)}^2 + 2 \| \sigma \|_{L^2(\Omega)}^2 \\
+	\leq \ & \max(2, 2 d_{\max}^2) (\| u \|_{H^1(\Omega)}^2 + \| \sigma \|_{H_{\di}(\Omega)}^2)	\\
+	=  \ & \beta \| [\sigma, u] \|_U^2 \qquad \text{ with } \beta:= \max(2, 2 d_{\max}^2).
+	\end{aligned}
+	\end{equation}
+\end{ceqn}
+The proof of the coercivity is not straight forward and potentially not even true. In the paper of Z. Cai et al. on "First-order system least squares for second-order partial differential equations: Part l", \cite{cai1994first}, they show norm equivalence for a similar class of problems that are however elliptic and therefore the terms and spaces involved differ. Nevertheless it might be possible to proceed similarly to their work to show that such an $\alpha$ exists, this is however beyond the scope of this thesis but could be an interesting extension to the topic.
+\smallskip
+\\
+A point that has not really been discussed so far but will have to be taken into account is the way of how to treat the boundary conditions in least--squares formulations. One possibility is to also include them in the functional as an additional term while another one would be to directly include them in the discretised system of the space. The former one entails the additional definition of an appropriate norm on the boundary while also requiring the treatment of the additional term. Since we have assumed it to be at least $L^2$-regular the appropriate conditions can directly be imposed as part of the discretised system which will be discussed in more detail in the implementation section.
 
 \section{A Finite Element Space-Time Formulation}
 
-After having derived a continuous least squares formulation let us turn towards deriving a finite element discretisation of the problem. We want to consider conforming subspaces of $U$ and $W$, hence we will be considering finite dimensional spaces $U_h \subset U$ and $W_h \subset W$ that are also defined on the entire space-time domain. 
-\smallskip
-\\
-$U^h$ contains the solution space for $\sigma^h$ and $u^h$, that is $s^h = [\sigma^h, u^h] \in U^h$. However the subspaces for the variables do not have to be the same which can potentially be advantageous as the continuous spaces differ as well, due to their different properties. Hence let us assume that $\sigma^h \in \tilde{U}^h$ and $u^h \in \hat{U}^h$, where $ U^h = \tilde{U}^h \times \hat{U}^h$. 
+After having derived a continuous least squares formulation, let us turn towards deriving a finite element discretisation of the problem. We want to consider conforming finite-dimensional subspaces $U^h$ and $W^h$ of $U$ and $W$ respectively, that are defined on the entire space-time domain, where $U^h$ contains the solution space for $\sigma^h$ and $u^h$, that is $s^h = [\sigma^h, u^h] \in U^h$. However the subspaces for the two do not have to be the same, and can be chosen independently of each other which can potentially be advantageous as the continuous spaces differ as well, due to their different properties. Hence let us assume that $\sigma^h \in \tilde{U}^h$ and $u^h \in \hat{U}^h$, where $ U^h = \tilde{U}^h \times \hat{U}^h$. 
 \smallskip
 \\ 
-Suppose we have $\tilde{n} = dim(\tilde{U}^h)$ and let $ \{\tilde{\phi}_1, ..., \tilde{\phi}_{\tilde{n}}\} $ be a basis of $\tilde{U}^h$ and similarly $n = dim(\hat{U}^h)$ and $span \{\phi_1, ..., \phi_n\}  = \hat{U}^h$. We furthermore assume $U^h$ to be constructed such that $\inf_{s^h \in U^h} || s - s^h||_U \rightarrow 0 \ \text{as } h \rightarrow 0$ for all $s \in U$. \text{This is a reasonable assumption, Raviart - Thomas something?!}. It is also worth noting that since we are in a space-time setting we have $\tilde{\phi} = \tilde{\phi}(x,t)$ and  $\phi = \phi(x,t)$.
+So suppose we have $\tilde{n} = dim(\tilde{U}^h)$ and let $ \{\tilde{\phi}_1, ..., \tilde{\phi}_{\tilde{n}}\} $ be a basis of $\tilde{U}^h$ and similarly $n = dim(\hat{U}^h)$ with $\text{span} \{\phi_1, ..., \phi_n\}  = \hat{U}^h$. We furthermore assume $U^h$ to be constructed such that $\inf_{s^h \in U^h} \| s - s^h\|_U \rightarrow 0 \ \text{as } h \rightarrow 0$ for all $s \in U$. \textit{Is this a reasonable assumption, Raviart - Thomas only in space what for time?! Some reference? Direct sums so it works?}. It is also worth noting that since we are in a space-time setting we have $\tilde{\phi} = \tilde{\phi}(x,t)$ and  $\phi = \phi(x,t)$.
 \smallskip
 \\ 
 We can then represent $\sigma^h$ and $u^h$ as a linear combination of basis functions in $\tilde{U}^h$ or equivalently $\hat{U}^h$ that is
@@ -202,23 +206,21 @@ We can then represent $\sigma^h$ and $u^h$ as a linear combination of basis func
 The functional $J$ then looks as follows 
 \begin{ceqn}
 	\begin{equation}
-J(\sigma_h, u_h) =|| \sum_{i=1}^{n} u_i \ (\phi_i)_t - \sum_{i=1}^{\tilde{n}} \sigma_i \ div(\tilde{\phi}_i) - f(\sum_{i=1}^{n} u_i \phi_i) ||_Y^2 + || \sum_{i=1}^{\tilde{n}} \sigma_i \tilde{\phi}_i - D(x) \nabla (\sum_{i=1}^{n} u_i \phi_i) || _Y^2
+J(\sigma_h, u_h) =\| \sum_{i=1}^{n} u_i \ (\phi_i)_t - \sum_{i=1}^{\tilde{n}} \sigma_i \ \di(\tilde{\phi}_i) - f(\sum_{i=1}^{n} u_i \phi_i) \|_Y^2 + \| \sum_{i=1}^{\tilde{n}} \sigma_i \tilde{\phi}_i - D(x) \nabla (\sum_{i=1}^{n} u_i \phi_i) \| _Y^2.
 	\end{equation}
 \end{ceqn}
-which will give rise to a vector-valued system once we discretise the domain. 
-\smallskip
-\\ 
-In the arising variational formulation that we will also have to consider finite dimensional subspaces of $W_h$ of $W$. In the scope of this thesis we restrict ourselves to the assumption that $W_h = U_h$. That is we introduce a set of test functions consisting of the basis vectors of $\tilde{U}^h$ and $U^h$. That is the discretised weak form then reads 
+
+In the arising variational formulation we will also have to consider finite dimensional subspaces of $W_h$ of $W$. In the scope of this thesis we restrict ourselves to the assumption that $W_h = U_h$. That is we introduce a set of test functions consisting of the basis vectors of $\tilde{U}^h$ and $U^h$. The discretised weak form then reads 
 
 \begin{ceqn}
 	\begin{align}
 	\begin{aligned}
-	\text{ Find } (\sigma_h, u_h) \in U_h \text{ such that } B \cdot [\sigma_h, u_h]^T  = L_{\tilde{f}}(u_h) 
+	\text{ Find } [\sigma_h, u_h] \in U_h \text{ such that } B \cdot [\sigma_h, u_h]^T  = L_{\tilde{f}}(u_h) 
 	\end{aligned}
 	\end{align}
 \end{ceqn}
 
-where $B \in \mathbb{R}^{m \times m}$, with $ m = \tilde{n} + n$, be the matrix arising from the discretised bilinear operator, and $L_{\tilde{f}}(u_h) \in \mathbb{R}^m$ being a discretised right-hand side. Since we assume that the solution $s_h = [\sigma_h, u_h]$ first contains all values corresponding to $\sigma$ and then for $u$ we obtain a block structure for $B$ and $L_{\tilde{f}}$ of the following form.
+where $B \in \mathbb{R}^{m \times m}$, with $ m = \tilde{n} + n$, be the matrix arising from the discretised bilinear operator, and $L_{\tilde{f}}(u_h) \in \mathbb{R}^m$ being the discretised right-hand side which we for now assume to contain all nonlinear terms, that is those related to $f$. Since we assume that the solution $s_h = [\sigma_h, u_h]$ first contains all values corresponding to $\sigma_h$ and then for $u_h$ we obtain a block structure for $B$ and $L_{\tilde{f}}$ of the following form.
 
 \begin{ceqn}
 	\begin{align}
@@ -233,24 +235,25 @@ B_{u \sigma}  & B_{uu}
  \end{bmatrix}
 	\end{align}
 \end{ceqn}
-Each entry of each of the blocks of $B$ can be computed explicitly according to the subsequent schemes.
+Each entry of each of the blocks of $B$ can be computed explicitly according to the subsequent schemes. For the detailed computation we refer to the next section and appendix A. 
 \begin{ceqn}
 	\begin{align}
-&\text{For } B_{\sigma \sigma} :	\qquad B_{ij} = \langle \tilde{\phi}_j, \tilde{\phi}_i \rangle_Y + \langle div(\tilde{\phi_j}), div(\tilde{\phi_i}) \rangle_Y \quad &\forall i,j \in \{1, ..., \tilde{n}\} \\
-&\text{For } B_{\sigma u} : \qquad B_{ij} = - \langle D(x) \nabla \phi_j, \tilde{\phi}_i \rangle_Y - \langle (\phi_j)_t, div(\tilde{\phi_i}) \rangle_Y \quad &\forall i \in \{1, ..., \tilde{n}\}, j \in \{\tilde{n}+1, ..., m\} \\
-&\text{For } B_{u \sigma} : \qquad B_{ij} = - \langle D(x) \nabla \phi_i, \tilde{\phi}_j \rangle_Y - \langle (\phi_i)_t, div(\tilde{\phi_j}) \rangle_Y \quad &i \in \{\tilde{n}+1, ..., m\}, \forall j \in \{1, ..., \tilde{n}\}\\
+	\label{blocks_B_begin}
+&\text{For } B_{\sigma \sigma} :	\qquad B_{ij} = \langle \tilde{\phi}_j, \tilde{\phi}_i \rangle_Y + \langle \di(\tilde{\phi_j}), \di(\tilde{\phi_i}) \rangle_Y \quad &\forall i,j \in \{1, ..., \tilde{n}\} \\
+&\text{For } B_{\sigma u} : \qquad B_{ij} = - \langle D(x) \nabla \phi_j, \tilde{\phi}_i \rangle_Y - \langle (\phi_j)_t, \di(\tilde{\phi_i}) \rangle_Y \quad &\forall i \in \{1, ..., \tilde{n}\}, j \in \{\tilde{n}+1, ..., m\} \\
+&\text{For } B_{u \sigma} : \qquad B_{ij} = - \langle D(x) \nabla \phi_i, \tilde{\phi}_j \rangle_Y - \langle (\phi_i)_t, \di(\tilde{\phi_j}) \rangle_Y \quad &i \in \{\tilde{n}+1, ..., m\}, \forall j \in \{1, ..., \tilde{n}\}\\
 &\text{For } B_{uu} : \qquad B_{ij} = \langle D(x) \nabla \phi_j, D(x) \nabla \phi_i \rangle_Y + \langle (\phi_j)_t, (\phi_i)_t \rangle_Y \quad &\forall i,j \in \{\tilde{n}+1, ..., m\}
+\label{block_B_end}
 \end{align}
 \end{ceqn}
-In the case that $f$ is independent of $u$, that is $f = 0$ or $f = f(x,t)$, the derivative of $f$ with respect to $u$, is clearly zero and therefore the right-hand side, which we will denote by $L_{\tilde{f}} = L_{\tilde{f}}(u_h)$ to underline its independence of $u$ only contains the following terms
+In the case that $f$ is independent of $u$, that is $f = 0$ or $f = f(x,t)$, the derivative of $f$ with respect to $u$, is zero and therefore the right-hand side, and which we will denote by $L_{\tilde{f}} = L_{\tilde{f}}(u_h)$ to underline its independence of $u$. Thus it only contains the following terms
 \begin{ceqn}
 	\begin{align}
 &(L_{\tilde{f}})_i = 0 \qquad &i \in \{1, ..., \tilde{n} \} \\
-&(L_{\tilde{f}})_i = \sum_{j=1}^{\tilde{n}}\langle div(\tilde{\phi_j}), f \rangle_Y - \langle (\phi_i)_t, f \rangle_Y \qquad  &i \in \{\tilde{n}+1, ..., m\}
+&(L_{\tilde{f}})_i = \sum_{j=1}^{\tilde{n}}\langle \di(\tilde{\phi_j}), f \rangle_Y - \langle (\phi_i)_t, f \rangle_Y \qquad  &i \in \{\tilde{n}+1, ..., m\}
 \end{align}
 \end{ceqn}
-\textit{where $P$ is some sort of projection in case $\tilde{n} \neq n$, how to really write this up?} \\
-Thus we now know how compute each term we can assemble one large linear system of equations
+Thus we now know how compute each term and can assemble one large linear system of equations
 \begin{ceqn}
 	\begin{align}
 B
@@ -260,167 +263,112 @@ u
 \end{pmatrix} = L_{\tilde{f}}
 	\end{align}
 \end{ceqn}
-which can then be solved immediately for $[\sigma, u]^T$ using for example a multigrid method. In the case of $f = f(u)$ the situation is more complicated, since we also have to take the derivatives of $f$ with respect to $u$ into account, and then construct a nonlinear iteration scheme and consider linearisations of the problem to solve for $u$ unless we have that $f(u)$ is a linear function. In that case we would only obtain additional terms that can be added to $B_{uu}$. 
+which can then be solved immediately for $[\sigma, u]$ using for example a multigrid method. In the case of $f = f(u)$ the situation is more complicated, since we also have to take the derivatives of $f$ with respect to $u$ into account. If $f(u)$ is a linear function we can directly include the additional terms in $B$. Otherwise we require a nonlinear iteration scheme which considers linearisations of the problem and whose construction will be the topic of the remaining part of the chapter. 
 
-
-\section{Computation of the Derivatives}
-In order to formulate a nonlinear iteration scheme we will first derive the first and second order Gateaux derivatives of $J$ to be able to find concrete formulations for the gradient and hessian. We formulate them here now in their continuous form and will discuss the discretisation in the subsequent section. Furthermore for the remainder of this chapter we will assume that $\langle \cdot, \cdot \rangle = \langle \cdot, \cdot \rangle _Y$ in order to simplify the notation. For brevity and clarity we split the functional $J$ in three different terms that will be considered separately dividing it into the linear and nonlinear terms which is possible due to the linearity of the inner product. 
+\section{Gradient and Hessian of the Objective}
+Let us compute the gradient and the Hessian of the functional $J$, which are needed for the construction of $B$ and the nonlinear iteration scheme. We therefore determine its first and second order Gateaux derivatives. We formulate them here now in their continuous form and will discuss the discretisation in the subsequent section. Furthermore for the remainder of this chapter we will assume that $\langle \cdot, \cdot \rangle = \langle \cdot, \cdot \rangle _Y$ in order to simplify the notation. Let us first assume $f = 0$ to derive the matrix $B$. That is we have 
 
 \begin{equation}
 \begin{aligned}
-J_1(\sigma, u) &= \frac{1}{2}c_1\langle u_t - div(\sigma), u_t - div(\sigma) \rangle \\
-J_2(\sigma, u) &= \frac{1}{2} c_1 \langle 2 u_t - 2 div(\sigma) - f(u), - f(u) \rangle \\
-J_3(\sigma, u) &= \frac{1}{2} c_2\langle \sigma - D(x) \nabla u, \sigma  - D(x) \nabla u \rangle
+J([\sigma, u], 0)& = J_1([\sigma, u]) + J_2([\sigma, u]) \quad \text{ where } \\
+J_1(\sigma, u) : &= \frac{1}{2}c_1\langle u_t - \di(\sigma), u_t - \di(\sigma) \rangle \\
+J_2(\sigma, u) :&= \frac{1}{2} c_2\langle \sigma - D(x) \nabla u, \sigma  - D(x) \nabla u \rangle
 \end{aligned}
 \end{equation}
-We can check that $J(\sigma, u) = J_1(\sigma, u) + J_2(\sigma, u) + J_3(\sigma, u)$. 
-\smallskip
-\\
-Since $u \in H^1(\Omega)$ and $\sigma \in H_{DIV}(\Omega)$ they are not defined pointwise which we have to take into account for the subsequent computations.
-\smallskip
-\\
-\textit{What changes, what doesn't? Weak derivatives.}
-\smallskip
-\\
-The partial directional derivatives of $J_1$ can be determined by once again taking the linearity of the inner product as well as its symmetry into account
+
+Since $u \in H^1(\Omega)$ and $\sigma \in H_{\di}(\Omega)$ they are not defined pointwise but we can nevertheless take the subsequent limits [\textit{something more here, reference?!}], but then also only hold almost everywhere. We then obtain the following directional partial derivative for $J_1$ using the linearity and the symmetry of the inner product. 
+
 \begin{equation}
 \begin{aligned}
 \frac{\partial J_1}{\partial \sigma} &= \lim_{\epsilon \rightarrow 0} \frac{J_1(\sigma + \epsilon \tau, u) - J_1(\sigma, u)}{\epsilon}  \\ 
-&= \lim_{\epsilon \rightarrow 0} \frac{c_1}{2 \epsilon} (\langle u_t - div(\sigma + \epsilon \tau), u_t - div(\sigma + \epsilon \tau) \rangle - \langle u_t - div(\sigma), u_t - div(\sigma) \rangle) \\
-&=  \lim_{\epsilon \rightarrow 0} \frac{c_1}{2 \epsilon} (\langle u_t, u_t \rangle - \langle u_t, div(\sigma) \rangle - \epsilon \langle u_t, div(\tau) \rangle - \langle div(\sigma), u_t \rangle + \langle div(\sigma), div(\sigma) \rangle \\ &+ \epsilon \langle div(\sigma), div(\tau) \rangle - \epsilon \langle div(\tau), u_t \rangle + \epsilon \langle div(\tau), div(\sigma) \rangle + \epsilon^2 \langle div(\tau), div(\tau) \rangle \\
-& - \langle u_t, u_t \rangle + \langle u_t, div(\sigma) \rangle + \langle div(\sigma), u_t \rangle - \langle div(\sigma), div(\sigma) \rangle) \\
-&= \lim_{\epsilon \rightarrow 0} \frac{c_1}{2 \epsilon} (- 2 \epsilon \langle u_t, div(\tau) \rangle + 2 \epsilon \langle div(\sigma), div(\tau) \rangle + \epsilon^2 \langle div(\tau), div(\tau) \rangle )
+&= \lim_{\epsilon \rightarrow 0} \frac{c_1}{2 \epsilon} (\langle u_t - \di(\sigma + \epsilon \tau), u_t - \di(\sigma + \epsilon \tau) \rangle - \langle u_t - \di(\sigma), u_t - \di(\sigma) \rangle) \\
+&=  \lim_{\epsilon \rightarrow 0} \frac{c_1}{2 \epsilon} (\langle u_t, u_t \rangle - \langle u_t, \di(\sigma) \rangle - \epsilon \langle u_t, \di(\tau) \rangle - \langle \di(\sigma), u_t \rangle + \langle \di(\sigma), \di(\sigma) \rangle \\ &+ \epsilon \langle \di(\sigma), \di(\tau) \rangle - \epsilon \langle \di(\tau), u_t \rangle + \epsilon \langle \di(\tau), \di(\sigma) \rangle + \epsilon^2 \langle \di(\tau), \di(\tau) \rangle \\
+& - \langle u_t, u_t \rangle + \langle u_t, \di(\sigma) \rangle + \langle \di(\sigma), u_t \rangle - \langle \di(\sigma), \di(\sigma) \rangle) \\
+&= \lim_{\epsilon \rightarrow 0} \frac{c_1}{2 \epsilon} (- 2 \epsilon \langle u_t, \di(\tau) \rangle + 2 \epsilon \langle \di(\sigma), \di(\tau) \rangle + \epsilon^2 \langle \di(\tau), \di(\tau) \rangle )
 \\
 \\
-&= - c_1 \langle u_t, div(\tau) \rangle + c_1 \langle div(\sigma), div(\tau) \rangle
+&= - c_1 \langle u_t, \di(\tau) \rangle + c_1 \langle \di(\sigma), \di(\tau) \rangle
 \end{aligned}
 \end{equation}
-%We can see that the terms only containing $\sigma$ or $u$ cancel. We end up with a number of mixed terms as well as the terms containing purely $\tau$ and $v$. Due to the factor of $\frac{1}{2}$ in front of the inner products in $J$ and the symmetry of the inner product, the mixed terms add up 1 or $-1$ respectively. Again because of the bilinearity of the inner product we can write $\epsilon$ in front of the individual terms, often they will cancel with the factor of $\frac{1}{\epsilon}$ in front. If we now take the limit with respect to $\epsilon$ going to zero all terms with an $\epsilon$ in both arguments will tend to zero which gives us the remaining result. 
+%We can see that the terms only containing $\sigma$ or $u$ cancel. We end up with a number of mixed terms as well as the terms containing purely $\tau$ and $v$. Due to the factor of $\frac{1}{2}$ in front of the inner products in $J$ and the symmetry of the inner product, the mixed terms add up 1 or $-1$ respectively. Again because of the bilinearity of the inner product we can write $\epsilon$ in front of the in\diidual terms, often they will cancel with the factor of $\frac{1}{\epsilon}$ in front. If we now take the limit with respect to $\epsilon$ going to zero all terms with an $\epsilon$ in both arguments will tend to zero which gives us the remaining result. 
 
-By proceeding analogously for equation $J_2$ and $J_3$ we obtain in these cases: 
+By proceeding analogously for equation $J_2$ and the partial directional derivatives for $u$ we end up with
 
 \begin{align}
-\frac{\partial J_2}{\partial \sigma} &= c_1 \langle div(\tau), f(u) \rangle \\
-\frac{\partial J_3}{\partial \sigma} &= c_2 \langle \sigma, \tau \rangle - c_2 \beta \langle \tau, \nabla u \rangle
+\frac{\partial J_2}{\partial \sigma} &= c_2 \langle \sigma, \tau \rangle - c_2 \beta \langle \tau, \nabla u \rangle \\
+\frac{\partial J_1}{\partial u} &= c_1 \langle u_t, v_t \rangle - c_1 \langle v_t, \di(\sigma) \rangle \\
+\frac{\partial J_2}{\partial u} &= - c_2 \langle \sigma, D(x) \nabla v \rangle + c_2 \langle D(x) \nabla u, D(x) \nabla v \rangle
+\end{align}
+Hence we obtain the following partial first order directional derivatives. 
+\begin{equation}
+\begin{aligned}
+D_{\sigma} J [\tau] = \frac{\partial}{\partial \sigma}J([\sigma, u])[\tau] =& c_2 \langle \sigma, \tau \rangle + c_1 \langle \di(\sigma), \di(\tau) \rangle - c_2 \langle D(x) \nabla u, \tau \rangle - c_1 \langle u_t, \di(\tau) \rangle 
+\end{aligned}
+\end{equation}
+\begin{equation}
+\begin{aligned}
+D_u J [v]= \frac{\partial}{\partial u} J([\sigma, u])[v] =&  c_1 \langle u_t, v_t \rangle - c_1 \langle v_t, \di(\sigma) \rangle - c_2 \langle \sigma, D(x) \nabla v \rangle + c_2 \langle D(x) \nabla u, D(x) \nabla v \rangle
+\end{aligned}
+\end{equation}
+Following the same principles one can determine the second order partial derivatives.  
+\begin{align}
+\begin{aligned}
+\frac{\partial^2}{\partial \sigma^2} J [\tau] [\rho] =& c_2 \langle \rho, \tau \rangle + c_1 \langle \di(\rho), \di(\tau) \rangle  \\
+\frac{\partial^2}{\partial \sigma \partial u} [v][\tau] = \frac{\partial^2 }{\partial u \partial \sigma} [\tau] [v]=& - c_2 \langle \tau, D(x) \nabla v \rangle - c_1 \langle v_t, \di(\tau) \rangle \\
+\frac{\partial^2 J}{\partial u^2} [v][w] =& c_1 \langle w_t, v_t \rangle + c_2 \langle D(x) \nabla w, D(x) \nabla v \rangle
+\end{aligned}
 \end{align}
 
-
-Let us now turn to the partial derivatives with respect to $u$. Here we obtain the following for $J_1$ and $J_3$:
-
-\begin{equation}
-\begin{aligned}
-\frac{\partial J_1}{\partial u} &=   \lim_{\epsilon \rightarrow 0} \frac{J_1(\sigma, u + \epsilon v) - J_1(\sigma, u)}{\epsilon}  \\
-&= \lim_{\epsilon \rightarrow 0} \frac{c_1}{2 \epsilon} (\langle (u + \epsilon v)_t - div(\sigma), (u + \epsilon v)_t - div(\sigma) \rangle - \langle u_t - div(\sigma), u_t - div(\sigma) \rangle) \\
-&= c_1 \langle u_t, v_t \rangle - c_1 \langle v_t, div(\sigma) \rangle \\
+If we now recast this in the finite dimensional setting using the beforementioned basis functions instead of the $\tau, \rho, v$ and $w$, and we can compute the matrix $B$ \textit{proper name, just call it H for Hessian?} which corresponds exactly to the description given by (\ref{blocks_B_begin})--(\ref{block_B_end}). 
+\smallskip
 \\
-\frac{\partial J_3}{\partial u} &= - c_2 \langle \sigma, D(x) \nabla v \rangle + c_2 \langle D(x) \nabla u, D(x) \nabla v \rangle
-\end{aligned}
-\end{equation}
-\textit{Repeat assumptions on D(x). But can leave it where it is for now?} 
-\smallskip 
+For the terms involving $f$ we can proceed in a similar way, given that $f$ is sufficiently smooth. The exact assumptions and the corresponding computations can be found in appendix A. This entails first the construction of an entire continuous iteration scheme and then its discretisation. One finally ends up with the following first and second order partial directional derivatives for a $f=f(u)$.
+
+\begin{ceqn}
+\begin{align}
+D_{\sigma} J [\tau] &= c_2 \langle \sigma, \tau \rangle + c_1 \langle div(\sigma), div(\tau) \rangle - c_2 \langle D(x) \nabla u, \tau \rangle - c_1 \langle u_t, div(\tau) \rangle - c_1 \langle f(u), div(\tau) \rangle \\
+D_{u} J [v] &=  c_1 \langle u_t, v_t \rangle - c_1 \langle v_t, div(\sigma) \rangle - c_2 \langle \sigma, D(x) \nabla v \rangle + c_2 \langle D(x) \nabla u, D(x) \nabla v \rangle  \\  
+&- c_1 \langle u_t, f'(u) \cdot v \rangle  - c_1 \langle v_t, f(u) \rangle  - c_1 \langle div(\sigma), f'(u) \cdot v \rangle + c_1 \langle f(u), f'(u) \cdot v \rangle, \\
 \\
-In the case of $J_2$, we have to take the non-linearity of $f$ into account. If we assume that $f$ sufficiently smooth (what do we need exactly?!) that is 
-\begin{align}  
-\lim_{\epsilon \rightarrow 0} f(u + \epsilon v) &= f(u) \text{ and } \\
-\lim_{\epsilon \rightarrow 0} \langle f(u+ \epsilon v), f(u + \epsilon v) \rangle - \langle f(u), f(u) \rangle &= \langle f'(u) \cdot v, f(u) \rangle + \langle f(u), f'(u) \cdot v \rangle
-\end{align} 
-which can be added due to symmetry.
+D_{\sigma \sigma} J [\tau] [\rho] &= c_2 \langle \rho, \tau \rangle + c_1 \langle \di(\rho), \di(\tau) \rangle  \\
+D_{\sigma u}J  [v][\tau] &= D_{u \sigma}J  [\tau] [v] = - \langle \tau, D(x) \nabla v \rangle - \langle v_t, div(\tau) \rangle - \langle div(\tau), f'(u) v \rangle \\
+D_{uu} J  [v][w] &= c_1 \langle w_t, v_t \rangle + c_2 \langle D(x) \nabla w, D(x) \nabla v \rangle + c_1 \langle u_t, w^T f''(u) v \rangle - c_1 \langle w_t, f'(u) \cdot v \rangle \\
+&- c_1 \langle v_t, f'(u) \cdot w \rangle 
+ - c_1 \langle div(\sigma), w^T f''(u) v \rangle + c_1 \langle f(u), w^T f''(u) v \rangle + \langle f'(u) \cdot w, f'(u) \cdot v \rangle 
+\end{align}
+\end{ceqn}
 
-\begin{equation}
-\begin{aligned}
-\frac{\partial J_2}{\partial u} &= \lim_{\epsilon \rightarrow 0} \frac{J_2(\sigma, u + \epsilon v) - J_2(\sigma, u)}{\epsilon}  \\
-&= \lim_{\epsilon \rightarrow 0} \frac{c_1}{2 \epsilon} (\langle 2(u+ \epsilon v)_t - 2 div(\sigma) - f(u + \epsilon v), - f(u + \epsilon v) \rangle - \langle 2u_t - 2 div(\sigma) - f(u), -f(u) \rangle) \\
-&= \lim_{\epsilon \rightarrow 0} \frac{c_1}{2 \epsilon}  (-2 \langle u_t, f(u+ \epsilon v) \rangle + 2 \langle u_t, f(u) \rangle \\
-& - 2 \epsilon \langle v_t, f(u+ \epsilon v) \rangle \\
-&+ 2 \langle div(\sigma), f(u + \epsilon v \rangle - 2 \langle div(\sigma), f(u) \rangle \\
-&+ \langle f(u+ \epsilon v), f(u + \epsilon v) \rangle - \langle f(u), f(u) \rangle) \\
-\\
-&= - c_1 \langle u_t, f'(u) \cdot v \rangle - c_1 \langle v_t, f(u) \rangle + c_1 \langle div(\sigma), f'(u) \cdot v \rangle + c_1 \langle f(u), f'(u) \cdot v \rangle
-\end{aligned}
-\end{equation}
 
-Hence we obtain the following partial first order directional derivatives. 
 
-\begin{equation}
-\begin{aligned}
-J_{\sigma}[\tau] = \frac{\partial}{\partial \sigma}J(\sigma, u)[\tau] =& c_2 \langle \sigma, \tau \rangle + c_1 \langle div(\sigma), div(\tau) \rangle - c_2 \langle D(x) \nabla u, \tau \rangle - c_1 \langle u_t, div(\tau) \rangle - c_1 \langle f(u), div(\tau) \rangle
-\end{aligned}
-\end{equation}
-\begin{equation}
-\begin{aligned}
-J_{u} [v]= \frac{\partial}{\partial u} J(\sigma, u)[v] =&  c_1 \langle u_t, v_t \rangle - c_1 \langle v_t, div(\sigma) \rangle - c_2 \langle \sigma, D(x) \nabla v \rangle + c_2 \langle D(x) \nabla u, D(x) \nabla v \rangle  \\  
-&- c_1 \langle u_t, f'(u) \cdot v \rangle  - c_1 \langle v_t, f(u) \rangle  - c_1 \langle div(\sigma), f'(u) \cdot v \rangle + c_1 \langle f(u), f'(u) \cdot v \rangle 
-\end{aligned}
-\end{equation}
-Following the same principles one can determine the second order partial derivatives whose derivation will only be briefly outlined here for the most difficult terms which are those including $f$.  
-
-\begin{equation}
-\begin{aligned}
-\frac{\partial^2}{\partial \sigma^2} J [\tau] [\rho] =& c_2 \langle \rho, \tau \rangle + c_1 \langle div(\rho), div(\tau) \rangle  \\
-\end{aligned}
-\end{equation}
-\begin{equation}
-\begin{aligned}
-\frac{\partial^2}{\partial \sigma \partial u} [v][\tau] = \frac{\partial^2 }{\partial u \partial \sigma} [\tau] [v]=& - \langle \tau, \nabla v \rangle - \langle v_t, div(\tau) \rangle - \langle div(\tau), f'(u) v \rangle \\
-\end{aligned}
-\end{equation}
-
-\begin{equation}
-\begin{aligned}
-\frac{\partial^2 J}{\partial u^2} [v][w]&= \lim_{\epsilon \rightarrow 0} \frac{1}{\epsilon} (J_u(\sigma, u+ \epsilon w)[v] - J_u(\sigma, u)[v]) \\
-&= \lim_{\epsilon \rightarrow 0} \frac{1}{\epsilon} ( c_1 \langle (u + \epsilon w)_t, v_t \rangle + c_2 \langle \nabla (u + \epsilon w), \nabla v \rangle - c_1 \langle (u + \epsilon w)_t, f'(u + \epsilon w) \cdot v \rangle \\
-&- c_1 \langle v_t, f(u + \epsilon w) \rangle - c_1 \langle div(\sigma), f'(u + \epsilon w) \cdot v \rangle + c_1 \langle f(u + \epsilon w), f'(u + \epsilon w) \cdot v \rangle  \\
-&- J_u(\sigma, u)[v]) \\
-&= c_1 \langle w_t, v_t \rangle + c_2 \langle \nabla w, \nabla v \rangle \\
-&+ \lim_{\epsilon \rightarrow 0} \frac{1}{\epsilon}  (c_1 \langle u_t, f'(u+ \epsilon w) \cdot v \rangle - c_1  \langle u_t, f'(u) \cdot v \rangle \\
-&- \epsilon \cdot c_1 \langle w_t,  f'(u + \epsilon w) \cdot v \rangle \\
-&- c_1 \langle v_t, f(u + \epsilon w) \rangle + c_1 \langle v_t, f(u) \rangle \\
-& - c_1 \langle div(\sigma), f'(u + \epsilon w) \cdot v \rangle +  c_1 \langle div(\sigma), f'(u) \cdot v \rangle \\
-& +  c_1 \langle f(u + \epsilon w), f'(u + \epsilon w) \cdot v \rangle - c_1 \langle f(u), f'(u) \cdot v \rangle) \\
-\\
-\frac{\partial^2 J}{\partial u^2} [v][w] &= c_1 \langle w_t, v_t \rangle + c_2 \langle \nabla w, \nabla v \rangle + c_1 \langle u_t, w^T f''(u) v \rangle - c_1 \langle w_t, f'(u) \cdot v \rangle - c_1 \langle v_t, f'(u) \cdot w \rangle \\
-& - c_1 \langle div(\sigma), w^T f''(u) v \rangle + c_1 \langle f(u), w^T f''(u) v \rangle + \langle f'(u) \cdot w, f'(u) \cdot v \rangle 
-\end{aligned}
-\end{equation}
-
-\textit{Yet some more on weak derivatives etc.}
-
-Thus we have now computed the necessary terms needed for the gradient as well as the Hessian of $J$. So let us now construct the nonlinear iteration scheme in order to minimse $J$. 
+Another way to formulate the problem is to first restrict the functional to finite dimensional subspaces and then differentiate which is the way we implemented it. For a further discussion of the pros and cons of either approach we can refer to [\textit{find good source?!}]. Hence the terms involvoing $f$ are constructed slightly differently, and will be introduced in the next section, as we derive the iterative schemes. 
 
 
 \section{Nonlinear Iteration Scheme}
-\textit{We only require the whole thing to be differentiable in a weak sense .... not like mentioned before.} 
+As discussed in section (3.4) the general approach to finding a minimiser of the functional $J$ is to search for a tuple $[\sigma, u]$ for which $\nabla  J ([\sigma, u])= 0$, while $\nabla^2 J ([\sigma, u]) $ is positive definite. We start with an initial guess $s_0 = s_{\text{init}} = [\sigma_{\text{init}}, u_{\text{init}}]$ and then successively try to decrease energy. In case of a Newton step by finding a quadratic approximation of $J$ at the value of the current iterate $s_k$, where the updated solution $s_{k+1}$ is the minimiser of the quadratic approximation. However if $J$ is not convex, and hence $\nabla^2 J ([\sigma, u]) $ not positive definite, the extremum of the quadratic approximation can actually lead us to a maximum of $J$. Therefore if we want to use a Newton iteration and maintain a decrease or at least no increase of energy in every step, that is $J(s_0) \geq J(s_1) \geq ... \geq J(s_k) \geq ... $ we need to be checking for convexity. In order to perform a Newton step we have to compute the Hessian of $J$, as well as its gradient in each iterate. The other option that was discussed previously to obtain a reduction in energy is to use a gradient descent method where we simply take an iteration step in the steepest descent direction. Hence we only need to evaluate the gradient in this case, which is computationally much cheaper but usually leads to a very slow convergence rate.
 \smallskip
 \\
-As discussed in the previous chapter [see section 3.4] the general approach to finding a minimiser of the functional $J$ is to search for a tuple $[\sigma, u]$ for which $\nabla  J ([\sigma, u])= 0$, while $\nabla^2 J ([\sigma, u]) $ is positive definite. We start with an initial guess $s_0 = s_{\text{init}} = [\sigma_{\text{init}}, u_{\text{init}}]$ and then successively try to decrease energy. In case of a Newton step by finding a quadratic approximation of $J$ at the value of the current iterate $s_k$, where the updated solution $s_{k+1}$ is the minimiser of the quadratic approximation. However if $J$ is not convex, and hence $\nabla^2 J ([\sigma, u]) $ not positive definite, the extremum of the quadratic approximation can actually lead us to a maximum of $J$. Therefore if we want to use a Newton iteration and maintain a decrease or at least no increase of energy in every step, that is $J(s_0) \geq J(s_1) \geq ... \geq J(s_k) \geq ... $ we need to be checking for convexity. In order to perform a Newton step we have to compute the Hessian of $J$, as well as its gradient in each iterate. The other option that was discussed previously to obtain a reduction in energy is to use a gradient descent method where we simply take an iteration step into the steepest descent direction. Hence we only need to evaluate the gradient in this case, which is computationally much cheaper but only leads to a linear convergence rate, instead of a quadratic one in the convex Newton case. 
-\smallskip
-\\
-There are different ways to linearise and discretise in $f$, that is we have to decide how to represent $f$ in our finite dimensional subspace formulation. For simplicity we assumed that $f \in C^2$, and denote the first and second derivative with respect to $u$ by $f'$ and $f''$. This is in line with the forcing term stemming from the FitzHugh-Nagumo model as well as many other physical applications [source]. Hence for each degree of freedom in $u$ we can determine coefficients for $f, f', f''$ and represent them in the basis of $\hat{U}^h$, that is 
+There are different ways to linearise and discretise in $f$, that is we have to decide how to represent $f$ in our finite dimensional subspace formulation. For simplicity we assume that $f \in C^2$, and denote the first and second derivative with respect to $u$ by $f'$ and $f''$. This is in line with the forcing term stemming from the FitzHugh-Nagumo model as well as many other physical applications [source]. Hence for each degree of freedom in $u$ we can determine coefficients for $f, f', f''$ and represent them in the basis of $\hat{U}^h$, that is 
 \begin{ceqn}
 	\begin{align}
-(f_h)_i = \sum_{i=1}^{n} f_i \phi_i, \qquad (f'_h)_i = \sum_{i=1}^{n} f'_i \phi_i, \qquad (f''_h)_i = \sum_{i=1}^{n} f''_i \phi_i
+f_h= \sum_{i=1}^{n} f_i \phi_i, \qquad f'_h = \sum_{i=1}^{n} f'_i \phi_i, \qquad  f''_h = \sum_{i=1}^{n} f''_i \phi_i
 	\end{align}
 \end{ceqn}
-Therefore $f_h, f'_h$ and $f''_h$ now represent a finite dimensional approximation of $f$ for one particular approximation of $u$. With this representation we can now proceed to formulate a discretisation of the gradient of $J$, linearised in $s_k = [\sigma_k, u_k]$ where we know that inner products are still well-defined since we are working in conforming subspaces.
+Therefore $f_h, f'_h$ and $f''_h$ now represent a finite dimensional approximation of $f$ for one particular approximation $u_h$. With this representation we can now proceed to formulate a discretisation of the gradient of $J$, linearised in $s_k = [\sigma_k, u_k]$ where we know that inner products are still well-defined since we are working in conforming subspaces.
 
-We want $\nabla J = 0$
-
-\begin{ceqn}
-	\begin{align}
- (L_{\tilde{f}}(u_h))_{\sigma} = \langle div(\sigma_h), f'_h \rangle_Y\\
-  (L_{\tilde{f}}(u_h))_{u} = - \langle u_t, f'_h \rangle_Y - \langle v_t, f_h \rangle_Y  + \langle f_h, f'_h \rangle_Y 
-	\end{align}
-\end{ceqn}
+We want $\nabla J = 0$, where
 
 \begin{ceqn}
 	\begin{align}
-	\nabla J_k = \nabla J(s_k) = B \begin{pmatrix}
+		\nabla J_k = \nabla J(s_k) &= B \begin{pmatrix}
 	\sigma_k \\
 	u_k
-	\end{pmatrix} - L_{\tilde{f}}(u_k)
+	\end{pmatrix} - L_{\tilde{f}} \quad \text{ with } \\
+ (L_{\tilde{f}})_{\sigma} &= \langle \di(\sigma_k), (f'_h) \rangle_Y \\
+  (L_{\tilde{f}}(u_k))_{u} &= - \langle u_t, f'_h \rangle_Y - \langle v_t, f_h \rangle_Y  + \langle f_h, f'_h \rangle_Y \\
+  \textit{ I know this is not }& \textit{exactly right yet, need to write it up again exactly, for individual indices.}
 	\end{align}
 \end{ceqn}
-For one step of gradient descent we therefore compute the update by 
+For one gradient descent step we therefore then compute the update by 
 \begin{ceqn}
 	\begin{align}
 s_{k+1} = s_k + \alpha (-\nabla J_k)
@@ -438,43 +386,35 @@ From the gradient and previous section we can determine the discretised Hessian 
 where $B_{\text{lin}} = B$ from before and $Q$ contains the nonlinear part, that is
 \begin{ceqn}
 	\begin{align}
-	Q = 
+	Q =& 
 	\begin{bmatrix}
 	0 &  Q_{\sigma u}  \\
 	 Q_{u \sigma}  &    Q_{uu} \\
-	\end{bmatrix}  \text{ where } \\
-		 (Q_{\sigma u})_{ij}  = (Q_{u\sigma})_{ji} = - \langle div(\tilde{\phi}), f'_h \rangle
-	\end{align}
+	\end{bmatrix}  \text{, where } \\
+		\end{align}
 \end{ceqn}
 
-
-
+\begin{ceqn}
+	\begin{align}
+(Q_{\sigma u})_{ij}  = (Q_{u\sigma})_{ji} = - \langle \di(\tilde{\phi_j}), (f'_h)_i \rangle \\
+(Q_{u u})_{ij} = c_1 \langle u_t, w^T f''(u) v \rangle - c_1 \langle w_t, f'(u) \cdot v \rangle  \\
+- c_1 \langle v_t, f'(u) \cdot w \rangle  - c_1 \langle div(\sigma), w^T f''(u) v \rangle + c_1 \langle f(u), w^T f''(u) v \rangle + \langle f'(u) \cdot w, f'(u) \cdot v \rangle \\
+\textit{  again, still need to rewrite this, this time in terms of the discretised everything with indices}
+	\end{align}
+\end{ceqn}
+And this leads to the iteration
 \begin{ceqn}
 	\begin{align}	
 	s_{k+1} = s_k - H_k^{-1}(\nabla J_k)
 	\end{align}
 \end{ceqn}
-that is we would like to solve the linear system of equations 
+of which we would like to solve the linear system of equations 
 \begin{ceqn}
 	\begin{align}	
+	\label{newt_it}
 	e_{k+1} = - H_k^{-1}(\nabla J_k) \quad \text{with} \quad
 	s_{k+1} =  s_k + e_{k+1}
 	\end{align}
 \end{ceqn}
-But since it is generally expensive to compute the inverse of a large matrix, even if $H_k$ is sparse and symmetric, because this property does in general not translate to the inverse we apply a multigrid method to solve (4.33). That is we need to solve a linear system of equations in each Newton step. 
-
-put derivative to zero therefore if we assume local convexity must be an extremum, positive definite, means minimum, therefore variational formulation makes sense 
-\bigskip
-\\
-As mentioned in the prologue we consider an iterative approach to solve this problem and will therefore consider linearisations of the problem. But before going into more detail about that, let us consider the variational formulation of the coupled reaction-diffusion system (4.3)
-
-A solution to (4.3) will always be a minimiser of the functional $J$ independent on the choice of $Y$, however the sequence of iterates is dependent on the choice of the norm. 
-\smallskip
-\\
-After having derived this discrete least squares space-time finite element formulation we will in the next chapter be looking at a concrete implementation which contains numerical results for some sample problems. 
-
-
-
-
-
+But since it is generally expensive to compute the inverse of a large matrix, even if $H_k$ is sparse and symmetric, because this property does in general not translate to the inverse we apply a multigrid method to solve (\ref{newt_it}) to solve this linear system of equations in each iteration. The following chapter will provide an insight into the underlying principles of the multigrid methodology before we turn to its actual implementation.
 \end{document}

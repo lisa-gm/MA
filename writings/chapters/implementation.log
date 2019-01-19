@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/MacPorts 2017_2) (preloaded format=pdflatex 2018.3.21)  2 JAN 2019 13:39
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/MacPorts 2017_2) (preloaded format=pdflatex 2018.3.21)  19 JAN 2019 15:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -428,12 +428,167 @@ File: pgfmodulematrix.code.tex 2013/09/17  (rcs-revision 1.8)
 ytopaths.code.tex
 File: tikzlibrarytopaths.code.tex 2008/06/17 v3.0.1 (rcs-revision 1.2)
 )))
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+yshapes.code.tex
+File: tikzlibraryshapes.code.tex 2008/01/09 v3.0.1 (rcs-revision 1.1)
+
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+yshapes.geometric.code.tex
+File: tikzlibraryshapes.geometric.code.tex 2008/01/09 v3.0.1 (rcs-revision 1.1)
+
+
+(/opt/local/share/texmf/tex/generic/pgf/libraries/shapes/pgflibraryshapes.geome
+tric.code.tex
+File: pgflibraryshapes.geometric.code.tex 2008/06/26 v3.0.1 (rcs-revision 1.1)
+))
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+yshapes.misc.code.tex
+File: tikzlibraryshapes.misc.code.tex 2008/01/09 v3.0.1 (rcs-revision 1.1)
+
+(/opt/local/share/texmf/tex/generic/pgf/libraries/shapes/pgflibraryshapes.misc.
+code.tex
+File: pgflibraryshapes.misc.code.tex 2013/07/18 v3.0.1 (rcs-revision 1.5)
+))
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+yshapes.symbols.code.tex
+File: tikzlibraryshapes.symbols.code.tex 2008/01/09 v3.0.1 (rcs-revision 1.1)
+
+(/opt/local/share/texmf/tex/generic/pgf/libraries/shapes/pgflibraryshapes.symbo
+ls.code.tex
+File: pgflibraryshapes.symbols.code.tex 2013/09/11 v3.0.1 (rcs-revision 1.6)
+))
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+yshapes.arrows.code.tex
+File: tikzlibraryshapes.arrows.code.tex 2008/01/09 v3.0.1 (rcs-revision 1.1)
+
+(/opt/local/share/texmf/tex/generic/pgf/libraries/shapes/pgflibraryshapes.arrow
+s.code.tex
+File: pgflibraryshapes.arrows.code.tex 2008/06/26 v3.0.1 (rcs-revision 1.1)
+))
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+yshapes.callouts.code.tex
+(/opt/local/share/texmf/tex/generic/pgf/libraries/shapes/pgflibraryshapes.callo
+uts.code.tex))
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+yshapes.multipart.code.tex
+File: tikzlibraryshapes.multipart.code.tex 2008/01/09 v3.0.1 (rcs-revision 1.1)
+
+
+(/opt/local/share/texmf/tex/generic/pgf/libraries/shapes/pgflibraryshapes.multi
+part.code.tex
+File: pgflibraryshapes.multipart.code.tex 2010/01/07 v3.0.1 (rcs-revision 1.2)
+\pgfnodepartlowerbox=\box39
+\pgfnodeparttwobox=\box40
+\pgfnodepartthreebox=\box41
+\pgfnodepartfourbox=\box42
+\pgfnodeparttwentybox=\box43
+\pgfnodepartnineteenbox=\box44
+\pgfnodeparteighteenbox=\box45
+\pgfnodepartseventeenbox=\box46
+\pgfnodepartsixteenbox=\box47
+\pgfnodepartfifteenbox=\box48
+\pgfnodepartfourteenbox=\box49
+\pgfnodepartthirteenbox=\box50
+\pgfnodeparttwelvebox=\box51
+\pgfnodepartelevenbox=\box52
+\pgfnodeparttenbox=\box53
+\pgfnodepartninebox=\box54
+\pgfnodeparteightbox=\box55
+\pgfnodepartsevenbox=\box56
+\pgfnodepartsixbox=\box57
+\pgfnodepartfivebox=\box58
+)))
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+ysnakes.code.tex
+File: tikzlibrarysnakes.code.tex 2013/07/15 v3.0.1 (rcs-revision 1.7)
+
+
+Package pgf Warning: Snakes have been superseded by decorations. Please use the
+ decoration libraries instead of the snakes library on input line 14.
+
+
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+ydecorations.pathmorphing.code.tex
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+ydecorations.code.tex
+(/opt/local/share/texmf/tex/generic/pgf/modules/pgfmoduledecorations.code.tex
+\pgfdecoratedcompleteddistance=\dimen165
+\pgfdecoratedremainingdistance=\dimen166
+\pgfdecoratedinputsegmentcompleteddistance=\dimen167
+\pgfdecoratedinputsegmentremainingdistance=\dimen168
+\pgf@decorate@distancetomove=\dimen169
+\pgf@decorate@repeatstate=\count121
+\pgfdecorationsegmentamplitude=\dimen170
+\pgfdecorationsegmentlength=\dimen171
+)
+\tikz@lib@dec@box=\box59
+)
+(/opt/local/share/texmf/tex/generic/pgf/libraries/decorations/pgflibrarydecorat
+ions.pathmorphing.code.tex))
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+ydecorations.pathreplacing.code.tex
+(/opt/local/share/texmf/tex/generic/pgf/libraries/decorations/pgflibrarydecorat
+ions.pathreplacing.code.tex))
+(/opt/local/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrar
+ydecorations.shapes.code.tex
+(/opt/local/share/texmf/tex/generic/pgf/libraries/decorations/pgflibrarydecorat
+ions.shapes.code.tex)))
+(/opt/local/share/texmf-texlive/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2016/04/27 v1.618033 publication quality tables
+\heavyrulewidth=\dimen172
+\lightrulewidth=\dimen173
+\cmidrulewidth=\dimen174
+\belowrulesep=\dimen175
+\belowbottomsep=\dimen176
+\aboverulesep=\dimen177
+\abovetopsep=\dimen178
+\cmidrulesep=\dimen179
+\cmidrulekern=\dimen180
+\defaultaddspace=\dimen181
+\@cmidla=\count122
+\@cmidlb=\count123
+\@aboverulesep=\dimen182
+\@belowrulesep=\dimen183
+\@thisruleclass=\count124
+\@lastruleclass=\count125
+\@thisrulewidth=\dimen184
+)
+(/opt/local/share/texmf-texlive/tex/latex/fancyhdr/fancyhdr.sty
+Package: fancyhdr 2016/09/06 3.8 Extensive control of page headers and footers
+\fancy@headwidth=\skip51
+\f@ncyO@elh=\skip52
+\f@ncyO@erh=\skip53
+\f@ncyO@olh=\skip54
+\f@ncyO@orh=\skip55
+\f@ncyO@elf=\skip56
+\f@ncyO@erf=\skip57
+\f@ncyO@olf=\skip58
+\f@ncyO@orf=\skip59
+)
 (/opt/local/share/texmf-texlive/tex/latex/ncctools/nccmath.sty
 Package: nccmath 2005/02/21 v1.2 Additional Math Commands (NCC)
-\NCC@fracrulewidth=\dimen165
+\NCC@fracrulewidth=\dimen185
 )
 (/opt/local/share/texmf-texlive/tex/latex/subfiles/subfiles.sty
 Package: subfiles 2012/05/23 Federico Garcia
+)
+(/opt/local/share/texmf-texlive/tex/latex/titlesec/titlesec.sty
+Package: titlesec 2016/03/21 v2.10.2 Sectioning titles
+\ttl@box=\box60
+\beforetitleunit=\skip60
+\aftertitleunit=\skip61
+\ttl@plus=\dimen186
+\ttl@minus=\dimen187
+\ttl@toksa=\toks40
+\titlewidth=\dimen188
+\titlewidthlast=\dimen189
+\titlewidthfirst=\dimen190
+)
+(/opt/local/share/texmf-texlive/tex/latex/tools/afterpage.sty
+Package: afterpage 2014/10/28 v1.08 After-Page Package (DPC)
+\AP@output=\toks41
+\AP@partial=\box61
+\AP@footins=\box62
 )))
 
 LaTeX Warning: Unused global option(s):
@@ -457,17 +612,17 @@ LaTeX Font Info:    ... okay on input line 4.
 
 (/opt/local/share/texmf-texlive/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count121
-\scratchdimen=\dimen166
-\scratchbox=\box39
-\nofMPsegments=\count122
-\nofMParguments=\count123
-\everyMPshowfont=\toks40
-\MPscratchCnt=\count124
-\MPscratchDim=\dimen167
-\MPnumerator=\count125
-\makeMPintoPDFobject=\count126
-\everyMPtoPDFconversion=\toks41
+\scratchcounter=\count126
+\scratchdimen=\dimen191
+\scratchbox=\box63
+\nofMPsegments=\count127
+\nofMParguments=\count128
+\everyMPshowfont=\toks42
+\MPscratchCnt=\count129
+\MPscratchDim=\dimen192
+\MPnumerator=\count130
+\makeMPintoPDFobject=\count131
+\everyMPtoPDFconversion=\toks43
 ) (/opt/local/share/texmf-texlive/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -527,110 +682,318 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 9.
 
 (/opt/local/share/texmf-texlive/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) [1
+)
+Underfull \hbox (badness 10000) in paragraph at lines 14--17
+
+ []
+
+
+LaTeX Warning: Citation `gander2016analysis' on page 1 undefined on input line 
+62.
+
+
+LaTeX Warning: Citation `gander2016analysis' on page 1 undefined on input line 
+62.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 62--66
+
+ []
+
+[1
 
 
 {/opt/local/var/db/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+Underfull \hbox (badness 10000) in paragraph at lines 114--117
 
-LaTeX Warning: Citation `gander2016analysis' on page 2 undefined on input line 
-58.
-
-
-LaTeX Warning: Citation `gander2016analysis' on page 2 undefined on input line 
-58.
+ []
 
 
-! Package pgfkeys Error: I do not know the key '/tikz/cross out' and I am going
- to ignore it. Perhaps you misspelled it.
+! LaTeX Error: File `images/implementation/sol_heat_eqn_interpol' not found.
 
-See the pgfkeys package documentation for explanation.
+See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.69 	\node [cross out]
-                        at (1,1);
-This error message was generated by an \errmessage
-command, so I can't give any explicit help.
-Pretend that you're Hercule Poirot: Examine all clues,
-and deduce the truth by order and method.
+l.133 ...ges/implementation/sol_heat_eqn_interpol}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
 
 
-! Package tikz Error: A node must have a (possibly empty) label text.
+Package Fancyhdr Warning: \headheight is too small (0.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
 
-See the tikz package documentation for explanation.
+[2] [3]
+
+! LaTeX Error: File `images/implementation/contour_plot_1_blk_size1by1' not fou
+nd.
+
+See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.69 	\node [cross out] at (1,1);
-                                 
-(That was another \errmessage.)
+l.190 ...plementation/contour_plot_1_blk_size1by1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 85--88
+! LaTeX Error: File `images/implementation/contour_plot_1_blk_size3by4' not fou
+nd.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.198 ...plementation/contour_plot_1_blk_size3by4}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: Citation `adams2001distributed' on page 4 undefined on input lin
+e 202.
+
+[4]
+
+! LaTeX Error: File `images/implementation/contour_plot_1_lineSm' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.245 ...ges/implementation/contour_plot_1_lineSm}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [5]
+
+LaTeX Warning: Citation `briggs2000multigrid' on page 6 undefined on input line
+ 268.
+
+
+! LaTeX Error: File `images/implementation/poisson/test_case_1_conv_plot' not f
+ound.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.292 ...ementation/poisson/test_case_1_conv_plot}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `images/implementation/poisson/test_case_2_conv_plot' not f
+ound.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.293 ...ementation/poisson/test_case_2_conv_plot}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[6]
+Underfull \hbox (badness 10000) in paragraph at lines 303--307
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 92--96
+Underfull \hbox (badness 10000) in paragraph at lines 308--310
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 92--96
+LaTeX Warning: No positions in optional float specifier.
+               Default added (so using `tbp') on input line 312.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 371--375
 
  []
 
-[2]
-Overfull \hbox (3.59738pt too wide) detected at line 132
-[][]
+
+! LaTeX Error: File `images/implementation/c2_comparison/res_norm' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.390 ...es/implementation/c2_comparison/res_norm}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `images/implementation/c2_comparison/conv_rate' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.391 ...s/implementation/c2_comparison/conv_rate}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[7] [8]
+
+! LaTeX Error: File `images/implementation/eigenvalues/eigenvalues_11by11elem' 
+not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.439 ...ation/eigenvalues/eigenvalues_11by11elem}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `images/implementation/eigenvalues/eigenvalues_24by44elem' 
+not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.440 ...ation/eigenvalues/eigenvalues_24by44elem}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: Citation `deuflhard2011adaptive' on page 9 undefined on input li
+ne 461.
+
+
+! LaTeX Error: File `images/implementation/sol_d0_001_1by20_20by40elem' not fou
+nd.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.466 ...plementation/sol_d0_001_1by20_20by40elem}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `images/implementation/sol_d0_003_1by20_20by40elem' not fou
+nd.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.467 ...plementation/sol_d0_003_1by20_20by40elem}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[9]
+Underfull \hbox (badness 10000) in paragraph at lines 508--552
+
  []
 
+[10]
 
-Underfull \hbox (badness 10000) in paragraph at lines 134--137
+! LaTeX Error: File `images/implementation/lin_hessian/subsets_on_sol' not foun
+d.
 
- []
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.575 ...mplementation/lin_hessian/subsets_on_sol}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
 
-[3]
-Underfull \hbox (badness 10000) in paragraph at lines 208--218
 
- []
+! LaTeX Error: File `images/implementation/lin_hessian/res_norm' not found.
 
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 233.
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.576 ...ages/implementation/lin_hessian/res_norm}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
 
-(/opt/local/share/texmf-texlive/tex/latex/base/omscmr.fd
-File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 233.
- [4]
-(./implementation.aux)
+[11] [12] (./implementation.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 12845 strings out of 494108
- 249878 string characters out of 6155655
- 387754 words of memory out of 5000000
- 15951 multiletter control sequences out of 15000+600000
- 11065 words of font info for 41 fonts, out of 8000000 for 9000
+ 15877 strings out of 494108
+ 334733 string characters out of 6155655
+ 508946 words of memory out of 5000000
+ 18872 multiletter control sequences out of 15000+600000
+ 10758 words of font info for 40 fonts, out of 8000000 for 9000
  430 hyphenation exceptions out of 8191
- 64i,14n,56p,1896b,639s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 64i,15n,78p,2184b,641s stack positions out of 5000i,500n,10000p,200000b,80000s
 </opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx10.pfb></o
 pt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb></opt/lo
 cal/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/local/s
 hare/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi10.pfb></opt/local/share/
-texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi8.pfb></opt/local/share/texmf-
-texlive/fonts/type1/public/amsfonts/cm/cmr10.pfb></opt/local/share/texmf-texliv
-e/fonts/type1/public/amsfonts/cm/cmr6.pfb></opt/local/share/texmf-texlive/fonts
-/type1/public/amsfonts/cm/cmr8.pfb></opt/local/share/texmf-texlive/fonts/type1/
-public/amsfonts/cm/cmsy10.pfb></opt/local/share/texmf-texlive/fonts/type1/publi
-c/amsfonts/cm/cmsy8.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsf
-onts/cm/cmti10.pfb>
-Output written on implementation.pdf (4 pages, 135480 bytes).
+texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi6.pfb></opt/local/share/texmf-
+texlive/fonts/type1/public/amsfonts/cm/cmmi8.pfb></opt/local/share/texmf-texliv
+e/fonts/type1/public/amsfonts/cm/cmr10.pfb></opt/local/share/texmf-texlive/font
+s/type1/public/amsfonts/cm/cmr6.pfb></opt/local/share/texmf-texlive/fonts/type1
+/public/amsfonts/cm/cmr8.pfb></opt/local/share/texmf-texlive/fonts/type1/public
+/amsfonts/cm/cmsy10.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsf
+onts/cm/cmsy6.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/c
+m/cmsy8.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti
+10.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/symbols/msbm
+10.pfb>
+Output written on implementation.pdf (12 pages, 205250 bytes).
 PDF statistics:
- 64 PDF objects out of 1000 (max. 8388607)
- 46 compressed objects within 1 object stream
+ 102 PDF objects out of 1000 (max. 8388607)
+ 73 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 

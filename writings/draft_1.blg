@@ -11,45 +11,45 @@ Warning--I didn't find a database entry for "lions2001resolutionions2001resoluti
 Warning--empty journal in evans2010partial
 Warning--empty journal in gander1996overlapping
 Warning--empty journal in gander1999optimal
-You've used 25 entries,
+You've used 28 entries,
             1876 wiz_defined-function locations,
-            621 strings with 7079 characters,
-and the built_in function-call counts, 6081 in all, are:
-= -- 621
-> -- 176
+            633 strings with 7364 characters,
+and the built_in function-call counts, 6547 in all, are:
+= -- 666
+> -- 192
 < -- 0
-+ -- 71
-- -- 46
-* -- 384
-:= -- 823
-add.period$ -- 33
-call.type$ -- 25
++ -- 78
+- -- 50
+* -- 405
+:= -- 891
+add.period$ -- 39
+call.type$ -- 28
 change.case$ -- 17
 chr.to.int$ -- 0
-cite$ -- 28
-duplicate$ -- 321
-empty$ -- 653
-format.name$ -- 46
-if$ -- 1521
+cite$ -- 31
+duplicate$ -- 346
+empty$ -- 713
+format.name$ -- 50
+if$ -- 1641
 int.to.chr$ -- 0
-int.to.str$ -- 25
-missing$ -- 31
-newline$ -- 86
-num.names$ -- 24
-pop$ -- 108
+int.to.str$ -- 28
+missing$ -- 37
+newline$ -- 98
+num.names$ -- 27
+pop$ -- 124
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 204
+skip$ -- 210
 stack$ -- 0
 substring$ -- 390
-swap$ -- 116
+swap$ -- 119
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 3
-while$ -- 60
-width$ -- 27
-write$ -- 241
+while$ -- 63
+width$ -- 30
+write$ -- 270
 (There were 6 warnings)
