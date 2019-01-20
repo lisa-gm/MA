@@ -4,12 +4,14 @@
 
 \chapter{Discretisation and Solution Methods}
 
-We will begin this chapter by briefly introducing finite element methods and before particularly focusing on least squares finite element methods. The subsequent sections will then give a general overview of space-time solution methods, before going into more detail about the methodology applied in this thesis. Before finally discussing nonlinear iteration schemes. While these concepts or methods are introduced separately here, we will use chapter 4 to tie them together in a \textit{comprehensive} solver.
+We will begin this chapter by briefly introducing finite element methods and before particularly focusing on least squares finite element approaches. Afterwards we will present a general overview of space--time solution methods, before going into more detail about the particular approach applied in this thesis. Last but not least we will discuss different strategies to tackle the nonlinearity of the problem. While these concepts or methods are introduced separately here, we will use chapter 4 to tie them together in a \textit{comprehensive} solver.
 
 
 \section{Finite Element Methods}
 
-In order to find a numerical estimate to the solution of a partial differential equation we need a way to approximate the operators involved. And while there are many different ideas of how to do so the one we have chosen to employ is a finite element approach, as they have shown to be one of the most powerful and versatile methodologies for the problem at hand \cite{bochev2009least}. The purpose of the subsequent section is not to establish the whole finite element framework from scratch but rather to provide the introduction of a unified notation that will be referred to throughout this thesis and a recollection of the most important properties needed. Anything else would be far beyond the scope this thesis, as a full description of the underlying mathematical constructions can quickly become rather involved but we would like to refer to \cite{evans2010partial} or \textit{[good finite element specific source?!]} for a comprehensive \textit{discussion} of the topic. 
+In order to find a numerical estimate to the solution of a partial differential equation we need a way to approximate the operators involved. And while there are many different ideas of how to do so the one we have chosen to employ is a finite element approach, as they have shown to be one of the most powerful and versatile methodologies for the problem at hand \cite{bochev2009least}. The subsequent section introduces the tools required for the usage of finite elements as well as a suitable notation that we will rely on for the rest of this thesis. For a more comprehensive overview of the topic we refer to \cite{evans2010partial} or \textit{[good finite element specific source?!]}, whereas this section as well as the next one is losely based on \cite{bochev2009least}.
+
+%The purpose of the subsequent section is not to establish the whole finite element framework from scratch but rather to provide the introduction of a unified notation that will be referred to throughout this thesis and a recollection of the most important properties needed. Anything else would be far beyond the scope this thesis, as a full description of the underlying mathematical constructions can quickly become rather involved but we would like to refer to  for a comprehensive \textit{discussion} of the topic. 
 
 %"a fem is first and foremost a quasi-projection scheme. ... approximate solutions are then characterized as quasi-projections of the exact (weak) solutions onto the closed subspace.
 
@@ -17,39 +19,42 @@ In order to find a numerical estimate to the solution of a partial differential 
 
 \subsection{Variational Formulation}
 
-The foundation of every finite element formulation is finding an appropriate weak formulation which includes the choice of suitable trial and solution spaces. This is especially applicable in the case of a least squares approach and will be discussed in further detail in section [...]. 
+The foundation of every finite element formulation is finding an appropriate weak formulation which includes the choice of suitable trial and solution spaces. This is especially applicable in the case of a least squares approach and will be discussed in further detail in section (3.2). 
 
 Given Banach spaces $X$ and $Y$, a bounded linear operator $\mathcal{A} : X \rightarrow Y$, $f \in Y$, we consider the problem:
 \begin{ceqn}
 \begin{align}
+\label{basic_strong_form}
 \text{Find } u \in X \text{ such that } \quad \mathcal{A} u = f \text{ in } Y.
 \end{align}
 \end{ceqn}
 
-We are interested in the case where $\mathcal{A}$ represents a partial differential operator. As mentioned before the process of discretisation begins with turning (3.6) into a suitable variational equation which is defined in terms of two Hilbert spaces $V$ and $W$, a continuous bilinear form $a(\cdot, \cdot): V \times W \rightarrow \mathbb{R}$, and a bounded linear functional $L_f(\cdot): W \rightarrow \mathbb{R}$ and is given by
+We are interested in the case where $\mathcal{A}$ represents a partial differential operator. As mentioned before the process of discretisation begins with turning (\ref{basic_strong_form}) into a suitable variational equation, which we assume to be defined in terms of a Hilbert space $U$, a continuous bilinear form $a(\cdot, \cdot): U \times U \rightarrow \mathbb{R}$, and a bounded linear functional $L_f(\cdot): U \rightarrow \mathbb{R}$ and can be written as follows
 \begin{ceqn}
 \begin{equation}
 \begin{aligned}
-\text{Find } u \text{ in } V \text{ such that:  } a(u, v) = L_f(v) \quad \forall v \in V
+\label{basic_weak_form}
+\text{Find } u \in U \text{ such that:  } a(u, v) = L_f(v) \quad \forall v \in U
 \end{aligned}
 \end{equation}
 \end{ceqn}
-An operator equation such as (3.6) may be reformulated into several different variational equations. We can see that we were originally seeking for a solution $u$ in the space $X$ whereas in the weak formulation one attempts to find a solution in the space $V$, and which generally doesnt lie in $X$, and is therefore often referred to as a weak solution. Hence the relationship between the spaces $X, Y$ and $V, W$, and the operator $\mathcal{A}$ and the bilinear form $a(\cdot, \cdot)$ are of great importance, and while one generally wants the solution of the variational formulation (3.7) to be a "good" representation of the solution of the original problem (3.6), the definition of what that exactly means varies and usually depends on the nature of the problem and often some practicality issues. One possibility could be ... or too much? Therefore we have denoted them by the same letter but to be precise the solution $u$ appearing in the subsequent paragraphs will always be referring to $u \in V$, because our aim now is to solve the variational formulation.
-
-So let us assume for now that we have found a suitable weak formulation of the operator equation where trial and test space are equal, that is $V = W$. In addition to $a(\cdot, \cdot)$ being linear and bounded, which is equivalent to the continuity, we will also require it to be symmetric, hence we have more specifically that
-\bigskip
-\\
-$a(v_1, v_2) = a(v_2, v_1)$ for all  $v_1, v_2 \in V$ (symmetry) \\
-$a(v_1, v_2) \leq \beta \|v_1\|_V \cdot \|v_2\|_V $, for all $v_1, v_2 \in V$ and $\beta > 0$ (boundedness) \\ $a(v_1, v_1) \geq \alpha \|v_1\|_V^2$, for all $v_1 \in V$ and $\alpha > 0$ (coercivity)
-\bigskip
-\\
-and $f \in V^*$, the dual space of $V$. Furthermore let us have homogeneous Dirichlet boundary conditions, that is $u = v = 0$ on $\partial \Omega$. Then by \textit{Riesz representation theorem/Lax-Milgram} we obtain that there exists a unique solution $u \in V$ that solves (2.2). And additionally the existence of an operator $\tilde{\mathcal{A}} : V \rightarrow V^*$ given by
+An operator equation such as (\ref{basic_strong_form}) may be reformulated into several different variational equations. We can see that we were originally seeking for a solution $u$ in the space $X$ whereas in the weak formulation one attempts to find a solution in the space $U$, which generally does not lie in $X$, as $U$ is less restrictive. However the relationship between the spaces of the strong and the weak form, and the operator $\mathcal{A}$ and the bilinear mapping $a(\cdot, \cdot)$ are of great importance, and while one generally wants the solution of the variational formulation (\ref{basic_weak_form}) to be a "good" representation of the solution of the original problem (\ref{basic_strong_form}), the definition of what that exactly means varies and usually depends on the nature of the problem, the overall objective, and often some practicality issues. So let us assume for now that we have found a suitable weak formulation of the operator equation (\ref{basic_strong_form}), and where for $a(\cdot, \cdot)$ it additionally holds that 
+\begin{ceqn}
+	\begin{equation}
+	\begin{aligned}
+	&a(v_1, v_2) = a(v_2, v_1), \qquad \ \ \quad \text{ for all } v_1, v_2 \in U \quad &\text{(symmetry)} \\
+	&a(v_1, v_2) \leq \beta \|v_1\|_V \cdot \|v_2\|_V , \ \  \text{ for all } v_1, v_2 \in U \text{ and } \beta > 0 &\text{ (boundedness)} \\
+    &a(v_1, v_1) \geq \alpha \|v_1\|_V^2, \qquad \quad \quad  \text{ for all } v_1 \in U \text{ and } \alpha > 0 &\text{ (coercivity)}
+	\end{aligned}
+	\end{equation}	
+	\end{ceqn}
+as well as that $f \in U^*$, the dual space of $U$. Then by the \textit{theorem of Lax-Milgram} we obtain the existence and uniqueness of a solution $u \in U$ of the variational formulation (\ref{basic_weak_form}). We furthermore have that $a(\cdot, \cdot)$ induces a norm on $U$, as it fulfills all properties of being an innerproduct. Through \textit{Riesz representation theorem}, which is used to prove the theorem of Lax-Milgram we additionally obtain the existence of an operator $\tilde{\mathcal{A}} : U \rightarrow U^*$ given by
 \begin{ceqn}
 \begin{align}
-a(u,v) = \langle \tilde{\mathcal{A}} u, v \rangle_{V^*, V} \quad \forall u, v \in V
+a(u,v) = \langle \tilde{\mathcal{A}} u, v \rangle_{U^*, U} \quad \forall u, v \in U
 \end{align}
 \end{ceqn}
-where $\langle \cdot, \cdot \rangle$ denotes the duality pairing (more...) between $V$ and its dual space $V*$. Likewise we obtain for $L_f(\cdot)$ the existence of an unique (!) element $\tilde{f}$ through the relation
+where $\langle \cdot, \cdot \rangle_{U^*, U}$ denotes the duality pairing between $U$ and its dual space $U*$ \textit{should i explain more, or okay like that?}. Likewise we obtain for $L_f(\cdot)$ the existence of an unique element $\tilde{f}$ through the relation
 \begin{ceqn}
 \begin{align}
 L_f(v) = \langle \tilde{f}, v \rangle_{V^*, V} \quad \forall v \in V
@@ -58,21 +63,23 @@ L_f(v) = \langle \tilde{f}, v \rangle_{V^*, V} \quad \forall v \in V
 The variational formulation is therefore equivalent to the problem 
 \begin{ceqn}
 \begin{align}
-\text{Find } u \in V \text{ such that } \quad \tilde{\mathcal{A}} u = \tilde{f} \quad  \text{in } W^*
+\text{Find } u \in V \text{ such that } \quad \tilde{\mathcal{A}} u = \tilde{f} \quad  \text{in } V^*
 \end{align}
 \end{ceqn}
-In the special case that $X = U$ and $Y = W^*$ we have that $ \mathcal{A} = \tilde{\mathcal{A}}$ and $ f = \tilde{f}$ but this is generally not the case. 
+In the special case that $X = U$ and $Y = V^*$ we have that $ \mathcal{A} = \tilde{\mathcal{A}}$ and $ f = \tilde{f}$ but this is generally not the case. \\
+\textit{write more? dont really need this section here, but nice to refer back to it later in lsfem, or cut in both?} 
 
 \subsection{Galerkin Approach}
-A key element to actually finding a good approximation $u^h$ of $u$ is to choose a suitable finite dimensional (sub)space $V_h$ where we search for the solution. We will consider a \textit{Galerkin approach}, where we indeed have $V_h \subset V$, which itself is again a Hilbert space and therefore the projected finite dimensional problem called Galerkin equation looks as follows
+In order to actually find a good approximation $u^h$ of the unique solution $u$ one chooses a suitable finite dimensional subspace $U_h$ of $U$, where we search for a solution to the problem. Each subspace of a Hilbert space is again a Hilbert space itself and therefore the projected finite dimensional problem called Galerkin equation looks as follows
 \begin{ceqn}
 \begin{equation}
 \begin{aligned}
-\text{Find } u_h \text{ in } V_h \text{ such that:  } a(u_h, v_h) = L_f(v_h) \quad \forall v_h \in V_h
+\label{finite_dim_basic_weak_form}
+\text{Find } u_h \text{ in } U_h \text{ such that:  } a(u_h, v_h) = L_f(v_h) \quad \forall v_h \in U_h.
 \end{aligned}
 \end{equation}
 \end{ceqn}
-and has a unique solution itself. Since (2.2) holds for all $v \in V$ it also holds for all $v \in V_h$, and hence $a(u-u_h, v_h) = 0$, a key property known as Galerkin orthogonality. With respect to the energy norm induced by $a(\cdot, \cdot)$, $u_h$ is a best approximation to $u$, in the sense that 
+By the theorem of Lax-Milgram it also has a unique solution. And since (\ref{basic_weak_form}) holds for all $v \in U$, it also holds for all $v \in U_h$, and hence $a(u-u_h, v_h) = 0$, which we obtain by subtracting equation (\ref{finite_dim_basic_weak_form}) from (\ref{basic_weak_form}), a key property known as Galerkin orthogonality. With respect to the energy norm induced by $a(\cdot, \cdot)$, the finite dimensional solution $u_h$ is a best approximation to $u$, in the sense that 
 \begin{ceqn}
 \begin{equation}
 \begin{aligned}
@@ -81,28 +88,30 @@ and has a unique solution itself. Since (2.2) holds for all $v \in V$ it also ho
 \end{aligned}
 \end{equation}
 \end{ceqn}
-We derive the third term from the second by using the Galerkin orthogonality. If we now divide both sides by $\| u - u_h\|_a$, we obtain that $\| u - u_h \|_a \leq \| u -v_h\|_a$ for all $v_h \in V_h$. We also have an estimate on $u - u_h$ in terms of the  norm $\| \cdot \|_V$. Using the coercivity constant $\alpha$ and the bound from above $\beta$, we see that
+We derive the third term from the second by using the Galerkin orthogonality. If we now divide both sides by $\| u - u_h\|_a$, we obtain that $\| u - u_h \|_a \leq \| u -v_h\|_a$ for all $v_h \in V_h$. We also can also have an estimate on $u - u_h$ in terms of the norm $\| \cdot \|_U$, by using the coercivity constant $\alpha$ and the bound from above $\beta$, we see that
 \begin{ceqn}
 \begin{equation}
 \begin{aligned}
+\label{approx_property}
 \alpha \| u - u_h \|_V^2 \leq& \ a(u-u_h, u-u_h) = a(u-u_h, u- u_h) = a(u-u_h, u +v_h - v_h - u_h ) \\
 =& \ a(u-u_h, u - v_h) + a(u - u_h, v_h - u_h) = a(u-u_h, u - v_h) \\
 \leq& \ \beta \| u - u_h \|_V \cdot \| u - v_h\|_V  \quad \forall v_h \in V_h.
 \end{aligned}
 \end{equation}
 \end{ceqn}
-Dividing by $\alpha \| u - u_h \| $ we have shown \textit{C\'{e}a's lemma}, which states that (accuracy ... constant thing):
+Dividing by $\alpha \| u - u_h \| $ we have shown \textit{C\'{e}a's lemma}, which states that
 \begin{ceqn}
 \begin{equation}
 \begin{aligned}
-\| u - u_h \|_V \leq \inf_{v_h \in V_h} \frac{\beta}{\alpha} \| u - v_h \|_V, \quad u \in V, u_h \in V_h
+\label{ceas_lemma}
+\| u - u_h \|_U \leq \inf_{v_h \in U_h} \frac{\beta}{\alpha} \| u - v_h \|_V, \quad u \in U, u_h \in U_h
 \end{aligned}
 \end{equation}
 \end{ceqn}
-where $u$ is the solution to (2.2) and $u_h$ to the corresponding finite dimensional problem (2.3). Hence accuracy of our approximation depends in this case on the constants $\alpha$ and $\beta$. 
+Hence accuracy of our approximation depends in this case on the constants $\alpha$ and $\beta$. 
 \bigskip
 \\ 
-If we assume that we have a discretisation $\Omega_h$ of our domain $\Omega$, where $h > 0$ is a parameter depending on the mesh size.  We furthemore want to assume that as $h$ tends to zero this implies that $dim(V_h) \Rightarrow \infty$. Additionally let $\{V_h : h > 0\}$ denote a family of finite dimensional subspaces of V, for which we assume that
+If we assume that we have a discretisation $\Omega_h$ of our domain $\Omega$, where $h > 0$ is a parameter depending on the mesh size and for which we have that as $h$ tends to zero this implies that $dim(V_h) \Rightarrow \infty$. Additionally let $\{V_h : h > 0\}$ denote a family of finite dimensional subspaces of V, for which we assume that
 \begin{ceqn}
 \begin{equation}
 \begin{aligned}
@@ -110,25 +119,27 @@ If we assume that we have a discretisation $\Omega_h$ of our domain $\Omega$, wh
 \end{aligned}
 \end{equation}
 \end{ceqn}
-That is with a mesh size tending to zero there exist increasingly precise approximations for every $v \in V$, whose infimum tends to zero as the mesh size does. But then we can also conclude by  the beforementioned properties (3.24) and (3.25) that $\| u - u_h\|_V \rightarrow 0 \text{ as } h \rightarrow 0$. Hence our approximate solution $u_h$ will converge to the weak solution $u$. 
+That is with a mesh size tending to zero there exist increasingly precise approximations for every $v \in V$, whose infimum tends to zero as the mesh size does. Then we can also conclude by the beforementioned properties (\ref{approx_property}) and (\ref{ceas_lemma}) that $\| u - u_h\|_V \rightarrow 0 \text{ as } h \rightarrow 0$. Hence in this setting the approximate finite--dimensional solution $u_h$ will converge to the weak solution $u$. 
 
 \subsection{Matrix Formulation}
-After establishing these theoretical properties our aim is now to construct a linear system of equations that can be solved efficiently. Since $V_h$ is a finite dimensional Hilbertspace, it has a countable basis $\{\phi_1, \phi_2, ..., \phi_n \}$ and we can write every element in $V_h$ as a linear combination of such, that is we also have $u_h = \sum_{j=1}^{n} u_j \phi_j$, where $u_1, ..., u_n$ are constant coefficients. Writing (3.21) in terms of the basis we obtain by linearity
+After establishing the theoretical properties of the finite--dimensional problem our aim is now to recast it in a linear system of equations that can be solved efficiently. Since $V_h$ is a finite dimensional Hilbert space, it has a countable basis $\{\phi_1, \phi_2, ..., \phi_n \}$ and we can write every element in $V_h$ as a linear combination this basis, that is we have $u_h = \sum_{j=1}^{n} u_j \phi_j$, where $u_1, ..., u_n$ are constant coefficients. Writing (\ref{finite_dim_basic_weak_form}) in terms of this basis we obtain by linearity
 \begin{ceqn}
 \begin{equation}
 \begin{aligned}
-a(\sum_{j=1}^{n} u_j \phi_j, \phi_i) = \sum_{j=1}^{n} u_j a(\phi_j, \phi_i) = L_f(\phi_i) \quad \forall \phi_i, \ i = 1, 2, ..., n 
+a(\sum_{j=1}^{n} u_j \phi_j, \phi_i) = \sum_{j=1}^{n} u_j a(\phi_j, \phi_i) = L_f(\phi_i) \quad \forall \ \phi_i, \ i = 1, 2, ..., n 
 \end{aligned}
 \end{equation}
 \end{ceqn}
-If we now write this as a system of the form $A_h u_h = L_h$ with entries entries $(A_h)_{ij} = a(\phi_j, \phi_i)$, $(L_h)_i = L_f(\phi_i)$, then this becomes a linear system of equations which we can solve for an unknown vector $u_h$, where each matrix entry represents the evaluation of an integral expression. The question of how to choose favorable subspaces $V_h$, and a suitable basis for it has no trivial answer and depends on many factors and goes hand in hand with the question of how to best discretise the domain. Generally it seems like a sensible aim to opt for easily computable integrals giving rise to a linear system that is in turn as easy as possible to solve. Hence one objective might be to choose the basis $\{\phi_1, ..., \phi_n \}$ such that $supp(\phi_i) \cap supp(\phi_j) = \emptyset$ for as many pairs $(i,j)$ as possible. Since this would ideally give rise to a sparse system of equations. It is also worth noting that due to the symmetry of $a(\cdot, \cdot)$, we have that $a_{ij} = a_{ji}$.
+If we now write this as a system of the form $A u_h = L_h$ with entries entries $A_{ij} = a(\phi_j, \phi_i)$, $(L_h)_i = L_f(\phi_i)$, then this becomes a linear system of equations which we can solve for the unknown vector $u_h$, where each matrix entry represents the evaluation of an integral expression. The question of how to choose favorable subspaces $V_h$, and a suitable basis for it has no trivial answer and depends on many factors and goes hand in hand with the question of how to best discretise the domain. Generally it seems like a sensible aim to opt for easily computable terms giving rise to a linear system that is in turn as easy as possible to solve.
 \smallskip
 \\
-Depending on the operator $\mathcal{A}$, there is not necessarily a straight forward way to translate a strong formulation, that is a problem of the type (...), into a symmetric variational formulation, that is a symmetric bilinear form $a(\cdot, \cdot)$, which can subsequently be restricted to finite-dimensional subspaces and where we search for approximate solutions. However one possibility is through the differentiation of certain energy functionals, because we know by the theorem of Schwarz that order of differentiation with respect to partial derivatives is interchangeable and therefore leads to symmetry. How to construct these functional to be related to particular differential equations will be discussed in the following section.
+Depending on the operator $\mathcal{A}$ from equation (\ref{basic_strong_form}), there is not necessarily a straight forward way to translate the strong formulation into a symmetric variational formulation, that is a symmetric bilinear mapping $a(\cdot, \cdot)$, which will hence give rise to a symmetric linear system of equations. One strategy to enforce symmetry is through the formulation and subsequently the differentiation of particular energy functionals, because we know by the theorem of Schwarz that order of differentiation with respect to partial derivatives is interchangeable and therefore leads to a symmetric Hessian. Hence if the operator $a(\cdot, \cdot)$ was somehow induced by a second order derivative it would have to be symmetric. How to construct these functionals such that they are related to the differential equation problem at hand will be discussed in the following section.
 
 \section{Least Squares Finite Element Methods}
 
-In this section which is based on (\cite{bochev2009least}, mainly ch. 2.1) we would like to introduce least squares finite element methods (LSFEMs), a class of methods for finding the numerical solution of partial differential equations that is based on the minimisation of functionals which are constructed from residual equations. Historically finite element methods were first developed and analysed for problems like linear elasticity whose solutions describe minimisers for convex, quadratic functionals over infinite dimensional Hilbert spaces and therefore emerged in an optimisation setting. A Rayleigh-Ritz approximation of solutions of such problems is then found by minimising the functional over finite dimensional subspaces. For these classical problems the Rayleigh-Ritz setting gives rise to formulations that have a variety of favourable features and therefore have been and continue being highly successful.  Among those are that:
+In this section 
+%which is based on (\cite{bochev2009least}, mainly ch. 2.1) 
+we would like to introduce least squares finite element methods (LSFEMs), a class of methods for finding the numerical solution of partial differential equations that is based on the minimisation of functionals which are constructed from residual equations. Historically finite element methods were first developed and analysed for problems like linear elasticity whose solutions describe minimisers for convex, quadratic functionals over infinite dimensional Hilbert spaces and therefore emerged in an optimisation setting. A Rayleigh-Ritz approximation of solutions of such problems is then found by minimising the functional over finite dimensional subspaces. For these classical problems the Rayleigh-Ritz setting gives rise to formulations that have a variety of favourable features and therefore have been and continue being highly successful.  Among those are that:
 
 \begin{enumerate}
 	\item \textit{general} domains and boundary conditions can be treated relatively easily in a systematic way 

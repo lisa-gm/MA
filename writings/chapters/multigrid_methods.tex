@@ -6,7 +6,65 @@
 
 \section{Core Ideas}
 %%% MAINLY TAKEN FROM BRIGGS CHAPTER 3
-Multigrid Methods are an important class of algorithms to iteratively approximate linear systems of equations of the form $Au = f$ where $A \in \mathbb{R}^n$ is usually a sparse symmetric positive definite matrix, that arises from the discretisation of a differential equation. They were first developed in the early 1960s by the soviet mathematicians Fedorenko and Bachlwalow but only became more well-known and \textit{developed} in the late 1970s through the works of Hackbusch \cite{hackbusch2013multi} and Brandt \cite{brandt1977multi}. The core idea behind them is to approximate the error between an estimate and the unknown actual solution "on different frequencies". Zerlegung. Due to the structure of the matrix of discretised differential equations we only have a local transport of information, therefore simple iterative solvers such as a Jacobi or Gauss-Seidel method damp high frequency components of the error fastest, which leads to a much smoother, lower frequency error after only a few iterations. However the low frequency error on the fine grid becomes high frequency error on the coarse grid and can therefore be damped there more efficiently also applying a smoother there. That is the usage of coarser grids accelarates the transport of low frequency error across the discretised domain. Additionally the coarser grids have significantly less degrees of freedom which makes them computationally much cheaper to handle, until we can solve the problem directly on the coarsest grid. The key is to then restrict and interpolate effectively between the series of nested grids to approximate the error the current and the actual solution. 
+Multigrid Methods are an important class of algorithms to iteratively approximate linear systems of equations of the form
+ \begin{ceqn}
+ 	\begin{align}
+ 	\label{lin_system}
+ Au = f 
+ 	\end{align}
+\end{ceqn}
+
+ where $A \in \mathbb{R}^{m \times m}$ is usually a sparse symmetric positive definite matrix, that arises from the discretisation of a differential equation on a discretised domain $\Omega$. They were first developed in the early 1960s by the soviet mathematicians Fedorenko and Bachlwalow but only became more well-known and further developed in the late 1970s through the works of Hackbusch \cite{hackbusch2013multi} and Brandt \cite{brandt1977multi}.
+\smallskip
+\\
+\textbf{Remark:} Here $u$ now denotes the solution to a discretised problem, and has in previous chapters been called $u^h$ as from now on we will only be dealing with the finite dimensional approximation, and therefore for brevity we will drop the superscript $h$, as we will now have iterative solutions denoted by $k$. Similarly $\Omega$ now denotes the discretised domain.
+\smallskip
+\\
+There are different ways to motivate the construction of multigrid algorithms. One of them is to start from an iteration built on approximating solutions of the residual equation. That is for any approximation $u^k$ of (\ref{lin_system}), we denote the error $e^k$, the residual or defect $r^k$ and the overall iteration called defect equation by
+\begin{ceqn}
+	\begin{align}
+	e^k :=& u - u^k \\
+	r^k :=& f - Au^k \\
+	\label{defect_equation}
+	A e^k =& \ r^k	
+	\end{align}
+\end{ceqn}
+For now we have only rewritten equation (\ref{lin_system}), subtracting the term $Au^k$ on either side, as $A e^k = A( u - u^k) = f - Au^k$. However if $A$ is approximated by a "simpler" invertible operator $\hat{A}$, then the solution of 
+\begin{ceqn}
+	\begin{align}
+	\label{simple_system}
+\hat{A} \hat{e}^k = r^k
+	\end{align}
+\end{ceqn}
+gives us a new approximation 
+\begin{ceqn}
+	\begin{align}
+u^{k+1} := u^k + \hat{e}^k.
+	\end{align}
+\end{ceqn}
+That is we have a current iterate $u^k$, compute the residual $r^k$, solve the simpler system (\ref{simple_system}) and can hence compute a new iterate $u^{k+1}$. If we start from some initial iterate $u^0$, the consecutive application leads to an iterative procedure, with the iteration operator $M$ and the error iteration 
+\begin{ceqn}
+	\begin{align}
+&M = I - (\hat{A})^{-1} A \\
+&e^{k+1} = M e^k
+	\end{align}
+\end{ceqn}
+where $I$ stands for the identity operator. Hence the error reduction can be bounded from above by $\rho := \| M \|$ for one iteration, where it is worth noting that we can only be sure to converge at all if $\rho < 1$.  The question that arises now is how to construct an operator $\hat{A}$, that leads to a value of $\rho$ that is as small as possible and still simple to invert. 
+\smallskip 
+\\
+simple iteration scheme. 
+\smallskip
+\\
+One possibility to solve the defect equation approximately is to construct an approximation $A_C$ of $A$ on a coarser grid $\Omega_C$, such 
+\smallskip
+\\
+\textit{need to somehow introduce what they call $\mathcal{G}(\Omega)$}
+\smallskip
+\\
+Coarse grid correction by itself not effective as .... 
+\smallskip
+\\
+The core idea behind them is to approximate the error between an estimate and the unknown actual solution "on different frequencies". Zerlegung. Due to the structure of the matrix of discretised differential equations we only have a local transport of information, therefore simple iterative solvers such as a Jacobi or Gauss-Seidel method damp high frequency components of the error fastest, which leads to a much smoother, lower frequency error after only a few iterations. However the low frequency error on the fine grid becomes high frequency error on the coarse grid and can therefore be damped there more efficiently also applying a smoother there. That is the usage of coarser grids accelarates the transport of low frequency error across the discretised domain. Additionally the coarser grids have significantly less degrees of freedom which makes them computationally much cheaper to handle, until we can solve the problem directly on the coarsest grid. The key is to then restrict and interpolate effectively between the series of nested grids to approximate the error of the current and the actual solution. 
 \smallskip
 \\
 Through this combination of coarse grid correction and smoothing one obtains a fast, mesh-size independent convergence rate \textit{for elliptic problems} [source].
@@ -50,32 +108,31 @@ Hence we need the following main ingredients to construct a multigrid method wit
 	\begin{itemize}
 		\item do $\nu_{J_a}$ smoothing steps on $A^J u^J = f^J$ with initial guess $w^J$
 		\item compute $f^{J-1} = I_{J}^{J-1} r^J$
-		\item do $\nu_{J-1_a}$ smoothing steps on $A^{J-1} u^{J-1} = f^{J-1}$ with initial guess $w^{J-1} = 0$ (vector)
-		\item compute $f^{J-2} = I_{J-1}^{J-2} r^{J-1}$
-		\item do $\nu_{J-2_a}$ smoothing steps on $A^{J-2} u^{J-2} = f^{J-2}$ with initial guess $w^{J-2} = 0$ (vector)
-		\item compute $f^{J-3} = I_{J-2}^{J-3} r^{J-2}$
+		\begin{itemize}
+			\item do $\nu_{J-1_a}$ smoothing steps on $A^{J-1} u^{J-1} = f^{J-1}$ with initial guess $w^{J-1} = 0$ (vector)
+			\item compute $f^{J-2} = I_{J-1}^{J-2} r^{J-1}$
+			\begin{itemize}
+				\item do $\nu_{J-2_a}$ smoothing steps on $A^{J-2} u^{J-2} = f^{J-2}$ with initial guess $w^{J-2} = 0$ (vector)
+				\item compute $f^{J-3} = I_{J-2}^{J-3} r^{J-2}$
 		
 		... \\
 		...
-		
-		\item solve $A^0 u^0 = f^0$
-		
+				\begin{itemize}
+				\item solve $A^0 u^0 = f^0$
+				\end{itemize}	
 		... \\
 		...
 		
-		\item correct $w^{J-2} = w^{J-2} + I_{J-3}^{J-2} w^{J-3}$
-		\item do $\nu_{J-2_b}$ smoothing steps on $A^{J-2} u^{J-2} = f^{J-2}$ with initial guess $w^{J-2}$
+			\item correct $w^{J-2} = w^{J-2} + I_{J-3}^{J-2} w^{J-3}$
+			\item do $\nu_{J-2_b}$ smoothing steps on $A^{J-2} u^{J-2} = f^{J-2}$ with initial guess $w^{J-2}$
+			\end{itemize}	
 		\item correct $w^{J-1} = w^{J-1} + I_{J-2}^{J-1} w^{J-2}$
 		\item do $\nu_{{J-1}_b}$ smoothing steps on $A^{J-1} u^{J-1} = f^{J-1}$ with initial guess $w^{J-1}$		
+			\end{itemize}	
 		\item correct $w^{J} = w^{J} + I_{J-1}^{J} w^{J-1}$
 		\item do $\nu_{J_b}$ smoothing steps on $A^{J} u^{J} = f^{J}$ with initial guess $w^{J}$
 	\end{itemize}	
 \end{framed}
-
-
-picture V-cycle?
-
-
 
 \section{Convergence Properties and Complexity}
 
