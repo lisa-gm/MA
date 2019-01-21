@@ -20,7 +20,7 @@ Multigrid Methods are an important class of algorithms to iteratively approximat
 \textbf{Remark:} Here $u$ now denotes the solution to a discretised problem, and has in previous chapters been called $u^h$ as from now on we will only be dealing with the finite dimensional approximation, and therefore for brevity we will drop the superscript $h$, as we will now have iterative solutions denoted by $k$. Similarly $\Omega$ now denotes the discretised domain.
 \smallskip
 \\
-There are different ways to motivate the construction of multigrid algorithms. One of them is to start from an iteration built on approximating solutions of the residual equation. That is for any approximation $u^k$ of (\ref{lin_system}), we denote the error $e^k$, the residual or defect $r^k$ and the overall iteration called defect equation by
+There are different ways to motivate the construction of multigrid algorithms. One of them is to start from an iteration built on approximating solutions of the residual equation and is \textit{based on} \cite{trottenberg2000multigrid}. That is for any approximation $u^k$ of (\ref{lin_system}), we denote the error $e^k$, the residual or defect $r^k$ and the overall iteration called defect equation by
 \begin{ceqn}
 	\begin{align}
 	e^k :=& u - u^k \\
@@ -39,58 +39,57 @@ For now we have only rewritten equation (\ref{lin_system}), subtracting the term
 gives us a new approximation 
 \begin{ceqn}
 	\begin{align}
+	\label{update_correction}
 u^{k+1} := u^k + \hat{e}^k.
 	\end{align}
 \end{ceqn}
 That is we have a current iterate $u^k$, compute the residual $r^k$, solve the simpler system (\ref{simple_system}) and can hence compute a new iterate $u^{k+1}$. If we start from some initial iterate $u^0$, the consecutive application leads to an iterative procedure, with the iteration operator $M$ and the error iteration 
 \begin{ceqn}
 	\begin{align}
-&M = I - (\hat{A})^{-1} A \\
+&M = Id - (\hat{A})^{-1} A \\
 &e^{k+1} = M e^k
 	\end{align}
 \end{ceqn}
-where $I$ stands for the identity operator. Hence the error reduction can be bounded from above by $\rho := \| M \|$ for one iteration, where it is worth noting that we can only be sure to converge at all if $\rho < 1$.  The question that arises now is how to construct an operator $\hat{A}$, that leads to a value of $\rho$ that is as small as possible and still simple to invert. 
+where $Id$ stands for the identity operator. Hence the error reduction can be bounded from above by $\rho := \| M \|$ for one iteration, where it is worth noting that we can only be sure to converge at all if $\rho < 1$.  The question that arises now is how to construct an operator $\hat{A}$, that leads to a value of $\rho$ that is as small as possible and still simple to invert. 
 \smallskip 
 \\
 simple iteration scheme. 
 \smallskip
 \\
-One possibility to solve the defect equation approximately is to construct an approximation $A_C$ of $A$ on a coarser grid $\Omega_C$, such 
-\smallskip
-\\
-\textit{need to somehow introduce what they call $\mathcal{G}(\Omega)$}
-\smallskip
-\\
-Coarse grid correction by itself not effective as .... 
-\smallskip
-\\
-The core idea behind them is to approximate the error between an estimate and the unknown actual solution "on different frequencies". Zerlegung. Due to the structure of the matrix of discretised differential equations we only have a local transport of information, therefore simple iterative solvers such as a Jacobi or Gauss-Seidel method damp high frequency components of the error fastest, which leads to a much smoother, lower frequency error after only a few iterations. However the low frequency error on the fine grid becomes high frequency error on the coarse grid and can therefore be damped there more efficiently also applying a smoother there. That is the usage of coarser grids accelarates the transport of low frequency error across the discretised domain. Additionally the coarser grids have significantly less degrees of freedom which makes them computationally much cheaper to handle, until we can solve the problem directly on the coarsest grid. The key is to then restrict and interpolate effectively between the series of nested grids to approximate the error of the current and the actual solution. 
-\smallskip
-\\
-Through this combination of coarse grid correction and smoothing one obtains a fast, mesh-size independent convergence rate \textit{for elliptic problems} [source].
-\smallskip
-\\
-SMOOTHER
-\smallskip
-\\
-COARSENING STRATEGIES, cite that $\lambda$ parameter paper
-\smallskip
-\\
-INTERPOLATION AND RESTRICTION OPERATOR
-\smallskip
-\\
-which allows us to consider the solution $u$, the approximate solution $w$ as well as the difference between the two, the error $ e = u - w$ as a linear combination of this basis. Furthermore ... frequency ... eigenfunctions ... eigenvectors. Therefore it is possible to differentiate between high and low frequency error where one generally assumes ... (further discussion of what high and low frequency is later ... physical connection to solution, AMG $ \iff $ GMG )
+One possibility to solve the defect equation approximately is to construct an approximation $A_c: \mathcal{G}(\Omega_c) \rightarrow \mathcal{G}(\Omega_c)$ of $A$ on a coarser grid $\Omega_c$, where we assume that $A_c$ is invertible and $\dim \mathcal{G}(\Omega_c) < \mathcal{G}(\Omega)$ and where one now attempts to solve
+\begin{ceqn}
+	\begin{align}
+	\label{coarse_grid_problem}
+A_c \hat{e}^k &= r_c^k \quad \qquad \text{ with } \\
+r_c^k :&= R r^k \qquad \text{ and }\\
+e_c^k :&= I e^k. 
+	\end{align}
+\end{ceqn}
+The restriction operator $R : \mathcal{G}(\Omega) \rightarrow \mathcal{G}(\Omega_c)$ is used to restrict the fine grid residual to the coarse grid while the interpolation operator $I: \mathcal{G}(\Omega_c) \rightarrow \mathcal{G}(\Omega)$ is used to interpolate the correction $ \hat{e}^k$ back to the fine grid from the coarse grid. 
+One coarse grid correction step i.e. calculating $u^{k+1}$ from $u^k$, then entails the computation of the fine grid residual $r^k$ using $u^k$, restricting it to the coarse grid, obtaining $r_c^k$, solving the coarse grid problem (\ref{coarse_grid_problem}), interpolating the solution back to the fine grid and computing the new approximation $u^{k+1}$ using (\ref{update_correction}). The corresponding iteration operator that arises is $(Id - R A_c^{-1} I A) $, unfortunately $\hat{A} = R A_c^{-1} I $ is not invertible as $R$ maps into a lower dimensional space and therefore we have that $(\hat{A}) A e = 0$ for certain $e \neq 0$. Which means that this error function $e$ will not be changed by a coarse grid correction step and therefore cannot give rise to a converging iteration. In order to succomb this problem one can combine the process of coarse grid correction with a classical iteration method also referred to as smoothers or relaxation schemes in this context. They are \textit{usually/often} simple (block-) Jacobi or Gauss-Seidel iterations that are computationally inexpensive and have the property of indeed showing a \textit{notable} smoothing effect, for which a concrete numerical showcase can be found in section (6.2.1). Thus let us denote the following relaxation scheme on the error $e^k$ 
+\begin{ceqn}
+	\begin{align}
+e^{k+1} &= e^k + P(f - Ae^k) \ \text{ with the iteration matrix } \\
+S &= (Id - PA)
+	\end{align}
+\end{ceqn}
+where $P$ describes the preconditioner and would for example in the basic Jacobi case be a diagonal matrix with $(\frac{1}{a_{11}}, \frac{1}{a_{22}}, ..., \frac{1}{a_{mm}})$ on the diagonal. If we now combine the two processes in an iteration step or cycle consisting of presmoothing, coarse grid correction and postsmoothing, we obtain the following iteration operator for a two-grid method
 
-
-
-nested meshes
-
-elliptic problems
-
-
+\begin{ceqn}
+	\begin{align}
+\label{two_level_iteration_operator}
+M = S^{\nu_2} K S^{\nu_1} \quad \text{ with } K := Id - R A_c^{-1} I A
+	\end{align}
+\end{ceqn}
+where $\nu_1$ denotes the number of presmoothing steps and $nu_2$ the number of postsmoothing steps. A way to \textit{describe/imagine} the interplay of the coarse grid correction and the smoothing that works \textit{especially} well for \textit{elliptic} problems is to consider a decomposition of the error $e$ into eigenmodes which correspond to discrete Fourier modes of different frequencies. Due to the structure of the matrix of discretised differential equations we only have a local transport of information, therefore simple iterative solvers such as a Jacobi or Gauss-Seidel method damp high frequency components of the error fastest, which leads to a much smoother, lower frequency error after only a few iterations. Now one uses the property the low frequency error on the fine grid becomes a higher frequency error on the coarse grid, especially if one considers recursively applying this approach, that is using more than 2 levels, and can therefore be damped there more efficiently also applying a smoother there. That is the usage of coarser grids accelarates the transport of low frequency error across the discretised domain. Additionally the coarser grids have significantly less degrees of freedom which makes them computationally much cheaper to handle, until we can solve the problem directly on the coarsest grid. The key is to then restrict and interpolate effectively between the series of nested grids to approximate the error of the current and the actual solution. There is a wide field of reasearch on how to choose the appropriate operators for which classes of problems, where for a further discussion we can refer to [source]. The choices made in our implementation will be presented in further detail in the following chapter. 
+\smallskip
+\\
+With suitable combinations of coarse grid correction and smoothing one can achieve fast, mesh-size independent convergence rates for a variety of problems [source]. \textit{convergence}
+\smallskip
+\\
 In geometric multigrid we have a predefined sequence of nested meshes of specific coarsening factors that can vary in different directions and on different levels. The coarse level spaces still represent the original problem just at a lower resolution. 
 
-Algebraic multigrid on the other hand does not have predefined coarse level spaces but instead they are chosen according to a given rule, that takes the values of $A$ (or other known properties of the problem) into account. This is favorable if .... but also more expensive to compute. 
+Algebraic multigrid on the other hand does not have predefined coarse level spaces but instead they are chosen according to a given rule, that takes the values of $A$ or other known properties of the problem into account. This can be favorable in instance where we have a irregular meshes $\Omega$ or a very particular structure  .... but also more expensive to compute. 
 
 
 \section{Basic Algorithm} 
