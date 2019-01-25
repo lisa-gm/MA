@@ -4,7 +4,7 @@
 
 % SHOWING PICTURES OF JACOBI SMOOTHER
 
-clear all;
+%clear all;
 close all;
 
 % iterations block Jacobi
@@ -14,8 +14,8 @@ max_iter = 9000;
 eps = 10^(-9);
 
 % BLOCK SIZE
-block_size_s = 2;
-block_size_t = 2;
+block_size_s = 1;
+block_size_t = 1;
 
 % eqn parameters
 diff_const = 0.1;                          % diffusion constant, define through sigma = diff_const*nabla(u) 
@@ -37,11 +37,11 @@ ht_list = zeros(1,levels);
 
 % space 
 S = 1;
-Nx_elem_list(1) = 10;
+Nx_elem_list(1) = 11;
 
 % time
 T = 1;
-Nt_elem_list(1) = 10;
+Nt_elem_list(1) = 11;
 
 
 % adaptively refine mesh by factor of 2, add in pts in space & time
@@ -84,8 +84,8 @@ bdy_right = zeros(Nx_pts_list(1),1);
 % ***************** INITIALISE U & SIGMA w/ bdy ******************************* %
 
 % create vector with random variables between [0,1] as initial guess
-sigma_init_mat = rand(Nx_pts_list(1), Nt_pts_list(1));
-u_init_mat = rand(Nx_pts_list(1), Nt_pts_list(1));
+%sigma_init_mat = rand(Nx_pts_list(1), Nt_pts_list(1));
+%u_init_mat = rand(Nx_pts_list(1), Nt_pts_list(1));
 
 u_init_mat(:,1) = u0;
 
@@ -127,8 +127,14 @@ rhs_u = f_u_vec;
 omega = 2/3;
 [~, sol_Jac] = JacobiSolve_LS_extended_SP_T(Nx_pts_list(1), Nt_pts_list(1), Hess_J_sym, rhs_sym, sol_init, max_iter, omega, block_size_s, block_size_t);
 
+[~, sol_Jac_3by4] = JacobiSolve_LS_extended_SP_T(Nx_pts_list(1), Nt_pts_list(1), Hess_J_sym, rhs_sym, sol_init, max_iter, omega, 3, 4);
+
+
 sigma_all_Jac = sol_Jac(1:tot_pts, :);
 u_all_Jac = sol_Jac(tot_pts+1:end, :);
+
+sigma_all_Jac_3by4 = sol_Jac_3by4(1:tot_pts, :);
+u_all_Jac_3by4 = sol_Jac_3by4(tot_pts+1:end, :);
 
 % ************************ LINE SMOOTHER **************************** %
 
@@ -154,6 +160,15 @@ sigma_mat_Jac_20iter = zeros(Nx_pts_list(1), Nt_pts_list(1));
 
 % u_mat_Jac_2000iter = zeros(Nx_pts_list(1), Nt_pts_list(1));
 % sigma_mat_Jac_2000iter = zeros(Nx_pts_list(1), Nt_pts_list(1));
+
+u_mat_Jac_3iter_3by4 = zeros(Nx_pts_list(1), Nt_pts_list(1));
+sigma_mat_Jac_3iter_3by4 = zeros(Nx_pts_list(1), Nt_pts_list(1));
+
+u_mat_Jac_8iter_3by4 = zeros(Nx_pts_list(1), Nt_pts_list(1));
+sigma_mat_Jac_8iter_3by4 = zeros(Nx_pts_list(1), Nt_pts_list(1));
+
+u_mat_Jac_20iter_3by4 = zeros(Nx_pts_list(1), Nt_pts_list(1));
+sigma_mat_Jac_20iter_3by4 = zeros(Nx_pts_list(1), Nt_pts_list(1));
 
 u_mat_Jac_init = zeros(Nx_pts_list(1), Nt_pts_list(1));
 sigma_mat_Jac_init = zeros(Nx_pts_list(1), Nt_pts_list(1));
@@ -185,6 +200,17 @@ for ts=1:Nt_pts_list(1)
     
     %sigma_mat_Jac_2000iter(:,ts) = sigma_all((ts-1)*Nx_pts_list(1)+1:ts*Nx_pts_list(1), 2000);
     %u_mat_Jac_2000iter(:,ts) = u_all((ts-1)*Nx_pts_list(1)+1:ts*Nx_pts_list(1), 2000);
+    
+    sigma_mat_Jac_3iter_3by4(:,ts) = sigma_all_Jac_3by4((ts-1)*Nx_pts_list(1)+1:ts*Nx_pts_list(1), 3);
+    u_mat_Jac_3iter_3by4(:,ts) = u_all_Jac_3by4((ts-1)*Nx_pts_list(1)+1:ts*Nx_pts_list(1), 3);
+    
+    sigma_mat_Jac_8iter_3by4(:,ts) = sigma_all_Jac_3by4((ts-1)*Nx_pts_list(1)+1:ts*Nx_pts_list(1), 8);
+    u_mat_Jac_8iter_3by4(:,ts) = u_all_Jac_3by4((ts-1)*Nx_pts_list(1)+1:ts*Nx_pts_list(1), 8);
+    
+    sigma_mat_Jac_20iter_3by4(:,ts) = sigma_all_Jac_3by4((ts-1)*Nx_pts_list(1)+1:ts*Nx_pts_list(1), 20);
+    u_mat_Jac_20iter_3by4(:,ts) = u_all_Jac_3by4((ts-1)*Nx_pts_list(1)+1:ts*Nx_pts_list(1), 20);
+    
+    
     
     sigma_mat_lineSm_3iter(:,ts) = sigma_all_lineSm((ts-1)*Nx_pts_list(1)+1:ts*Nx_pts_list(1), 3);
     u_mat_lineSm_3iter(:,ts) = u_all_lineSm((ts-1)*Nx_pts_list(1)+1:ts*Nx_pts_list(1), 3);
@@ -268,6 +294,41 @@ hp4 = get(subplot(2,2,4),'Position');
 colorbar('Position', [hp4(1)+hp4(3)+0.03  hp4(2)  0.02  hp4(2)+hp4(3)*2.1]);
 
 fprintf('norm residual Jac sm after %d iter : %d\n', length(sol_Jac(1, :)), norm(Hess_J_sym*sol_Jac(:, end) - rhs_sym));
+
+figure;
+subplot(2,2,1);
+contourf(x_vec_f, t_vec_f, transpose(u_mat_Jac_init));
+caxis([-0.2,1.2]);
+xlabel('space','FontSize', font_size);
+ylabel('time','FontSize', font_size);
+title('random initial guess','FontSize', font_size)
+
+subplot(2,2,2);
+contourf(x_vec_f, t_vec_f, transpose(u_mat_Jac_3iter_3by4)); 
+caxis([-0.2,1.2]);
+xlabel('space','FontSize', font_size);
+ylabel('time','FontSize', font_size);
+title('after 3 iterations','FontSize', font_size)
+
+subplot(2,2,3);
+contourf(x_vec_f, t_vec_f, transpose(u_mat_Jac_8iter_3by4));
+xlabel('space','FontSize', font_size);
+ylabel('time','FontSize', font_size);
+caxis([-0.2,1.2]);
+title('after 8 iterations','FontSize', font_size);
+
+subplot(2,2,4);
+contourf(x_vec_f, t_vec_f, transpose(u_mat_Jac_20iter_3by4)); 
+xlabel('space','FontSize', font_size);
+ylabel('time','FontSize', font_size);
+caxis([-0.2,1.2]);
+title('after 20 iterations','FontSize', font_size)
+
+hp4 = get(subplot(2,2,4),'Position');
+colorbar('Position', [hp4(1)+hp4(3)+0.03  hp4(2)  0.02  hp4(2)+hp4(3)*2.1]);
+
+fprintf('norm residual Jac 3 by 4 sm after %d iter : %d\n', length(sol_Jac_3by4(1, :)), norm(Hess_J_sym*sol_Jac_3by4(:, end) - rhs_sym));
+
 
 % figure;
 % subplot(1,2,1);

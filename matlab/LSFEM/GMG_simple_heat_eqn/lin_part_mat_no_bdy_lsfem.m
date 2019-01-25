@@ -30,8 +30,8 @@ get_elem_ind = @(i,j) [pos2id(i,j); pos2id(i+1,j); pos2id(i,j+1); pos2id(i+1,j+1
 %% basis functions, and their gradients
 
 basis_fct_eval = @(x,t) [(1-x)*(1-t); x*(1-t); (1-x)*t;  x*t];
-grad_x_fct_eval = @(x,t) S/hx*[(-1)*(1-t); 1*(1-t); (-1)*t;  1*t];
-grad_t_fct_eval = @(x,t) T/ht*[(1-x)*(-1); x*(-1); (1-x)*1;  x*1];
+grad_x_fct_eval = @(x,t) 1/hx*[(-1)*(1-t); 1*(1-t); (-1)*t;  1*t];
+grad_t_fct_eval = @(x,t) 1/ht*[(1-x)*(-1); x*(-1); (1-x)*1;  x*1];
 
 
 % linear parts of Hessian

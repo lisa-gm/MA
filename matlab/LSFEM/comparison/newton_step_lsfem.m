@@ -275,6 +275,10 @@ while(inner_it < 60)
     end
 end
   
+  if(iter == 67)
+      save('Hess_J.mat', 'Hess_J');
+  end
+  
   sigma = sigma_temp;
   u = u_temp;
      

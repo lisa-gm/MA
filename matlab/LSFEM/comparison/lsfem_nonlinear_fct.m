@@ -77,6 +77,8 @@ for ts=1:Nt_pts
 
 end
 
+save('u_mat.mat', 'u_mat');
+
 figure
 mesh(x_vec, t_vec(1:end), transpose(u_mat(:,1:end)));
 xlabel('space');
@@ -84,6 +86,7 @@ ylabel('time');
 zlabel('u');
 %zlim([min(u), max(u)]);
 title('heat equation LSFEM nonlinear');
+
 % 
 % figure
 % mesh(x_vec, t_vec(1:end), transpose(sigma_mat(:,1:end)));

@@ -35,12 +35,17 @@ for iter = 1:max_iter
             % get list of sigma and u indices we want
             %patch_ind = [i+(j-1)*Nx_pts,i+(j-1)*Nx_pts+tot_pts];
             %c_small = A(patch_ind, patch_ind) \ (f(patch_ind) - A(patch_ind, :)*u_old)
+            
             curr_inds = [];
             for l=0:block_size_t-1
                 curr_inds = [curr_inds, (j-1+l)*Nx_pts+i: (j-1+l)*Nx_pts+i-1+block_size_s, (j-1+l)*Nx_pts+i+tot_pts: (j-1+l)*Nx_pts+i-1+block_size_s+tot_pts];   
             end
+            
+            
             curr_inds = sort(curr_inds);
+            
             c = A(curr_inds, curr_inds)  \ (f(curr_inds) - A(curr_inds, :)*u_old);
+   
             
             u_new(curr_inds) = u_old(curr_inds) + omega*c;
         end

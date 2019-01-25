@@ -35,7 +35,7 @@ u = reshape(u0'*ones(1,Nt_pts), [tot_pts,1]);
 %%%%%%%%%%%%%%%%%%%%%%%%% NEWTON ITERATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 solutions = zeros(max_iter, tot_pts);
 
-for iter=1:1 %max_iter 
+for iter=1:max_iter 
     
    [sigma, u, norm_grad_J] = newton_step_lsfem(S, Nx_elem, T, Nt_elem, u0, bdy_cond, bdy_left, bdy_right, sigma, u, a0, a1, a2, a3, alpha, J_ss_lin, J_su_lin, J_us_lin, J_uu_lin, c1, c2, diff_const, eps, iter);
     

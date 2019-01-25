@@ -5,26 +5,26 @@
 
 % SETTING UP GENERAL PARAMETERS + MULTIGRID
 
-clear all;
+%clear all;
 close all;
 
 % CHOOSE GENERAL PARAMTERS: 
 
 % MG parameters
-max_iter = 100;                          % number of newton iterations
+max_iter = 400;                          % number of newton iterations
 eps = 10^(-9);                           % tolerance
 levels = 2; 
 %smoother = 'GaussSeidel';
-%smoother = 'Jacobi_LS_extended_SP_T';
+smoother = 'Jacobi_LS_extended_SP_T';
 %smoother = 'two_block_GaussSeidel';
-smoother = 'line_smoother';
+%smoother = 'line_smoother';
 
 % eqn parameters
-diff_const = 0.1;                          % diffusion constant, define through sigma = diff_const*nabla(u) 
+diff_const = 1;                          % diffusion constant, define through sigma = diff_const*nabla(u) 
 
 % LSFEM parameters
-c1 = 2;                                 % constants in front of J = c1*|| ....-f(u) ||^2 + c2*|| ...||^2
-c2 = 2;                                 % need to multiply with them in computation of each integral 
+c1 = 1;                                 % constants in front of J = c1*|| ....-f(u) ||^2 + c2*|| ...||^2
+c2 = 1;                                 % need to multiply with them in computation of each integral 
                                         
 % ********** SETTING UP DOMAIN PARAMETERS ***************************** %
 % from fine to coarse
@@ -38,12 +38,12 @@ ht_list = zeros(1,levels);
 % we already know number of total levels, but 
 
 % space 
-S = 10;
+S = 1;
 Nx_elem_list(1) = 8;
 
 % time
-T = 10;
-Nt_elem_list(1) = 16;
+T = 1;
+Nt_elem_list(1) = 8;
 
 
 % adaptively refine mesh by factor of 2, add in pts in space & time
@@ -75,17 +75,17 @@ tot_pts = Nx_pts_list(1)*Nt_pts_list(1);
 % ******** BOUNDARY CONDITIONS ON FINEST GRID ************************** %
 
 %u0 = sin(pi*x_vec);
-u0 = transpose(max(10-2*x_vec_f, 0));
+u0 = transpose(max(1-2*x_vec_f, 0));
 
 %bdy_cond = 'Dirichlet';
 bdy_cond = 'Neumann';
 
-bdy_left = zeros(Nt_pts_list(1),1);
+bdy_left =  zeros(Nt_pts_list(1),1);
 bdy_right = zeros(Nt_pts_list(1),1);
 
 % ***************** INITIALISE U & SIGMA w/ bdy ******************************* %
 
-sigma_bdy_mat = ones(Nx_pts_list(1), Nt_pts_list(1));
+sigma_bdy_mat = 0*ones(Nx_pts_list(1), Nt_pts_list(1));
 u_bdy_mat = zeros(Nx_pts_list(1), Nt_pts_list(1));
 
 for ts=1:Nt_pts_list(1)
@@ -129,7 +129,11 @@ rhs_u = f_u_vec;
 
 % ********************** MULTIGRID ********************************** %
 
-[sol_mg, it_sol_mg, it_res_mg] = V_cycle_plain(Nx_elem_list, hx_list, Nt_elem_list, ht_list, f, sol_init, c1, c2, diff_const, bdy_cond, u0, bdy_left, bdy_right, levels, max_iter, smoother, eps);
+%[sol_mg, it_sol_mg, it_res_mg] = V_cycle_plain(Nx_elem_list, hx_list, Nt_elem_list, ht_list, f, sol_init, c1, c2, diff_const, bdy_cond, u0, bdy_left, bdy_right, levels, max_iter, smoother, eps);
+[sol_mg, it_sol_mg, it_res_mg] = V_cycle_galerkin_assembly(Nx_elem_list, hx_list, Nt_elem_list, ht_list, Hess_J, f, sol_init, bdy_cond, u0, bdy_left, bdy_right, levels, max_iter, smoother, eps);
+
+file_name = ['it_res_mg_',num2str(Nx_elem_list(1)),'by', num2str(Nt_elem_list(1)),'_fine_elem_c2_', num2str(c2),'.mat'];
+save(file_name, 'it_res_mg');
 
 sigma_mg = sol_mg(1:tot_pts);
 u_mg = sol_mg(tot_pts+1:end);
@@ -160,20 +164,31 @@ for iter=1:length(it_res_mg)-1
         conv_coeff_res(iter) = it_res_mg(iter+1)/it_res_mg(iter);    
 end
 
+file_name = ['conv_coeff_res_',num2str(Nx_elem_list(1)),'by', num2str(Nt_elem_list(1)),'_fine_elem_c2_', num2str(c2),'.mat'];
+save(file_name, 'conv_coeff_res');
+
+
 % figure;
 % plot(1:length(conv_coeff), conv_coeff);
 % xlabel('iterations')
 % ylim([0.5,1.1]);
 % title('convergence coefficient: || u - u_k || / || u - u_{k-1} ||');
 
-figure;
-semilogy(1:length(it_res_mg), it_res_mg);
-xlabel('iterations');
-title('norm residual, log plot');
+font_size = 20;
 
 figure;
-plot(1:length(conv_coeff_res),conv_coeff_res);
-title('convergence coefficient residual : || res_k || / || res_{k-1} ||');
+semilogy(1:length(it_res_mg), it_res_mg, 'b', 'LineWidth', 2);
+xlim([0, length(it_res_mg)]);
+xlabel('iterations', 'interpreter','latex', 'FontSize', font_size);
+ylabel('residual norm', 'interpreter','latex', 'FontSize', font_size);
+%title('norm residual, log plot', 'interpreter','latex', 'FontSize', font_size);
+
+figure;
+plot(1:length(conv_coeff_res),conv_coeff_res, 'b', 'LineWidth', 2);
+xlim([0, length(conv_coeff_res)]);
+xlabel('k', 'interpreter','latex', 'FontSize', font_size);
+ylabel('convergence coefficient', 'interpreter','latex', 'FontSize', font_size);
+%title('convergence coefficient residual : || res_k || / || res_{k-1} ||', 'interpreter','latex', 'FontSize', font_size);
 
 fprintf('average value res conv coeff : %d \n', mean(conv_coeff_res));
 % ************************ PLOTTING ******************************** %
@@ -194,56 +209,57 @@ for ts=1:Nt_pts_list(1)
     u_mat_mg(:, ts) = u_mg((ts-1)*Nx_pts_list(1)+1:ts*Nx_pts_list(1));
 end
 
+
 figure;
-subplot(1,3,1);
+subplot(1,2,1);
 mesh(x_vec_f, t_vec_f, transpose( u_bdy_mat));
-xlabel('space');
-ylabel('time');
-zlabel('u');
+xlabel('space', 'interpreter','latex', 'FontSize', font_size);
+ylabel('time', 'interpreter','latex', 'FontSize', font_size);
+zlabel('u', 'interpreter','latex', 'FontSize', font_size);
 %zlim([min(u), max(u)]);
-title('u initial guess');
+% title('u initial guess', 'interpreter','latex', 'FontSize', font_size);
 
-subplot(1,3,2);
+subplot(1,2,2);
 mesh(x_vec_f, t_vec_f, transpose(u_mat_mg));
-xlabel('space');
-ylabel('time');
-zlabel('u');
+xlabel('space', 'interpreter','latex', 'FontSize', font_size);
+ylabel('time', 'interpreter','latex', 'FontSize', font_size);
+zlabel('u', 'interpreter','latex', 'FontSize', font_size);
 %zlim([min(u), max(u)]);
-title('heat equation LSFEM, f=0, MULTIGRID V-CYCLE');
+%title('heat equation LSFEM, f=0, MULTIGRID V-CYCLE', 'interpreter','latex', 'FontSize', font_size);
 
-subplot(1,3,3);
-mesh(x_vec_f, t_vec_f, transpose(u_mat_direct)); 
-xlabel('space');
-ylabel('time');
-zlabel('u');
-%zlim([min(u), max(u)]);
-title('u direct');
+% subplot(1,3,3);
+% mesh(x_vec_f, t_vec_f, transpose(u_mat_direct)); 
+% xlabel('space', 'interpreter','latex', 'FontSize', font_size);
+% ylabel('time', 'interpreter','latex', 'FontSize', font_size);
+% zlabel('u', 'interpreter','latex', 'FontSize', font_size);
+% %zlim([min(u), max(u)]);
+% %title('u direct', 'interpreter','latex', 'FontSize', font_size);
 
 
 figure;
 subplot(1,3,1);
 mesh(x_vec_f, t_vec_f, transpose(sigma_bdy_mat)); 
-xlabel('space');
-ylabel('time');
-zlabel('sigma');
+xlabel('space', 'interpreter','latex', 'FontSize', font_size);
+ylabel('time', 'interpreter','latex', 'FontSize', font_size);
+zlabel('sigma', 'interpreter','latex', 'FontSize', font_size);
 %zlim([min(u), max(u)]);
-title('SIGMA,  sigma direct');
+%title('SIGMA,  sigma direct', 'interpreter','latex', 'FontSize', font_size);
 
 subplot(1,3,2);
 mesh(x_vec_f, t_vec_f, transpose(sigma_mat_mg)); 
-xlabel('space');
-ylabel('time');
-zlabel('sigma');
+xlabel('space', 'interpreter','latex', 'FontSize', font_size);
+ylabel('time', 'interpreter','latex', 'FontSize', font_size);
+zlabel('sigma', 'interpreter','latex', 'FontSize', font_size);
 %zlim([min(u), max(u)]);
-title('SIGMA, sigma mg');
+%title('SIGMA, sigma mg', 'interpreter','latex', 'FontSize', font_size);
 
 subplot(1,3,3);
 mesh(x_vec_f, t_vec_f, transpose(sigma_mat_direct)); 
-xlabel('space');
-ylabel('time');
-zlabel('sigma');
+xlabel('space', 'interpreter','latex', 'FontSize', font_size);
+ylabel('time', 'interpreter','latex', 'FontSize', font_size);
+zlabel('sigma', 'interpreter','latex', 'FontSize', font_size);
 %zlim([min(u), max(u)]);
-title('SIGMA, direct');
+%title('SIGMA, direct', 'interpreter','latex', 'FontSize', font_size);
 
 
 % figure;

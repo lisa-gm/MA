@@ -18,8 +18,8 @@ smoother = 'Jacobi_LS';
 diff_const = 1;                          % diffusion constant, define through sigma = diff_const*nabla(u) 
 
 % LSFEM parameters
-c1 = 2;                                 % constants in front of J = c1*|| ....-f(u) ||^2 + c2*|| ...||^2
-c2 = 2;                                 % need to multiply with them in computation of each integral 
+c1 = 1;                                 % constants in front of J = c1*|| ....-f(u) ||^2 + c2*|| ...||^2
+c2 = 1;                                 % need to multiply with them in computation of each integral 
             
 % ********** SETTING UP DOMAIN PARAMETERS ***************************** %
 % from fine to coarse
@@ -31,7 +31,7 @@ hx_list = zeros(1,levels);
 
 % space 
 S = 1;
-Nx_elem_list(1) = 10;
+Nx_elem_list(1) = 200;
 
 % adaptively refine mesh by factor of 2, add in pts in space & time
 for j=1:levels
@@ -53,13 +53,13 @@ Nx_pts_list = Nx_elem_list + 1;
 % ******** BOUNDARY CONDITIONS ON FINEST GRID ************************** %
 
 bdy_left = 1;
-bdy_right = 1;
+bdy_right = 2;
 
 % ***************** INITIALISE U & SIGMA w/ bdy ******************************* %
-sigma = zeros(Nx_pts_list(1),1);
-u = zeros(Nx_pts_list(1),1); 
+sigma = 0.1*ones(Nx_pts_list(1),1);
+u = 0.1*ones(Nx_pts_list(1),1); 
 u(1) = bdy_left;
-u(2) = bdy_right;
+u(end) = bdy_right;
 
 sol_init = [sigma; u];
 
@@ -73,8 +73,8 @@ Hess_J = [J_ss_lin, J_su_lin; J_us_lin, J_uu_lin];
 % ****************** RHS ******************************************** %
 
 f_sigma_vec = zeros(Nx_pts_list(1),1);
-%f_u_vec = 2*ones(Nx_pts_list(1),1);
-f_u_vec = transpose(x_vec_f);
+f_u_vec = 0*ones(Nx_pts_list(1),1);
+%f_u_vec = transpose(x_vec_f);
 f = [f_sigma_vec; f_u_vec];
 
 rhs = poisson_rhs_no_bdy_lsfem (S, Nx_elem_list(1), f);
@@ -123,37 +123,49 @@ u_direct = sol_direct(Nx_pts_list(1)+1:end);
 conv_coeff_res = zeros(1, length(it_res_mg)-1);
 
 for iter=1:length(it_res_mg)-1
-        conv_coeff_res(iter) = it_res_mg(iter+1)/it_res_mg(iter);    
+        conv_coeff_res(iter) = it_res_mg(iter+1)/it_res_mg(iter); 
 end
+
+
+
+
 
 % figure;
 % semilogy(1:length(it_res_mg), it_res_mg);
 % xlabel('iterations');
 % title('norm residual, log plot');
 % 
+
+font_size = 15; 
+
 figure;
-plot(1:length(conv_coeff_res),conv_coeff_res);
-title('convergence coefficient residual : || res_k || / || res_{k-1} ||');
+plot(1:length(conv_coeff_res),conv_coeff_res, 'b');
+xlabel('k', 'interpreter','latex', 'FontSize', font_size);
+ylabel('convergence coefficient', 'interpreter','latex', 'FontSize', font_size);
+
+%title('convergence coefficient residual : || res_k || / || res_{k-1} ||');
 
 fprintf('average value res conv coeff : %d \n', mean(conv_coeff_res));
+% fprintf('average value res conv coeff NO IG : %d \n', mean(conv_coeff_res(2:end)));
+
 % ************************ PLOTTING ******************************** %
 
-figure;
-subplot(1,2,1);
-plot(x_vec_f, sigma_direct);
-title('1D Laplace LSFEM, direct solve, SIGMA');
-subplot(1,2,2);
-plot(x_vec_f, u_direct);
-title('1D Laplace LSFEM, direct solve');
+% figure;
+% subplot(1,2,1);
+% plot(x_vec_f, sigma_direct);
+% title('1D Laplace LSFEM, direct solve, SIGMA');
+% subplot(1,2,2);
+% plot(x_vec_f, u_direct);
+% title('1D Laplace LSFEM, direct solve');
 
-
-figure;
-subplot(1,2,1);
-plot(x_vec_f, sigma_GS);
-title('1D Laplace LSFEM, 2 block Gauss Seidel, SIGMA');
-subplot(1,2,2);
-plot(x_vec_f, u_GS);
-title('1D Laplace LSFEM, 2 block Gauss Seidel');
+% 
+% figure;
+% subplot(1,2,1);
+% plot(x_vec_f, sigma_GS);
+% title('1D Laplace LSFEM, 2 block Gauss Seidel, SIGMA');
+% subplot(1,2,2);
+% plot(x_vec_f, u_GS);
+% title('1D Laplace LSFEM, 2 block Gauss Seidel');
 
 figure;
 subplot(1,2,1);
@@ -162,6 +174,8 @@ title('1D Laplace LSFEM, multigrid, SIGMA');
 subplot(1,2,2);
 plot(x_vec_f, u_mg);
 title('1D Laplace LSFEM, multigrid');
+
+
 
 
 

@@ -42,5 +42,7 @@ for i=1:N
     end
 end
 t = toc;
+
+row_sum_W = sum(W,2);
 % fprintf('set up weight matrix finished, time: %d sec\n', t);
 end 

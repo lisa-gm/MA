@@ -4,7 +4,7 @@
 
 % considering 2x2 blocks of sigma and u for same dof
 
-function [u, sol] = JacobiSolve_LS(A, f, u0, max_iter)
+function [u, res_list] = JacobiSolve_LS(A, f, u0, max_iter)
 tot_pts = length(f)/2;
 % additional values, convergence threshold eps,
 % damping factor hard coded for now
@@ -15,7 +15,8 @@ eps = 10^(-12);
 u_old = u0;
 u_new = zeros(size(u0));
 
-sol = zeros(length(f), max_iter);
+res_list = zeros(1, max_iter+1);
+res_list(1) = norm(f-A*u_old);
 
 for iter = 1:max_iter
     for i=1:tot_pts
@@ -27,9 +28,11 @@ for iter = 1:max_iter
     end
     
     u_old = u_new;
-    sol(:, iter) = u_new;
-    if(norm(f-A*u_new) < eps)
-       sol = sol(:, 1:iter);
+    res = norm(f-A*u_new);
+    res_list(1, iter+1) = res;
+    if(res < eps)
+       fprintf('Jacobi_LS converged after %d iter,with res %d\n', iter, res); 
+       res_list = res_list(1, 1:iter+1);
        break;
     end
     

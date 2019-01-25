@@ -44,6 +44,8 @@ for row=1:N
     end
 end
 
+row_sum_I = sum(I,2);
+
 R = I';
 A_c = R*A*I;
 
@@ -60,20 +62,27 @@ for k=1:max_iter
      %u = A \ rhs;
       
     % compute + restrict residual 
-     r = rhs - A*u;
-     r_c = R*r; 
+    r = rhs - A*u;
+    r_c = R*r; 
     
     % solve coarse grid problem directly
      e_c = A_c \ r_c;
-
+    
     % interpolate back, update u
+     test_e_c = ones(size(e_c));
+     test_e = I*test_e_c;
+     
+     
      e = I*e_c;
+     
+     
      u = u + e;
     
     % post-smoothing
      fprintf('energy before post-smoothing : %d\n', abs(u'*A*u-rhs'*u));
      u = smoothing(A, rhs, u, max_iter_sm, smoother);
      fprintf('energy after post-smoothing : %d\n', abs(u'*A*u-rhs'*u));
+     norm_res =  norm(A*u-rhs)
 
     if(norm(A*u-rhs) < tol)
         fprintf('converged after %d iterations \n', k);
