@@ -20,6 +20,11 @@ P.~Colli~Franzone and L.~F. Pavarino, ``A parallel solver for
   Mathematical models and methods in applied sciences}, vol.~14, no.~06,
   pp.~883--911, 2004.
 
+\bibitem{hohmann2012numerical}
+A.~Hohmann and P.~Deuflhard, {\em Numerical analysis in modern scientific
+  computing: an introduction}, vol.~43.
+\newblock Springer Science \& Business Media, 2012.
+
 \bibitem{gander201550}
 M.~J. Gander, ``50 years of time parallel time integration,'' in {\em Multiple
   Shooting and Time Domain Decomposition Methods}, pp.~69--113, Springer, 2015.
@@ -59,8 +64,29 @@ M.~Potse, B.~Dub{\'e}, J.~Richer, A.~Vinet, and R.~M. Gulrajani, ``A comparison
   propagation in the human heart,'' {\em IEEE Transactions on Biomedical
   Engineering}, vol.~53, no.~12, pp.~2425--2435, 2006.
 
+\bibitem{pezzuto2016space}
+S.~Pezzuto, J.~Hake, and J.~Sundnes, ``Space-discretization error analysis and
+  stabilization schemes for conduction velocity in cardiac electrophysiology,''
+  {\em International journal for numerical methods in biomedical engineering},
+  vol.~32, no.~10, p.~e02762, 2016.
+
+\bibitem{deuflhard2011adaptive}
+P.~Deuflhard and M.~Weiser, {\em Adaptive L{\"o}sung partieller
+  Differentialgleichungen}.
+\newblock Walter de Gruyter, 2011.
+
 \bibitem{evans2010partial}
 L.~C. Evans, ``Partial differential equations,'' 2010.
+
+\bibitem{braess2007finite}
+D.~Braess, {\em Finite elements: Theory, fast solvers, and applications in
+  solid mechanics}.
+\newblock Cambridge University Press, 2007.
+
+\bibitem{ciarlet2016partial}
+P.~G. Ciarlet, T.~Li, and Y.~Maday, {\em Partial Differential Equations:
+  Theory, Control and Approximation}.
+\newblock Springer, 2016.
 
 \bibitem{gander2008nonlinear}
 M.~J. Gander and E.~Hairer, ``Nonlinear convergence analysis for the parareal
@@ -117,14 +143,19 @@ Z.~Cai, R.~Lazarov, T.~A. Manteuffel, and S.~F. McCormick, ``First-order system
 W.~Hackbusch, {\em Multi-grid methods and applications}, vol.~4.
 \newblock Springer Science \& Business Media, 2013.
 
+\bibitem{trottenberg2000multigrid}
+U.~Trottenberg, C.~W. Oosterlee, and A.~Schuller, {\em Multigrid}.
+\newblock Elsevier, 2000.
+
 \bibitem{adams2001distributed}
 M.~F. Adams, ``A distributed memory unstructured gauss-seidel algorithm for
   multigrid smoothers,'' in {\em Proceedings of the 2001 ACM/IEEE conference on
   Supercomputing}, pp.~4--4, ACM, 2001.
 
-\bibitem{deuflhard2011adaptive}
-P.~Deuflhard and M.~Weiser, {\em Adaptive L{\"o}sung partieller
-  Differentialgleichungen}.
-\newblock Walter de Gruyter, 2011.
+\bibitem{langer2017multipatch}
+U.~Langer, M.~Neum{\"u}ller, and I.~Toulopoulos, ``Multipatch space-time
+  isogeometric analysis of parabolic diffusion problems,'' in {\em
+  International Conference on Large-Scale Scientific Computing}, pp.~21--32,
+  Springer, 2017.
 
 \end{thebibliography}

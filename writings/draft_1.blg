@@ -4,52 +4,52 @@ The top-level auxiliary file: draft_1.aux
 The style file: ieeetr.bst
 Database file #1: bibfile.bib
 Warning--entry type for "WHO_statistics" isn't style-file defined
---line 78 of file bibfile.bib
-Warning--entry type for "cardiosmart" isn't style-file defined
 --line 86 of file bibfile.bib
+Warning--entry type for "cardiosmart" isn't style-file defined
+--line 94 of file bibfile.bib
 Warning--I didn't find a database entry for "lions2001resolutionions2001resolution"
 Warning--empty journal in evans2010partial
 Warning--empty journal in gander1996overlapping
 Warning--empty journal in gander1999optimal
-You've used 28 entries,
+You've used 34 entries,
             1876 wiz_defined-function locations,
-            633 strings with 7364 characters,
-and the built_in function-call counts, 6547 in all, are:
-= -- 666
-> -- 192
+            662 strings with 8354 characters,
+and the built_in function-call counts, 7847 in all, are:
+= -- 791
+> -- 248
 < -- 0
-+ -- 78
-- -- 50
-* -- 405
-:= -- 891
-add.period$ -- 39
-call.type$ -- 28
-change.case$ -- 17
++ -- 99
+- -- 65
+* -- 479
+:= -- 1072
+add.period$ -- 49
+call.type$ -- 34
+change.case$ -- 19
 chr.to.int$ -- 0
-cite$ -- 31
-duplicate$ -- 346
-empty$ -- 713
-format.name$ -- 50
-if$ -- 1641
+cite$ -- 37
+duplicate$ -- 421
+empty$ -- 851
+format.name$ -- 65
+if$ -- 1971
 int.to.chr$ -- 0
-int.to.str$ -- 28
-missing$ -- 37
-newline$ -- 98
-num.names$ -- 27
-pop$ -- 124
+int.to.str$ -- 34
+missing$ -- 47
+newline$ -- 120
+num.names$ -- 33
+pop$ -- 155
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 210
+skip$ -- 247
 stack$ -- 0
-substring$ -- 390
-swap$ -- 119
+substring$ -- 426
+swap$ -- 143
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 3
-while$ -- 63
-width$ -- 30
-write$ -- 270
+while$ -- 73
+width$ -- 36
+write$ -- 328
 (There were 6 warnings)

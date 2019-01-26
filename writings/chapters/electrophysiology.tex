@@ -49,48 +49,62 @@ The stimuli are under normal conditions about 0.6-1 seconds apart, which means t
 
 \section{The Monodomain Equation}
 
-The propagation of these stimuli is usually modeled with either a version of the bidomain equation or monodomain equation. The former was first developed in the late 1970's and is the more comprehensive one of the two still posing many computational challenges in its implementation and execution. Therefore one often relies on a simpler monodomain model which in the vast majority of applications leads to a very similar solution and can therefore be considered as an adequate approximation, \cite{potse2006comparison}. The discrete cellular structure is replaced by an averaged continuous model, giving rise to a parabolic reaction-diffusion equation derived from the cable equation maintaining a conservation of charge. Cable theory is used to calculate the electric current in nerve fibres by modeling them as composed segments with capacitances and resistences combined in parallel. 
-% only have a good picture from wikipedia,  $c_m$,  $r_m$
-The diffusion term represents the spread of current through gap junctions and cardiac tissue while the reaction terms describe the flux of ions across the myocyte membrane. \textit{say more about internal and external current.}
-\begin{ceqn}
-\begin{equation}
-\begin{aligned}
-\partial_t u - \nabla \cdot ( D(x) \nabla u) &= I_{\text{int}}(u) + I_{\text{ext}}(x,t)  \quad  (x,t) \in \Omega \\
-\nabla u \cdot n &= g(x,t) \qquad \qquad \qquad (x,t) \in \Gamma_N \\
-\end{aligned}
-\end{equation}
-\end{ceqn}
+The propagation of these stimuli is usually modeled with either a version of the bidomain equation or monodomain equation. The former was first developed in the late 1970's and is the more comprehensive one of the two still posing many computational challenges in its implementation and execution. Therefore one often relies on a simpler monodomain model which in the vast majority of applications leads to a very similar solution and can therefore be considered as an adequate approximation \cite{potse2006comparison}. The discrete cellular structure is replaced by an averaged continuous model, giving rise to a parabolic reaction-diffusion equation derived from the cable equation maintaining a conservation of charge. %Cable theory is used to calculate the electric current in nerve fibres by modeling them as composed segments with capacitances and resistences combined in parallel. 
+% only have a good picture from wikipedia,  $c_m$,  $r_m$ 
+A formulation of the model taken from \cite{pezzuto2016space} then reads
 
+\begin{ceqn}
+	\begin{align}
+	\label{mon_domain_eq}
+	(\mathcal{X} C_m) \partial_t u - \nabla \cdot ( D(x) \nabla u) &= (\mathcal{X} C_m) f_{\text{ion}}(u, z) + I_{\text{ext}}(x,t)  \quad &(x,t) \in \mathcal{S} \times [0,T] \\
+	\partial_t z &= g(u,z) \quad  &(x,t) \in \mathcal{S} \times (0,T] \\
+	n^T D(x) \nabla u  &= 0 \qquad \qquad \qquad &(x,t) \in \partial \mathcal{S} \times [0,T] \\
+	u(x,0) &= u_0(x), \ z(x,0) = z_0(x) \quad &x \in \mathcal{S} 
+	\end{align}
+\end{ceqn}
 where the above terms describe the following 
 \smallskip
 \\
-$u(x,t)$ : electric potential \\
-$D(x) $  : conductivity tensor \\
-$ I_{\text{int}}(u) $: internal current \\
-$I_{\text{ext}}(x,t)$: external current 
-\bigskip
+$u(x,t)$ : transmembrane potential \\
+$z(x,t)$ : auxiliary variables \\
+ $	D := D_{\text{in}}^{-1} (D_{\text{in}} + D_{\text{ex}}) D_{\text{ex}}^{-1}$, where $D_{\text{in}}$ and $ D_{\text{ex}}$ are intracellular and extracellular conductivities \\
+ $ f_{\text{ion}}(u,z)$ : transmembrane ionic current \\
+ $I_{\text{ext}}(x,t)$ : source currents \\
+$C_m$: membrane capitance \\
+$\mathcal{X}$:  surface-to-volume ratio 
+\smallskip
 \\
-In the case of the simplified FitzHugh-Nagumo model we have $I_{\text{int}}= u (u - 1 )(\alpha - u)$, with $ 0 < \alpha < 1$. \textit{mention gating variables...? }
+The diffusion term $\nabla \cdot ( D(x) \nabla u)$ represents the spread of current through gap junctions and cardiac tissue while the reaction term $(\mathcal{X} C_m) f_{\text{ion}}(u, z)$ describes the flux of ions across the myocyte membrane. The auxiliary variables $z$ capture the dynamics of the cell and the cell membrane. $D_{\text{in}}$ and $ D_{\text{ex}}$ are tensors representing the conductivity given by the local microstructure of the tissue. In the monodomain equation one assumes equal anisotropy ratios in the intra-and extracellular domain. This assumption is not made in the bi-domain equations and therefore gives rise to two different coupled reaction diffusion equations, instead of one. 
+\smallskip
+\\
+One version of the above monodomain equation is the FitzHugh-Nagumo model where we neglect the system of ordinary differential equations of auxiliary variables $z$ by setting them to zero. This leads to the neglect of modeling the recovery of the action potential, however the model still captures the propagation of the steep wavefront, which is the crucial part of the process. One also assumes that are no source currents  $I_{\text{ext}}(x,t)$. The ionic currents are modeled as cubic functions of the transmembrane potential, that is 
+\begin{ceqn}
+	\begin{equation}
+	f_{\text{ionic}} (u) = (u - u_{\text{rest}})(u - u_{\text{thres}})(u - u_{\text{depol}}),	
+	\end{equation}
+	\end{ceqn}
+
+where $u_{\text{rest}} \leq u_{\text{thres}} \leq u_{\text{depol}}$. The scalar $u_{\text{rest}}$ describes the resting potential, which for simplicity we will assume to be zero, $u_{\text{depol}}$ describes the depolarisation potential which we will assume to be equal to one. And $u_{\text{thres}}$ is the threshold value in between. Hence we can see that $f_{\text{ionic}}$ has three roots, in zero, one and $u_{\text{thres}}$, which are then fixed points of the FitzHugh--Nagumo model and it can be shown, that the two in zero and one are stable fixed points, whereas $u_{\text{thres}}$ is unstable \cite{deuflhard2011adaptive}. Hence depending on the initial conditions $u_0$ the solution will quickly tend to either zero or one, unless it is exactly $\alpha$, creating the steep activation front, which will through the diffusion term lead to a propagation of the wavefront over time.
 \smallskip
 \\
 %"From a macroscopic point of view, the Forward Problem of Electrocardiology is described by the so-called Bidomain model for the evolution of the intra, extracellular and extracardiac potential fields. The two main components of the Bidomain model are: (a) the dynamics of the ionic current flow through the cardiac cellular membrane, modeled by a system of ordinary differential equations and (b) a macroscopic representation of the cardiac tissue modeled as a bidomain superposition of the intra and extra cellular media characterized by anisotropic conductivity tensors associated with the fiber architecture of the myocardium."
-\smallskip
-\\
+%\smallskip
+%\\
 %"Due to the presence of gap junctions between two subsequent myocytes, the conductivity  i .x/ is practically constant in the interior of the cell, with value given by the cytosolic conductivity, but in the small length of the gap junctions it undergoes a strong reduction due to the high resistivity of the gap junctions."
-\smallskip
-\\
+%\smallskip
+%\\
 %"Due to the presence of gap junctions connecting the cardiac cells end-to-end and side-to-side,  ̋i and  ̋e are regarded as two simply-connected open sets of R3. The effects of the microstructure on the current flow are also included in the conductivity tensors  ̇i .x/;  ̇e .x/ as inhomogeneous functions of space that reflect the local variations of conductances because of the presence of structural intra and extracellular inhomogeneities of resistance associated with e.g. gap junctions, connective tissue, collagen and blood vessels."
-\smallskip
-\\
+%\smallskip
+%\\
 %"The cellular conductivity matrices  ̇i.x/ and  ̇e.x/ are symmetric positive definite matrices"
+%\smallskip
+%\\
+%" if the two media have the same anisotropy ratio then the Bidomain system reduces to the Monodomain model. We remark that this is not a physiological case, as it clearly follows from well established experimental evidence. "
+%\smallskip
+%\\
+There are a number of difficulties that arise when trying to numerically approximate a solution to this problem. One is the beforementioned challenging task of dealing with large differences in spatial and temporal scaling due to the complex multiscale structure. The combination of fast reaction dynamics and relatively low conductivity lead to steep gradients in the solution. As mentioned before the microscopic scale the electric conduction of excitation fronts happens through ion channels of cellular membranes which are on a scale of the order of 0.1 mm. On the other hand the overall size cardiac tissues invovled entails a size of several centimeters which leads to a spatial spread factor of up to $10^3$. Similarly for the time parametrisation we have an even larger spread factor. A normal heartbeat takes about 1 second, that is one full cycle, whereas the step excitation front that is described in phase 0 in the previous section ranges on a much shorter time scale therefore requiring time steps within a range of about 0.1 to 500 milliseconds for accurate representation \cite{colli2004parallel}.
 \smallskip
 \\
-" if the two media have the same anisotropy ratio then the Bidomain system reduces to the Monodomain model. We remark that this is not a physiological case, as it clearly follows from well established experimental evidence. "
-\smallskip
-\\
-There are a number of difficulties that arise when trying to numerically approximate a solution to this problem. One is the beforementioned challenging task of dealing with large differences in spatial and temporal scaling due to the complex multiscale structure. As mentioned before the microscopic scale the electric conduction of excitation fronts happens through ion channels of cellular membranes which are on a scale of the order of 0.1 mm. On the other hand the overall size cardiac tissues invovled entails a size of several centimeters which leads to a spatial spread factor of up to $10^3$. Similarly for the time parametrisation we have an even larger spread factor. A normal heartbeat takes about 1 second, that is one full cycle, whereas the step excitation front that is described in phase 0 in the previous section ranges on a much shorter time scale therefore requiring time steps within a range of about 0.1 to 500 milliseconds for accurate representation \cite{colli2004parallel}.
-\smallskip
-\\
-But the sheer size of the problem is not the only difficulty, as mentioned in the prologue there are many ways to discretise the domain, various methodologies of how to represent the differential operators and how to approximate the arising linear and nonlinear systems of equations. As we have tried to reason for the particular choices we have made, the following chapter is meant to serve as an introduction to these mathematical methodologies we apply, outline their underlying principles, demonstrate their functioning using standard examples and point out their relevance and applicability for other \textit{problems}.
+But the sheer size of the problem is not the only difficulty, as mentioned in the prologue there are many ways to discretise the domain, various methodologies of how to represent the differential operators and how to approximate the arising linear and nonlinear systems of equations. As we have tried to reason for the particular choices we have made, the following chapter is meant to serve as an introduction to these mathematical methodologies we apply, outline their underlying principles, demonstrate their functioning using standard examples and point out their relevance and applicability for other problems.
 
 \end{document}

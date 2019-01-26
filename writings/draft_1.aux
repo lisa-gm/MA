@@ -3,6 +3,7 @@
 \citation{zegeling2004adaptive}
 \citation{franzone2014mathematical}
 \citation{colli2004parallel}
+\citation{hohmann2012numerical}
 \citation{gander201550}
 \citation{brandt1977multi}
 \citation{gander201550}
@@ -12,6 +13,7 @@
 \@writefile{toc}{\contentsline {chapter}{\numberline {1}Prologue}{4}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{base_equation}{{1.1}{4}}
 \citation{WHO_statistics}
 \citation{deMotuCordis}
 \citation{franzone2014mathematical}
@@ -28,42 +30,54 @@
 \@writefile{toc}{\contentsline {section}{\numberline {2.1}Electrical Activity on the Cellular Level}{9}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces Different Phases of Cardiac Action Potential \cite  {franzone2014mathematical}}}{9}}
 \citation{potse2006comparison}
+\citation{pezzuto2016space}
+\citation{deuflhard2011adaptive}
 \citation{colli2004parallel}
 \@writefile{toc}{\contentsline {section}{\numberline {2.2}The Monodomain Equation}{10}}
+\newlabel{mon_domain_eq}{{2.1}{10}}
 \citation{bochev2009least}
 \citation{evans2010partial}
+\citation{braess2007finite}
+\citation{ciarlet2016partial}
 \citation{bochev2009least}
 \@writefile{toc}{\contentsline {chapter}{\numberline {3}Discretisation and Solution Methods}{12}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{toc}{\contentsline {section}{\numberline {3.1}Finite Element Methods}{12}}
+\newlabel{FEM_section}{{3.1}{12}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Variational Formulation}{12}}
 \newlabel{basic_strong_form}{{3.1}{12}}
 \newlabel{basic_weak_form}{{3.2}{12}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}Galerkin Approach}{13}}
-\newlabel{finite_dim_basic_weak_form}{{3.7}{13}}
-\newlabel{approx_property}{{3.9}{14}}
-\newlabel{ceas_lemma}{{3.10}{14}}
+\newlabel{finite_dim_basic_weak_form}{{3.9}{13}}
+\newlabel{approx_property}{{3.11}{14}}
+\newlabel{ceas_lemma}{{3.12}{14}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1.3}Matrix Formulation}{14}}
+\citation{bochev2009least}
 \@writefile{toc}{\contentsline {section}{\numberline {3.2}Least Squares Finite Element Methods}{15}}
+\newlabel{basic_min_problem}{{3.18}{16}}
+\newlabel{lsfem_bilinear_form}{{3.20}{16}}
 \citation{gander201550}
 \citation{gander201550}
 \citation{lions2001resolutionions2001resolution}
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Space-Time Approaches}{17}}
+\newlabel{space_time_ode}{{3.25}{17}}
 \citation{gander2008nonlinear}
 \citation{gander1996overlapping}
 \citation{gander1999optimal}
 \citation{guttel2013parallel}
-\@writefile{toc}{\contentsline {section}{\numberline {3.3}Space-Time Approaches}{17}}
 \citation{gander2013paraexp}
 \citation{gander2016analysis}
+\newlabel{ganda_neumueller_system}{{3.31}{19}}
 \@writefile{toc}{\contentsline {section}{\numberline {3.4}Iterative Methods for Nonlinear Systems and Minimisation Problems}{19}}
+\newlabel{iterative_method}{{3.4}{19}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Gradient Descent Methods}{19}}
 \citation{NoceWrig99}
 \citation{NoceWrig99}
 \citation{briggs2000multigrid}
 \citation{deuflhard2011newton}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Gradient Descent Methods}{20}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Newton's Method}{20}}
 \citation{NoceWrig99}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Newton's Method}{20}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.4.3}Trust Region Methods}{21}}
 \citation{bochev2009least}
 \citation{bochev2009least}
@@ -80,14 +94,21 @@
 \@writefile{toc}{\contentsline {section}{\numberline {4.2}Function Spaces}{24}}
 \newlabel{spacesLS}{{4.14}{24}}
 \citation{cai1994first}
-\@writefile{toc}{\contentsline {section}{\numberline {4.3}A Finite Element Space-Time Formulation}{26}}
-\newlabel{blocks_B_begin}{{4.26}{26}}
-\newlabel{block_B_end}{{4.29}{26}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}A Finite Element Space-Time Formulation}{25}}
+\newlabel{blocks_B_begin}{{4.25}{26}}
+\newlabel{block_B_end}{{4.28}{26}}
 \@writefile{toc}{\contentsline {section}{\numberline {4.4}Gradient and Hessian of the Objective}{27}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.5}Nonlinear Iteration Scheme}{29}}
-\newlabel{newt_it}{{4.63}{30}}
+\newlabel{Q_ss}{{4.44}{28}}
+\newlabel{Q_sigma_u}{{4.45}{28}}
+\newlabel{Q_uu}{{4.46}{28}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.5}Nonlinear Iteration Scheme}{28}}
+\newlabel{discretisation_f}{{4.48}{29}}
+\newlabel{non_lin_grad_J_fem_sigma}{{4.50}{29}}
+\newlabel{non_lin_grad_J_fem_u}{{4.51}{29}}
+\newlabel{newt_it}{{4.58}{30}}
 \citation{hackbusch2013multi}
 \citation{brandt1977multi}
+\citation{trottenberg2000multigrid}
 \@writefile{toc}{\contentsline {chapter}{\numberline {5}Multigrid Methods}{31}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
@@ -95,50 +116,75 @@
 \newlabel{lin_system}{{5.1}{31}}
 \newlabel{defect_equation}{{5.4}{31}}
 \newlabel{simple_system}{{5.5}{31}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}Basic Algorithm}{32}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.3}Convergence Properties and Complexity}{33}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.4}Coarse Space Construction Based on Eigenfunctions}{33}}
-\citation{gander2016analysis}
-\citation{gander2016analysis}
+\newlabel{update_correction}{{5.6}{31}}
+\newlabel{coarse_grid_problem}{{5.9}{32}}
+\newlabel{two_level_iteration_operator}{{5.14}{32}}
+\citation{briggs2000multigrid}
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Basic Algorithm}{33}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {6}Implementation and Numerical Results}{35}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{toc}{\contentsline {section}{\numberline {6.1}Discretisation Scheme}{35}}
+\newlabel{fig:space_time_grid}{{6.1}{35}}
+\citation{gander2016analysis}
+\citation{gander2016analysis}
+\newlabel{basis_function}{{6.2}{36}}
 \@writefile{toc}{\contentsline {section}{\numberline {6.2}Multigrid Implementation}{36}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.1}{\ignorespaces Interpolation of the solution to the heat equation with $u(x,0) = \qopname  \relax m{max}(1-2x, 0)$, $D(x) = 0.1$ and homogeneous Neumann boundary conditions in time on a unit square from $8 \times 8$ to $16 \times 16$ elements. The interpolated solution of $\sigma $ is not shown here as $\mathaccentV {tilde}07E{I}$ simply applied to $\sigma $ and $u$ independently.}}{37}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.1}Smoothers}{37}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.1}Coarse Level Construction}{36}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.1}{\ignorespaces Interpolation of the solution to the heat equation with $u(x,0) = \qopname  \relax m{max}(1-2x, 0)$, $D(x) = 0.1$ and homogeneous Neumann boundary conditions in time on a unit square from $8 \times 8$ to $16 \times 16$ elements. The interpolated solution of $\sigma $ is not shown here as $\mathaccentV {tilde}07E{I}$ simply applied to $\sigma $ and $u$ independently.}}{38}}
+\newlabel{fig:interpolation_op}{{6.1}{38}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.2}Smoothers}{38}}
 \citation{adams2001distributed}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.2}{\ignorespaces Schematic overview of the construction of the blocks of damped Jacobi smoother}}{38}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.3}{\ignorespaces Iterates after $k = 0,3,8, 20$ iterations for a patch size of $1 \times 1$, and a grid with $11 \times 11$ elements. needed more than 9000 iterations in order for the norm of the residual to be $< 10^{-9}$.}}{39}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.4}{\ignorespaces Iterates after $k = 0,3,8, 20$ iterations for a patch size of $3 \times 4$, and a grid with $11 \times 11$ elements. needed more than 3177 iterations in order for the norm of the residual to be $< 10^{-9}$.}}{40}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.5}{\ignorespaces Schematic overview of the construction blocks in the Gauss Seidel line smoother}}{40}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.6}{\ignorespaces Iterates after $k = 0,3,8, 20$ iterations for the described line smoother, using a grid with $11 \times 11$ elements. It needed more than about 1759 iterations in order for the norm of the residual to be $< 10^{-9}$. where $A, f$ as before}}{41}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.2}{\ignorespaces Schematic overview of the construction of the blocks of damped Jacobi smoother}}{39}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.3}{\ignorespaces Iterates after $k = 0,3,8, 20$ iterations for a patch size of $1 \times 1$, and a grid with $11 \times 11$ elements. needed more than 9000 iterations in order for the norm of the residual to be smaller than $ 10^{-9}$. }}{40}}
+\newlabel{fig:smoother_1by1}{{6.3}{40}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.4}{\ignorespaces Iterates after $k = 0,3,8, 20$ iterations for a patch size of $3 \times 4$, and a grid with $11 \times 11$ elements. needed more than 3177 iterations in order for the norm of the residual to be smaller than $ 10^{-9}$.}}{41}}
+\newlabel{fig:smoother_3by4}{{6.4}{41}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.5}{\ignorespaces Schematic overview of the construction blocks in the Gauss Seidel line smoother}}{41}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.6}{\ignorespaces Iterates after $k = 0,3,8, 20$ iterations for the described line smoother, using a grid with $11 \times 11$ elements. It needed more than about 1759 iterations in order for the norm of the residual to be $< 10^{-9}$. where $A, f$ as before}}{42}}
 \citation{briggs2000multigrid}
-\@writefile{toc}{\contentsline {section}{\numberline {6.3}Numerical Test Cases}{42}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.1}One-Dimensional Poisson Equation}{42}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.7}{\ignorespaces test case 1: $\mathcal  {S} = (0,1)$, with $u(0) = 1$, $u(1) = 2$, initial iterate $u_{\text  {init}} = 0.1$, $\sigma _{\text  {init}} = 0.1$, $f = 0$. test case 2: $\mathcal  {S} = (0,3)$, with $u(0) = 3$, $u(1) = 0$, initial iterate $u_{\text  {init}} = 1$, $\sigma _{\text  {init}} = 0.5$, $f = 0$. test case 3: \textit  {put it if i get $f$ nonzero working.} }}{42}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.8}{\ignorespaces Left-Panel: Convergence rate $\mu _k$ for the first test case (see table), $\mu = $, Right-Panel: Convergence rate $\mu _k$ for the second test case, $\mu = $.}}{43}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.2}Heat Equation}{43}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.9}{\ignorespaces residual norm over iterations. stopping criterion, residual norm smaller than $10^{-9}$, $\Omega = (0,1)^2$, same number of elements in time and space, $D = 0.1$, $c_2 = 10$, 2 level methods, 3 pre -and post smoothing steps, block Jacobi, $2 \times 2$.}}{43}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.1}{\ignorespaces Overview of a number of sample cases, tested for varying parameters in the number of fine elements $N_x$, the number of fine elements in time $N_t$, the diffusion constant $D$ and the scaling parameter $c_2$. The iterations until convergence give the number of V-cycles, using a 2-level method with 3 pre-and post smoothing steps of the block Jacobi smoother introduced before, with a patch size of $2 \times 2$, and $\kappa (H)$ denotes the condition number of the symmetrised Hessian}}{44}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.10}{\ignorespaces created from a fine mesh with 20 by 20 elements on a unit square, $D = 0.1$, block Jacobi smoother with block sizes of $2 \times 2$, $u_0 = max(1-2x, 0)$ and Neumann boundary conditions in time}}{45}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.11}{\ignorespaces Left--Panel: Sorted eigenvalues of the Hessian $H$ using 11 elements in both space and time with $\kappa (H)=1.5\cdot 10^3$. Right--Panel: Sorted eigenvalues of the Hessian using 24 in space and 44 in time with $\kappa (H)=23\cdot 10^3$. In both cases $\Omega = (0,1)^2$.}}{46}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.3}Numerical Test Cases}{43}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.1}One-Dimensional Poisson Equation}{43}}
+\newlabel{ssec:Poisson}{{6.3.1}{43}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.1}{\ignorespaces tall test cases on $\mathcal  {S} = (0,3)$, with $u(0) = 3$, $u(1) = 0$, initial iterate $u_{\text  {init}} = 1$, $\sigma _{\text  {init}} = 0.5$, $f = 0$ and only vary in the number of degrees of freedom, that is the resolution of the mesh. Smoother: Jacobi-smoother, patch size $1 \times 1$. Convergence criterium : norm of residual smaller than $10^{-9}$.}}{43}}
+\newlabel{table:Table_mg_poisson}{{6.1}{43}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.7}{\ignorespaces Left-Panel: norm of the residual over iterations for test cases 1 to 4, Right-Panel: Convergence rate $\mu $ for test cases 1 to 4. See Table (6.1\hbox {}) for details.}}{44}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.2}Heat Equation}{44}}
+\newlabel{J_heat_equation}{{6.10}{44}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.8}{\ignorespaces Left-Panel: Norm of the residual over iterations. Right-Panel: Convergence rate $\mu $. Stopping criterion residual norm smaller than $10^{-9}$, $\Omega = (0,1)^2$, same number of elements in time and space, $d = 1$, $c_2 = 100$, 2 level methods, 3 pre --and post smoothing steps, block Jacobi, patch size $2 \times 2$.}}{44}}
+\newlabel{fig:scaling_mg}{{6.8}{44}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.9}{\ignorespaces created from a fine mesh with 20 by 20 elements on a unit square, $D = 0.1$, block Jacobi smoother with block sizes of $2 \times 2$, $u_0 = max(1-2x, 0)$ and Neumann boundary conditions in time. The increase in the end may be caused by cancellation of leading digits as the norm of the residuals for the final iterates become very small.}}{45}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.2}{\ignorespaces Overview of a number of sample cases, tested for varying parameters in the number of fine elements $N_x$, the number of fine elements in time $N_t$, the diffusion constant $D$ and the scaling parameter $c_2$. The iterations until convergence give the number of V-cycles, using a 2-level method with 3 pre-and post smoothing steps of the block Jacobi smoother introduced before, with a patch size of $2 \times 2$, and $\kappa (H)$ denotes the condition number of the symmetrised Hessian}}{46}}
+\newlabel{table:convergence_results}{{6.2}{46}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.3}{\ignorespaces More detailed table with condition numbers. $d$ describes the diffusion constant. $c_2$ scaling parameter of the second term of the functional. $\kappa (H)$: condition number of the Hessian. $\kappa (H_{\sigma \sigma })$ : condition number of the submatrix $H_{\sigma \sigma }$, and for $H_{uu}$ respectively. All test cases are of the same size.}}{47}}
+\newlabel{table:cond_number_eig_val}{{6.3}{47}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.10}{\ignorespaces Left-Panel: Sorted eigenvalues of the Hessian of the test cases $2,5,11$ and 20, using a logscale on the $y$-axis. Right-Panel: Sorted eigenvalues of the iteration matrix $M = (I - PH)$ for the same test cases, where $P$ is the preconditioner arising from the block Jacobi smoother using patches of size $2 \times 2$.}}{48}}
+\newlabel{fig:eigenvalues_H_and_it_mat}{{6.10}{48}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.11}{\ignorespaces Left-Panel: Sorted eigenvalues of the Hessian of the test cases $22, 23$ and 24, using a logscale on the $y$-axis. Right-Panel: Sorted eigenvalues of the iteration matrix $M = (I - PH)$ for the same test cases, where $P$ is the preconditioner arising from the block Jacobi smoother using patches of size $2 \times 2$.}}{48}}
+\newlabel{fig:eigenvalues_H_and_it_mat}{{6.11}{48}}
 \citation{deuflhard2011adaptive}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.12}{\ignorespaces }}{47}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.3}Monodomain Equation}{47}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.13}{\ignorespaces For both graphs we have $u_0 = max(1-2x, 0)$, homogeneous Neumann boundary conditions on the spatial boundaries of the domain, for 20 elements in space and 40 in time. On the left we have a diffusion constant $D= 10^{-3}$, whereas on the right we have $D=3 \cdot 10^{-3}$.}}{48}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.14}{\ignorespaces Last steps of the Iteration, where $\mathcal  {S} = (0, 1), \mathcal  {T} = (0, 20)$, 20 elements in space, 40 elements in time, diffusion constant $d=1 \cdot 10^{-3}$, $u_{\text  {init}} (\cdot ,t)= u_0$ for all time steps, and $\sigma _{\text  {init}} = 0$, boundary conditions as before}}{49}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.2}{\ignorespaces Last steps of the Iteration, where $\mathcal  {S} = (0, 1), \mathcal  {T} = (0, 20)$, 20 elements in space, 40 elements in time, diffusion constant $d=3 \cdot 10^{-3}$, $u_{\text  {init}} (\cdot ,t)= u_0$ for all time steps, and $\sigma _{\text  {init}} = 0$, boundary conditions as before}}{49}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.4}Linearisation of a Monodomain Equation}{49}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.15}{\ignorespaces On the left, subsets of grid points on the constant zone, using solution for $d=1 \cdot 10^{-3}$, and on the wavefront where we set the pertubations. On the right the residual norms after each iteration for one of the random test sets.}}{50}}
-\newlabel{fig:pertubations}{{6.15}{50}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusions and Outlook}{51}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.3}Monodomain Equation}{49}}
+\newlabel{my_monodomain}{{6.12}{49}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.12}{\ignorespaces For both graphs we have $u_0 = \qopname  \relax m{max}(1-2x, 0)$, homogeneous Neumann boundary conditions on the spatial boundaries of the domain, for 20 elements in space and 40 in time. Left-Panel: diffusion constant $d= 10^{-3}$. Right-Panel: $d=3 \cdot 10^{-3}$.}}{49}}
+\newlabel{fig:md_sol}{{6.12}{49}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.4}{\ignorespaces Last steps of the Iteration, where $\mathcal  {S} = (0, 1), \mathcal  {T} = (0, 20)$, 20 elements in space, 40 elements in time, diffusion constant $d=1 \cdot 10^{-3}$, $u_{\text  {init}} (\cdot ,t)= u_0$ for all time steps, and $\sigma _{\text  {init}} = 0$, boundary conditions as before.}}{50}}
+\newlabel{table: conv_results_small_dif}{{6.4}{50}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.5}{\ignorespaces Last steps of the Iteration, where $\mathcal  {S} = (0, 1), \mathcal  {T} = (0, 20)$, 20 elements in space, 40 elements in time, diffusion constant $d=3 \cdot 10^{-3}$, $u_{\text  {init}} (\cdot ,t)= u_0$ for all time steps, and $\sigma _{\text  {init}} = 0$, boundary conditions as before.}}{50}}
+\newlabel{table: conv_results_bigger_dif}{{6.5}{50}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.6}{\ignorespaces Testing the effect of the diffusion constant $d$ on the number of iterations until stopping criterion is met. $\mathcal  {S} = (0, 1)$, $\mathcal  {T} = (0, 20)$, 20 elements in space, 40 elements in time, $u_{\text  {init}} (\cdot ,t)= u_0$ for all time steps, and $\sigma _{\text  {init}} = 0$, boundary conditions as before.}}{51}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.7}{\ignorespaces different resolution and different domain sizes, diffusion constant $d=3 \cdot 10^{-3}$, $u_{\text  {init}} (\cdot ,t)= u_0$ for all time steps, and $\sigma _{\text  {init}} = 0$. With the same boundary conditions as before. Stopping criterion $ \delimiter "026B30D  \nabla J \delimiter "026B30D  < 10^{-9}$}}{51}}
+\newlabel{table:diff_grids_md}{{6.7}{51}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.4}Linearisation of a Monodomain Equation}{51}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.13}{\ignorespaces On the left, subsets of grid points on the constant zone, using solution for $d=1 \cdot 10^{-3}$, and on the wavefront where we set the pertubations. On the right the residual norms after each iteration for one of the random test sets.}}{52}}
+\newlabel{fig:pertubations}{{6.13}{52}}
+\citation{langer2017multipatch}
+\@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusions and Outlook}{53}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {chapter}{\numberline {8}Epilogue}{52}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {8}Epilogue}{55}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {chapter}{\numberline {A}Full Computation of the Hessian}{53}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}Full Computation of the Hessian}{56}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \bibstyle{ieeetr}
@@ -147,27 +193,33 @@
 \bibcite{zegeling2004adaptive}{2}
 \bibcite{franzone2014mathematical}{3}
 \bibcite{colli2004parallel}{4}
-\bibcite{gander201550}{5}
-\bibcite{brandt1977multi}{6}
-\bibcite{bochev2009least}{7}
-\bibcite{deuflhard2011newton}{8}
-\bibcite{conn2000trust}{9}
-\bibcite{WHO_statistics}{10}
-\bibcite{deMotuCordis}{11}
-\bibcite{cardiosmart}{12}
-\bibcite{potse2006comparison}{13}
-\bibcite{evans2010partial}{14}
-\bibcite{gander2008nonlinear}{15}
-\bibcite{gander1996overlapping}{16}
-\bibcite{gander1999optimal}{17}
-\bibcite{guttel2013parallel}{18}
-\bibcite{gander2013paraexp}{19}
-\bibcite{gander2016analysis}{20}
-\bibcite{NoceWrig99}{21}
-\bibcite{briggs2000multigrid}{22}
-\bibcite{conway2013course}{23}
-\bibcite{tartar2007introduction}{24}
-\bibcite{cai1994first}{25}
-\bibcite{hackbusch2013multi}{26}
-\bibcite{adams2001distributed}{27}
-\bibcite{deuflhard2011adaptive}{28}
+\bibcite{hohmann2012numerical}{5}
+\bibcite{gander201550}{6}
+\bibcite{brandt1977multi}{7}
+\bibcite{bochev2009least}{8}
+\bibcite{deuflhard2011newton}{9}
+\bibcite{conn2000trust}{10}
+\bibcite{WHO_statistics}{11}
+\bibcite{deMotuCordis}{12}
+\bibcite{cardiosmart}{13}
+\bibcite{potse2006comparison}{14}
+\bibcite{pezzuto2016space}{15}
+\bibcite{deuflhard2011adaptive}{16}
+\bibcite{evans2010partial}{17}
+\bibcite{braess2007finite}{18}
+\bibcite{ciarlet2016partial}{19}
+\bibcite{gander2008nonlinear}{20}
+\bibcite{gander1996overlapping}{21}
+\bibcite{gander1999optimal}{22}
+\bibcite{guttel2013parallel}{23}
+\bibcite{gander2013paraexp}{24}
+\bibcite{gander2016analysis}{25}
+\bibcite{NoceWrig99}{26}
+\bibcite{briggs2000multigrid}{27}
+\bibcite{conway2013course}{28}
+\bibcite{tartar2007introduction}{29}
+\bibcite{cai1994first}{30}
+\bibcite{hackbusch2013multi}{31}
+\bibcite{trottenberg2000multigrid}{32}
+\bibcite{adams2001distributed}{33}
+\bibcite{langer2017multipatch}{34}

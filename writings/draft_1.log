@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/MacPorts 2017_2) (preloaded format=pdflatex 2018.3.21)  20 JAN 2019 19:57
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/MacPorts 2017_2) (preloaded format=pdflatex 2018.3.21)  25 JAN 2019 16:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -594,7 +594,11 @@ Package: afterpage 2014/10/28 v1.08 After-Page Package (DPC)
 LaTeX Warning: Unused global option(s):
     [bibliography=totoc].
 
-(./draft_1.aux)
+(./draft_1.aux
+
+LaTeX Warning: Label `fig:eigenvalues_H_and_it_mat' multiply defined.
+
+)
 \openout1 = `draft_1.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 63.
@@ -609,8 +613,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 63.
 LaTeX Font Info:    ... okay on input line 63.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 63.
 LaTeX Font Info:    ... okay on input line 63.
-
-(/opt/local/share/texmf-texlive/tex/context/base/mkii/supp-pdf.mkii
+ (/opt/local/share/texmf-texlive/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count126
 \scratchdimen=\dimen191
@@ -751,23 +754,27 @@ fined on input line 239.
 Chapter 4.
 [22
 
-] [23] [24]
-Underfull \hbox (badness 10000) in paragraph at lines 162--166
-
+] [23]
+Overfull \hbox (16.67714pt too wide) in paragraph at lines 115--118
+\OT1/cmr/bx/n/10.95 Remark: \OT1/cmr/m/n/10.95 We can see that $\OMS/cmsy/m/n/1
+0.95 B$ \OT1/cmr/m/n/10.95 is a sym-met-ric bi-lin-ear form. In ad-di-tion we h
+ave that $\OMS/cmsy/m/n/10.95 B\OT1/cmr/m/n/10.95 ([\OML/cmm/m/it/10.95 ^^[; u\
+OT1/cmr/m/n/10.95 ]\OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10.95 [\OML/cmm/m/it/10.9
+5 ^^[; u\OT1/cmr/m/n/10.95 ]) \OMS/cmsy/m/n/10.95 ^^U
  []
 
 
-Overfull \hbox (14.25386pt too wide) detected at line 184
+Overfull \hbox (14.25386pt too wide) detected at line 176
 [][]
  []
 
-[25]
-Overfull \hbox (8.01224pt too wide) in paragraph at lines 247--247
+[24] [25]
+Overfull \hbox (8.01224pt too wide) in paragraph at lines 239--239
 [] 
  []
 
 [26] [27]
-Overfull \hbox (7.52347pt too wide) in paragraph at lines 338--338
+Overfull \hbox (7.52347pt too wide) in paragraph at lines 333--333
 [] 
  []
 
@@ -776,232 +783,323 @@ Chapter 5.
 [31
 
 ] [32]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 109.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 102.
 
  (/opt/local/share/texmf-texlive/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 109.
-
-Underfull \hbox (badness 10000) in paragraph at lines 150--153
-
- []
-
-[33]) (./chapters/implementation.tex [34]
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 102.
+ [33])
+(./chapters/implementation.tex [34]
 Chapter 6.
 
-Underfull \hbox (badness 10000) in paragraph at lines 14--17
+Underfull \hbox (badness 10000) in paragraph at lines 49--56
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 62--66
+Underfull \vbox (badness 3343) has occurred while \output is active []
 
- []
-
-[35
+ [35
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 114--117
+Underfull \hbox (badness 10000) in paragraph at lines 140--146
+
+ []
+
+[36]
+Underfull \hbox (badness 4752) in paragraph at lines 179--181
+[][] \OT1/cmr/m/it/10.95 add cap-tion.
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 194--197
 
  []
 
 
-<images/implementation/sol_heat_eqn_interpol.png, id=144, 1644.1425pt x 837.127
+<images/implementation/sol_heat_eqn_interpol.png, id=147, 1644.1425pt x 837.127
 5pt>
 File: images/implementation/sol_heat_eqn_interpol.png Graphic file (type png)
  <use images/implementation/sol_heat_eqn_interpol.png>
 Package pdftex.def Info: images/implementation/sol_heat_eqn_interpol.png used o
-n input line 133.
+n input line 211.
 (pdftex.def)             Requested size: 411.03462pt x 209.28136pt.
- [36] [37 <./images/implementation/sol_heat_eqn_interpol.png (PNG copy)>]
-<images/implementation/contour_plot_1_blk_size1by1.png, id=151, 1383.1675pt x 1
+ [37] [38 <./images/implementation/sol_heat_eqn_interpol.png (PNG copy)>]
+<images/implementation/contour_plot_1_blk_size1by1.png, id=154, 1383.1675pt x 1
 194.4625pt>
 File: images/implementation/contour_plot_1_blk_size1by1.png Graphic file (type 
 png)
  <use images/implementation/contour_plot_1_blk_size1by1.png>
 Package pdftex.def Info: images/implementation/contour_plot_1_blk_size1by1.png 
-used on input line 191.
-(pdftex.def)             Requested size: 387.28426pt x 334.44722pt.
+used on input line 269.
+(pdftex.def)             Requested size: 407.66833pt x 352.03531pt.
 
-<images/implementation/contour_plot_1_blk_size3by4.png, id=152, 1387.1825pt x 1
+<images/implementation/contour_plot_1_blk_size3by4.png, id=155, 1387.1825pt x 1
 198.4775pt>
 File: images/implementation/contour_plot_1_blk_size3by4.png Graphic file (type 
 png)
  <use images/implementation/contour_plot_1_blk_size3by4.png>
 Package pdftex.def Info: images/implementation/contour_plot_1_blk_size3by4.png 
-used on input line 199.
+used on input line 279.
 (pdftex.def)             Requested size: 407.66833pt x 352.21283pt.
 
-<images/implementation/contour_plot_1_lineSm.png, id=153, 1284.8pt x 1076.02pt>
+<images/implementation/contour_plot_1_lineSm.png, id=156, 1284.8pt x 1076.02pt>
 File: images/implementation/contour_plot_1_lineSm.png Graphic file (type png)
 <use images/implementation/contour_plot_1_lineSm.png>
 Package pdftex.def Info: images/implementation/contour_plot_1_lineSm.png used o
-n input line 246.
+n input line 327.
 (pdftex.def)             Requested size: 359.74155pt x 301.28355pt.
- [38] [39 <./images/implementation/contour_plot_1_blk_size1by1.png (PNG copy)>]
- [40 <./images/implementation/contour_plot_1_blk_size3by4.png (PNG copy)>] [41 
+ [39] [40 <./images/implementation/contour_plot_1_blk_size1by1.png (PNG copy)>]
+ [41 <./images/implementation/contour_plot_1_blk_size3by4.png (PNG copy)>] [42 
 <./images/implementation/contour_plot_1_lineSm.png (PNG copy)>]
-<images/implementation/poisson/test_case_1_conv_plot.png, id=167, 562.0197pt x 
-421.575pt>
-File: images/implementation/poisson/test_case_1_conv_plot.png Graphic file (typ
-e png)
- <use images/implementation/poisson/test_case_1_conv_plot.png>
-Package pdftex.def Info: images/implementation/poisson/test_case_1_conv_plot.pn
-g used on input line 293.
-(pdftex.def)             Requested size: 203.83417pt x 152.8926pt.
+Package epstopdf Info: Source file: <images/implementation/poisson/residual_nor
+m_mg.eps>
+(epstopdf)                    date: 2019-01-25 16:07:36
+(epstopdf)                    size: 56631 bytes
+(epstopdf)             Output file: <images/implementation/poisson/residual_nor
+m_mg-eps-converted-to.pdf>
+(epstopdf)                    date: 2019-01-25 16:10:46
+(epstopdf)                    size: 26960 bytes
+(epstopdf)             Command: <repstopdf --outfile=images/implementation/pois
+son/residual_norm_mg-eps-converted-to.pdf images/implementation/poisson/residua
+l_norm_mg.eps>
+(epstopdf)             \includegraphics on input line 377.
+Package epstopdf Info: Output file is already uptodate.
 
-<images/implementation/poisson/test_case_2_conv_plot.png, id=168, 562.0197pt x 
-421.575pt>
-File: images/implementation/poisson/test_case_2_conv_plot.png Graphic file (typ
-e png)
- <use images/implementation/poisson/test_case_2_conv_plot.png>
-Package pdftex.def Info: images/implementation/poisson/test_case_2_conv_plot.pn
-g used on input line 294.
-(pdftex.def)             Requested size: 203.83417pt x 152.8926pt.
+<images/implementation/poisson/residual_norm_mg-eps-converted-to.pdf, id=170, 5
+62.1pt x 421.575pt>
+File: images/implementation/poisson/residual_norm_mg-eps-converted-to.pdf Graph
+ic file (type pdf)
+
+<use images/implementation/poisson/residual_norm_mg-eps-converted-to.pdf>
+Package pdftex.def Info: images/implementation/poisson/residual_norm_mg-eps-con
+verted-to.pdf used on input line 377.
+(pdftex.def)             Requested size: 203.83417pt x 152.8733pt.
+Package epstopdf Info: Source file: <images/implementation/poisson/convergence_
+rate_mg.eps>
+(epstopdf)                    date: 2019-01-25 16:07:06
+(epstopdf)                    size: 58362 bytes
+(epstopdf)             Output file: <images/implementation/poisson/convergence_
+rate_mg-eps-converted-to.pdf>
+(epstopdf)                    date: 2019-01-25 16:10:17
+(epstopdf)                    size: 28418 bytes
+(epstopdf)             Command: <repstopdf --outfile=images/implementation/pois
+son/convergence_rate_mg-eps-converted-to.pdf images/implementation/poisson/conv
+ergence_rate_mg.eps>
+(epstopdf)             \includegraphics on input line 378.
+Package epstopdf Info: Output file is already uptodate.
+
+<images/implementation/poisson/convergence_rate_mg-eps-converted-to.pdf, id=171
+, 562.1pt x 421.575pt>
+File: images/implementation/poisson/convergence_rate_mg-eps-converted-to.pdf Gr
+aphic file (type pdf)
+
+<use images/implementation/poisson/convergence_rate_mg-eps-converted-to.pdf>
+Package pdftex.def Info: images/implementation/poisson/convergence_rate_mg-eps-
+converted-to.pdf used on input line 378.
+(pdftex.def)             Requested size: 203.83417pt x 152.8733pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[42
+[43
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 304--308
+Package epstopdf Info: Source file: <images/implementation/multigrid_scaling/no
+rm_res_scaling_mg.eps>
+(epstopdf)                    date: 2019-01-25 16:18:17
+(epstopdf)                    size: 87795 bytes
+(epstopdf)             Output file: <images/implementation/multigrid_scaling/no
+rm_res_scaling_mg-eps-converted-to.pdf>
+(epstopdf)                    date: 2019-01-25 16:22:01
+(epstopdf)                    size: 37236 bytes
+(epstopdf)             Command: <repstopdf --outfile=images/implementation/mult
+igrid_scaling/norm_res_scaling_mg-eps-converted-to.pdf images/implementation/mu
+ltigrid_scaling/norm_res_scaling_mg.eps>
+(epstopdf)             \includegraphics on input line 402.
+Package epstopdf Info: Output file is already uptodate.
 
- []
+<images/implementation/multigrid_scaling/norm_res_scaling_mg-eps-converted-to.p
+df, id=175, 562.1pt x 421.575pt>
+File: images/implementation/multigrid_scaling/norm_res_scaling_mg-eps-converted
+-to.pdf Graphic file (type pdf)
 
+<use images/implementation/multigrid_scaling/norm_res_scaling_mg-eps-converted-
+to.pdf>
+Package pdftex.def Info: images/implementation/multigrid_scaling/norm_res_scali
+ng_mg-eps-converted-to.pdf used on input line 402.
+(pdftex.def)             Requested size: 224.83601pt x 168.627pt.
+Package epstopdf Info: Source file: <images/implementation/multigrid_scaling/co
+nvergence_rate_scaling_mg.eps>
+(epstopdf)                    date: 2019-01-25 16:23:01
+(epstopdf)                    size: 74568 bytes
+(epstopdf)             Output file: <images/implementation/multigrid_scaling/co
+nvergence_rate_scaling_mg-eps-converted-to.pdf>
+(epstopdf)                    date: 2019-01-25 16:23:05
+(epstopdf)                    size: 37295 bytes
+(epstopdf)             Command: <repstopdf --outfile=images/implementation/mult
+igrid_scaling/convergence_rate_scaling_mg-eps-converted-to.pdf images/implement
+ation/multigrid_scaling/convergence_rate_scaling_mg.eps>
+(epstopdf)             \includegraphics on input line 403.
+Package epstopdf Info: Output file is already uptodate.
 
-Underfull \hbox (badness 10000) in paragraph at lines 309--311
+<images/implementation/multigrid_scaling/convergence_rate_scaling_mg-eps-conver
+ted-to.pdf, id=176, 562.1pt x 421.575pt>
+File: images/implementation/multigrid_scaling/convergence_rate_scaling_mg-eps-c
+onverted-to.pdf Graphic file (type pdf)
 
- []
-
+<use images/implementation/multigrid_scaling/convergence_rate_scaling_mg-eps-co
+nverted-to.pdf>
+Package pdftex.def Info: images/implementation/multigrid_scaling/convergence_ra
+te_scaling_mg-eps-converted-to.pdf used on input line 403.
+(pdftex.def)             Requested size: 224.83601pt x 168.627pt.
+ [44 <./images/implementation/poisson/residual_norm_mg-eps-converted-to.pdf> <.
+/images/implementation/poisson/convergence_rate_mg-eps-converted-to.pdf> <./ima
+ges/implementation/multigrid_scaling/norm_res_scaling_mg-eps-converted-to.pdf> 
+<./images/implementation/multigrid_scaling/convergence_rate_scaling_mg-eps-conv
+erted-to.pdf>]
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 313.
+               Default added (so using `tbp') on input line 411.
 
 
-<images/implementation/multigrid_scaling/scaling_residual_mg.png, id=172, 562.0
-197pt x 421.575pt>
-File: images/implementation/multigrid_scaling/scaling_residual_mg.png Graphic f
-ile (type png)
-
-<use images/implementation/multigrid_scaling/scaling_residual_mg.png>
-Package pdftex.def Info: images/implementation/multigrid_scaling/scaling_residu
-al_mg.png used on input line 368.
-(pdftex.def)             Requested size: 224.8039pt x 168.627pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 372--376
-
- []
-
-[43 <./images/implementation/poisson/test_case_1_conv_plot.png (PNG copy)> <./i
-mages/implementation/poisson/test_case_2_conv_plot.png (PNG copy)> <./images/im
-plementation/multigrid_scaling/scaling_residual_mg.png (PNG copy)>] [44]
-<images/implementation/c2_comparison/res_norm.png, id=179, 562.0197pt x 421.575
+<images/implementation/c2_comparison/res_norm.png, id=201, 562.0197pt x 421.575
 pt>
 File: images/implementation/c2_comparison/res_norm.png Graphic file (type png)
  <use images/implementation/c2_comparison/res_norm.png>
 Package pdftex.def Info: images/implementation/c2_comparison/res_norm.png used 
-on input line 391.
+on input line 468.
 (pdftex.def)             Requested size: 224.8039pt x 168.627pt.
 
-<images/implementation/c2_comparison/conv_rate.png, id=180, 562.0197pt x 421.57
+<images/implementation/c2_comparison/conv_rate.png, id=202, 562.0197pt x 421.57
 5pt>
 File: images/implementation/c2_comparison/conv_rate.png Graphic file (type png)
 
  <use images/implementation/c2_comparison/conv_rate.png>
 Package pdftex.def Info: images/implementation/c2_comparison/conv_rate.png used
- on input line 392.
+ on input line 469.
 (pdftex.def)             Requested size: 224.8039pt x 168.627pt.
  [45 <./images/implementation/c2_comparison/res_norm.png (PNG copy)> <./images/
-implementation/c2_comparison/conv_rate.png (PNG copy)>]
-<images/implementation/eigenvalues/eigenvalues_11by11elem.png, id=184, 562.0197
-pt x 421.575pt>
-File: images/implementation/eigenvalues/eigenvalues_11by11elem.png Graphic file
- (type png)
+implementation/c2_comparison/conv_rate.png (PNG copy)>] [46]
+Package epstopdf Info: Source file: <images/implementation/eigenvalues/some_eig
+envalues_logy.eps>
+(epstopdf)                    date: 2019-01-25 10:32:15
+(epstopdf)                    size: 257388 bytes
+(epstopdf)             Output file: <images/implementation/eigenvalues/some_eig
+envalues_logy-eps-converted-to.pdf>
+(epstopdf)                    date: 2019-01-25 10:34:00
+(epstopdf)                    size: 216755 bytes
+(epstopdf)             Command: <repstopdf --outfile=images/implementation/eige
+nvalues/some_eigenvalues_logy-eps-converted-to.pdf images/implementation/eigenv
+alues/some_eigenvalues_logy.eps>
+(epstopdf)             \includegraphics on input line 532.
+Package epstopdf Info: Output file is already uptodate.
 
-<use images/implementation/eigenvalues/eigenvalues_11by11elem.png>
-Package pdftex.def Info: images/implementation/eigenvalues/eigenvalues_11by11el
-em.png used on input line 440.
-(pdftex.def)             Requested size: 224.8039pt x 168.627pt.
+<images/implementation/eigenvalues/some_eigenvalues_logy-eps-converted-to.pdf, 
+id=209, 562.1pt x 421.575pt>
+File: images/implementation/eigenvalues/some_eigenvalues_logy-eps-converted-to.
+pdf Graphic file (type pdf)
 
-<images/implementation/eigenvalues/eigenvalues_24by44elem.png, id=185, 562.0197
-pt x 421.575pt>
-File: images/implementation/eigenvalues/eigenvalues_24by44elem.png Graphic file
- (type png)
-
-<use images/implementation/eigenvalues/eigenvalues_24by44elem.png>
-Package pdftex.def Info: images/implementation/eigenvalues/eigenvalues_24by44el
-em.png used on input line 441.
-(pdftex.def)             Requested size: 224.8039pt x 168.627pt.
-
-<images/implementation/eigenvalues/some_eigenvalues_logy.png, id=186, 562.0197p
-t x 421.575pt>
-File: images/implementation/eigenvalues/some_eigenvalues_logy.png Graphic file 
-(type png)
-
-<use images/implementation/eigenvalues/some_eigenvalues_logy.png>
+<use images/implementation/eigenvalues/some_eigenvalues_logy-eps-converted-to.p
+df>
 Package pdftex.def Info: images/implementation/eigenvalues/some_eigenvalues_log
-y.png used on input line 449.
-(pdftex.def)             Requested size: 224.8039pt x 168.627pt.
- [46 <./images/implementation/eigenvalues/eigenvalues_11by11elem.png (PNG copy)
-> <./images/implementation/eigenvalues/eigenvalues_24by44elem.png (PNG copy)>]
-<images/implementation/sol_d0_001_1by20_20by40elem.png, id=190, 562.0197pt x 48
+y-eps-converted-to.pdf used on input line 532.
+(pdftex.def)             Requested size: 224.83601pt x 168.627pt.
+Package epstopdf Info: Source file: <images/implementation/eigenvalues/plot_eig
+envalues_iter_mat_block_Jac_tc.eps>
+(epstopdf)                    date: 2019-01-25 10:29:28
+(epstopdf)                    size: 255396 bytes
+(epstopdf)             Output file: <images/implementation/eigenvalues/plot_eig
+envalues_iter_mat_block_Jac_tc-eps-converted-to.pdf>
+(epstopdf)                    date: 2019-01-25 10:34:49
+(epstopdf)                    size: 217697 bytes
+(epstopdf)             Command: <repstopdf --outfile=images/implementation/eige
+nvalues/plot_eigenvalues_iter_mat_block_Jac_tc-eps-converted-to.pdf images/impl
+ementation/eigenvalues/plot_eigenvalues_iter_mat_block_Jac_tc.eps>
+(epstopdf)             \includegraphics on input line 533.
+Package epstopdf Info: Output file is already uptodate.
+
+<images/implementation/eigenvalues/plot_eigenvalues_iter_mat_block_Jac_tc-eps-c
+onverted-to.pdf, id=210, 562.1pt x 421.575pt>
+File: images/implementation/eigenvalues/plot_eigenvalues_iter_mat_block_Jac_tc-
+eps-converted-to.pdf Graphic file (type pdf)
+
+<use images/implementation/eigenvalues/plot_eigenvalues_iter_mat_block_Jac_tc-e
+ps-converted-to.pdf>
+Package pdftex.def Info: images/implementation/eigenvalues/plot_eigenvalues_ite
+r_mat_block_Jac_tc-eps-converted-to.pdf used on input line 533.
+(pdftex.def)             Requested size: 224.83601pt x 168.627pt.
+ [47]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [48 <./images/implementation/eigenvalues/some_eigenvalues_logy-eps-converted-t
+o.pdf> <./images/implementation/eigenvalues/plot_eigenvalues_iter_mat_block_Jac
+_tc-eps-converted-to.pdf>]
+<images/implementation/sol_d0_001_1by20_20by40elem.png, id=228, 562.0197pt x 48
 3.7272pt>
 File: images/implementation/sol_d0_001_1by20_20by40elem.png Graphic file (type 
 png)
  <use images/implementation/sol_d0_001_1by20_20by40elem.png>
 Package pdftex.def Info: images/implementation/sol_d0_001_1by20_20by40elem.png 
-used on input line 495.
+used on input line 593.
 (pdftex.def)             Requested size: 224.8039pt x 193.48744pt.
 
-<images/implementation/sol_d0_003_1by20_20by40elem.png, id=191, 562.0197pt x 48
+<images/implementation/sol_d0_003_1by20_20by40elem.png, id=229, 562.0197pt x 48
 1.8pt>
 File: images/implementation/sol_d0_003_1by20_20by40elem.png Graphic file (type 
 png)
  <use images/implementation/sol_d0_003_1by20_20by40elem.png>
 Package pdftex.def Info: images/implementation/sol_d0_003_1by20_20by40elem.png 
-used on input line 496.
+used on input line 594.
 (pdftex.def)             Requested size: 224.8039pt x 192.71658pt.
- [47 <./images/implementation/eigenvalues/some_eigenvalues_logy.png (PNG copy)>
-]
-Underfull \hbox (badness 10000) in paragraph at lines 537--581
+ [49 <./images/implementation/sol_d0_001_1by20_20by40elem.png (PNG copy)> <./im
+ages/implementation/sol_d0_003_1by20_20by40elem.png (PNG copy)>]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 702--704
 
  []
 
-[48 <./images/implementation/sol_d0_001_1by20_20by40elem.png (PNG copy)> <./ima
-ges/implementation/sol_d0_003_1by20_20by40elem.png (PNG copy)>]
-<images/implementation/lin_hessian/subsets_on_sol.png, id=200, 562.0197pt x 449
+[50]
+Underfull \hbox (badness 10000) in paragraph at lines 762--765
+
+ []
+
+[51]
+<images/implementation/lin_hessian/subsets_on_sol.png, id=239, 562.0197pt x 449
 .7603pt>
 File: images/implementation/lin_hessian/subsets_on_sol.png Graphic file (type p
 ng)
  <use images/implementation/lin_hessian/subsets_on_sol.png>
 Package pdftex.def Info: images/implementation/lin_hessian/subsets_on_sol.png u
-sed on input line 605.
+sed on input line 780.
 (pdftex.def)             Requested size: 224.8039pt x 179.90092pt.
 
-<images/implementation/lin_hessian/res_norm.png, id=201, 562.0197pt x 421.575pt
+<images/implementation/lin_hessian/res_norm.png, id=240, 562.0197pt x 421.575pt
 >
 File: images/implementation/lin_hessian/res_norm.png Graphic file (type png)
  <use images/implementation/lin_hessian/res_norm.png>
 Package pdftex.def Info: images/implementation/lin_hessian/res_norm.png used on
- input line 606.
+ input line 781.
 (pdftex.def)             Requested size: 224.8039pt x 168.627pt.
- [49])
-(./chapters/conclusions.tex [50 <./images/implementation/lin_hessian/subsets_on
+)
+(./chapters/conclusions.tex [52 <./images/implementation/lin_hessian/subsets_on
 _sol.png (PNG copy)> <./images/implementation/lin_hessian/res_norm.png (PNG cop
 y)>]
 Chapter 7.
-) (./chapters/epilogue.tex [51
+[53
 
-]
+]) (./chapters/epilogue.tex [54]
 Chapter 8.
-) (./chapters/appendix.tex [52
+) (./chapters/appendix.tex [55
 
 ]
 Appendix A.
-[53
+[56
 
 ]
 Overfull \hbox (43.58923pt too wide) detected at line 90
@@ -1013,27 +1111,29 @@ Overfull \hbox (6.10196pt too wide) detected at line 96
 $[][]$  
  []
 
-[54]) (./draft_1.bbl [55]
-Missing character: There is no Ì in font cmr10!
-Missing character: There is no ˆ in font cmr10!
- [56
+[57]) (./draft_1.bbl [58] [59
 
 ]
 Missing character: There is no Ì in font cmr10!
 Missing character: There is no ˆ in font cmr10!
-) [57] (./draft_1.aux)
+Missing character: There is no Ì in font cmr10!
+Missing character: There is no ˆ in font cmr10!
+) [60] (./draft_1.aux)
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: There were multiply-defined labels.
+
  ) 
 Here is how much of TeX's memory you used:
- 16094 strings out of 494108
- 341697 string characters out of 6155655
- 506218 words of memory out of 5000000
- 19049 multiletter control sequences out of 15000+600000
- 13933 words of font info for 51 fonts, out of 8000000 for 9000
+ 16142 strings out of 494108
+ 343005 string characters out of 6155655
+ 508672 words of memory out of 5000000
+ 19087 multiletter control sequences out of 15000+600000
+ 13232 words of font info for 49 fonts, out of 8000000 for 9000
  430 hyphenation exceptions out of 8191
- 55i,16n,76p,2494b,765s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 55i,16n,76p,2494b,741s stack positions out of 5000i,500n,10000p,200000b,80000s
 </opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx10.pfb></o
 pt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb></opt/lo
 cal/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/local/s
@@ -1049,10 +1149,10 @@ m/cmsy6.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy
 8.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti10.pfb
 ></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/symbols/msbm10.pfb
 >
-Output written on draft_1.pdf (59 pages, 4379362 bytes).
+Output written on draft_1.pdf (62 pages, 4447764 bytes).
 PDF statistics:
- 280 PDF objects out of 1000 (max. 8388607)
- 181 compressed objects within 2 object streams
+ 321 PDF objects out of 1000 (max. 8388607)
+ 212 compressed objects within 3 object streams
  0 named destinations out of 1000 (max. 500000)
  108 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -10,29 +10,28 @@
 \contentsline {section}{\numberline {3.2}Least Squares Finite Element Methods}{15}
 \contentsline {section}{\numberline {3.3}Space-Time Approaches}{17}
 \contentsline {section}{\numberline {3.4}Iterative Methods for Nonlinear Systems and Minimisation Problems}{19}
-\contentsline {subsection}{\numberline {3.4.1}Gradient Descent Methods}{20}
+\contentsline {subsection}{\numberline {3.4.1}Gradient Descent Methods}{19}
 \contentsline {subsection}{\numberline {3.4.2}Newton's Method}{20}
 \contentsline {subsection}{\numberline {3.4.3}Trust Region Methods}{21}
 \contentsline {chapter}{\numberline {4}Derivation of a Least Squares Finite Element Space-Time Discretisation}{22}
 \contentsline {section}{\numberline {4.1}Construction of an Equivalent Minimisation Problem}{22}
 \contentsline {section}{\numberline {4.2}Function Spaces}{24}
-\contentsline {section}{\numberline {4.3}A Finite Element Space-Time Formulation}{26}
+\contentsline {section}{\numberline {4.3}A Finite Element Space-Time Formulation}{25}
 \contentsline {section}{\numberline {4.4}Gradient and Hessian of the Objective}{27}
-\contentsline {section}{\numberline {4.5}Nonlinear Iteration Scheme}{29}
+\contentsline {section}{\numberline {4.5}Nonlinear Iteration Scheme}{28}
 \contentsline {chapter}{\numberline {5}Multigrid Methods}{31}
 \contentsline {section}{\numberline {5.1}Core Ideas}{31}
-\contentsline {section}{\numberline {5.2}Basic Algorithm}{32}
-\contentsline {section}{\numberline {5.3}Convergence Properties and Complexity}{33}
-\contentsline {section}{\numberline {5.4}Coarse Space Construction Based on Eigenfunctions}{33}
+\contentsline {section}{\numberline {5.2}Basic Algorithm}{33}
 \contentsline {chapter}{\numberline {6}Implementation and Numerical Results}{35}
 \contentsline {section}{\numberline {6.1}Discretisation Scheme}{35}
 \contentsline {section}{\numberline {6.2}Multigrid Implementation}{36}
-\contentsline {subsection}{\numberline {6.2.1}Smoothers}{37}
-\contentsline {section}{\numberline {6.3}Numerical Test Cases}{42}
-\contentsline {subsection}{\numberline {6.3.1}One-Dimensional Poisson Equation}{42}
-\contentsline {subsection}{\numberline {6.3.2}Heat Equation}{43}
-\contentsline {subsection}{\numberline {6.3.3}Monodomain Equation}{47}
-\contentsline {subsection}{\numberline {6.3.4}Linearisation of a Monodomain Equation}{49}
-\contentsline {chapter}{\numberline {7}Conclusions and Outlook}{51}
-\contentsline {chapter}{\numberline {8}Epilogue}{52}
-\contentsline {chapter}{\numberline {A}Full Computation of the Hessian}{53}
+\contentsline {subsection}{\numberline {6.2.1}Coarse Level Construction}{36}
+\contentsline {subsection}{\numberline {6.2.2}Smoothers}{38}
+\contentsline {section}{\numberline {6.3}Numerical Test Cases}{43}
+\contentsline {subsection}{\numberline {6.3.1}One-Dimensional Poisson Equation}{43}
+\contentsline {subsection}{\numberline {6.3.2}Heat Equation}{44}
+\contentsline {subsection}{\numberline {6.3.3}Monodomain Equation}{49}
+\contentsline {subsection}{\numberline {6.3.4}Linearisation of a Monodomain Equation}{51}
+\contentsline {chapter}{\numberline {7}Conclusions and Outlook}{53}
+\contentsline {chapter}{\numberline {8}Epilogue}{55}
+\contentsline {chapter}{\numberline {A}Full Computation of the Hessian}{56}

@@ -5,6 +5,15 @@
 
 \chapter{Conclusions and Outlook}
 
+In this thesis we developed a least-squares space--time finite element discretisation for parabolic reaction-diffusion systems with a potentially nonlinear forcing term. We implemented a discretisation for test cases of one space dimension using a uniform mesh with rectangular elements and the finite--dimensional approximation space $Q_1$. We also implemented a linear geometric multigrid V--cycle algorithm to solve the arising linear systems of equations. 
+\\
+We did not really know how the multigrid algorithm would perform on our test cases as to our knowledge there is no literature to compare our results to for space--time least-squares finite element discretisaitons. But as we tested it on sparse, symmetric, positive definite systems of equations of rather small size we had hoped for better convergence rates and more consistent scaling. However this was not really the case. The multigrid algorithm converged for all test cases but at unsatisfactory convergence rates and it also did not scale to satisfactory extent. 
+\smallskip
+\\
+We then tried to understand better what affected the rate of convergence.  
+
+
+
 \textbf{Potential Reasons Why Doesn't Work Well}
 
 
@@ -14,7 +23,17 @@
 	\item maybe a space-time approach where future influencing the past isn't a great idea, should follow causality principle? 
 	\item maybe the scaling ... how terms are weighted ... or this multigrid thing, since the algorithm seems to work alright for other problems ... unfortunate combination of things
 	\item so many more things what to test, summarise what worked best. what seems to not work well at all
+	\item really absolutely toy examples, but important understand behavior there before working with really large systems
 	
 \end{itemize}
+
+It is more complicated to understand the influence of the diffusion constant $d$ the term $\nabla u$ is coupled with $\sigma$ and therefore influences the overall dynamics. The scaling parameter $c_2$ however affects only the second term. And we observed a significant speed up in the convergence rate by increasing this term. Probably due to the fact that the increase in $c_2$ leads to an increase of the small eigenvalues of $H$ which in turn then lowers the condition numer $\kappa(H)$ and therefore leads to faster convergence. 
+
+
+We saw on the other hand that the multigrid algorithm seemed to perform well for the Laplace equation, see Section (\ref{ssec:Poisson}), therefore it also seems a reasonable hypothesis that the time derivative in $u$ is causing problems.  
+
+It is known that multigrid methods do not achieve the same good performance results for parabolic problems as they do for elliptic ones [source]. And many strategies are being developed to modify or construct the arising systems of equations to enhance the performance of the multigrid algorithm, e.g. in \cite{langer2017multipatch}. It is often necessary to introduce a stabilisation term in order for the . Therefore one of the potential problems we might be experiencing here might have to do with the fact that we do not have a time derivative in $\sigma$. All first order derivatives of $u$ are present in the equation, however as $\sigma$ is defined as the gradient of $u$ in space it is generally still a function of $t$, without containing 
+
+Therefore another possibility could be to choose different basis functions for $\sigma$ that are constant in time, in order to avoid the potential instability arising from this. 
 
 \end{document}
