@@ -105,7 +105,7 @@
 \newlabel{discretisation_f}{{4.48}{29}}
 \newlabel{non_lin_grad_J_fem_sigma}{{4.50}{29}}
 \newlabel{non_lin_grad_J_fem_u}{{4.51}{29}}
-\newlabel{newt_it}{{4.58}{30}}
+\newlabel{newt_it}{{4.57}{30}}
 \citation{hackbusch2013multi}
 \citation{brandt1977multi}
 \citation{trottenberg2000multigrid}
@@ -151,40 +151,48 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {6.7}{\ignorespaces Left-Panel: norm of the residual over iterations for test cases 1 to 4, Right-Panel: Convergence rate $\mu $ for test cases 1 to 4. See Table (6.1\hbox {}) for details.}}{44}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.3.2}Heat Equation}{44}}
 \newlabel{J_heat_equation}{{6.10}{44}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.8}{\ignorespaces Left-Panel: Norm of the residual over iterations. Right-Panel: Convergence rate $\mu $. Stopping criterion residual norm smaller than $10^{-9}$, $\Omega = (0,1)^2$, same number of elements in time and space, $d = 1$, $c_2 = 100$, 2 level methods, 3 pre --and post smoothing steps, block Jacobi, patch size $2 \times 2$.}}{44}}
-\newlabel{fig:scaling_mg}{{6.8}{44}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.9}{\ignorespaces created from a fine mesh with 20 by 20 elements on a unit square, $D = 0.1$, block Jacobi smoother with block sizes of $2 \times 2$, $u_0 = max(1-2x, 0)$ and Neumann boundary conditions in time. The increase in the end may be caused by cancellation of leading digits as the norm of the residuals for the final iterates become very small.}}{45}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.8}{\ignorespaces Left-Panel: Norm of the residual over iterations. Right-Panel: Convergence rate $\mu $. Stopping criterion residual norm smaller than $10^{-9}$, $\Omega = (0,1)^2$, same number of elements in time and space, $d = 1$, $c_2 = 100$, 2 level methods, 3 pre --and post smoothing steps, using 2-colour Gauss-Seidel line smoother.}}{44}}
+\newlabel{fig:scaling_mg_block_Jac}{{6.8}{44}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.9}{\ignorespaces Left-Panel: Norm of the residual over iterations. Right-Panel: Convergence rate $\mu $. Stopping criterion residual norm smaller than $10^{-9}$, $\Omega = (0,1)^2$, same number of elements in time and space, $d = 1$, $c_2 = 100$, 2 level methods, 3 pre --and post smoothing steps, using 2-colour Gauss-Seidel line smoother.}}{45}}
+\newlabel{fig:scaling_mg_line_smoother}{{6.9}{45}}
 \@writefile{lot}{\contentsline {table}{\numberline {6.2}{\ignorespaces Overview of a number of sample cases, tested for varying parameters in the number of fine elements $N_x$, the number of fine elements in time $N_t$, the diffusion constant $D$ and the scaling parameter $c_2$. The iterations until convergence give the number of V-cycles, using a 2-level method with 3 pre-and post smoothing steps of the block Jacobi smoother introduced before, with a patch size of $2 \times 2$, and $\kappa (H)$ denotes the condition number of the symmetrised Hessian}}{46}}
 \newlabel{table:convergence_results}{{6.2}{46}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.3}{\ignorespaces More detailed table with condition numbers. $d$ describes the diffusion constant. $c_2$ scaling parameter of the second term of the functional. $\kappa (H)$: condition number of the Hessian. $\kappa (H_{\sigma \sigma })$ : condition number of the submatrix $H_{\sigma \sigma }$, and for $H_{uu}$ respectively. All test cases are of the same size.}}{47}}
-\newlabel{table:cond_number_eig_val}{{6.3}{47}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.10}{\ignorespaces Left-Panel: Sorted eigenvalues of the Hessian of the test cases $2,5,11$ and 20, using a logscale on the $y$-axis. Right-Panel: Sorted eigenvalues of the iteration matrix $M = (I - PH)$ for the same test cases, where $P$ is the preconditioner arising from the block Jacobi smoother using patches of size $2 \times 2$.}}{48}}
-\newlabel{fig:eigenvalues_H_and_it_mat}{{6.10}{48}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.11}{\ignorespaces Left-Panel: Sorted eigenvalues of the Hessian of the test cases $22, 23$ and 24, using a logscale on the $y$-axis. Right-Panel: Sorted eigenvalues of the iteration matrix $M = (I - PH)$ for the same test cases, where $P$ is the preconditioner arising from the block Jacobi smoother using patches of size $2 \times 2$.}}{48}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.10}{\ignorespaces created from a fine mesh with 20 by 20 elements on a unit square, $D = 0.1$, block Jacobi smoother with block sizes of $2 \times 2$, $u_0 = max(1-2x, 0)$ and Neumann boundary conditions in time. The increase in the end may be caused by cancellation of leading digits as the norm of the residuals for the final iterates become very small.}}{47}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.3}{\ignorespaces More detailed table with condition numbers. $d$ describes the diffusion constant. $c_2$ scaling parameter of the second term of the functional. $\kappa (H)$: condition number of the Hessian. $\kappa (H_{\sigma \sigma })$ : condition number of the submatrix $H_{\sigma \sigma }$, and for $H_{uu}$ respectively. All test cases are of the same size.}}{48}}
+\newlabel{table:cond_number_eig_val}{{6.3}{48}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.11}{\ignorespaces Left-Panel: Sorted eigenvalues of the Hessian of the test cases $2,5,11$ and 20, using a logscale on the $y$-axis. Right-Panel: Sorted eigenvalues of the iteration matrix $M = (I - PH)$ for the same test cases, where $P$ is the preconditioner arising from the block Jacobi smoother using patches of size $2 \times 2$.}}{48}}
 \newlabel{fig:eigenvalues_H_and_it_mat}{{6.11}{48}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.12}{\ignorespaces Left-Panel: Sorted eigenvalues of the Hessian of the test cases $22, 23$ and 24, using a logscale on the $y$-axis. Right-Panel: Sorted eigenvalues of the iteration matrix $M = (I - PH)$ for the same test cases, where $P$ is the preconditioner arising from the block Jacobi smoother using patches of size $2 \times 2$.}}{49}}
+\newlabel{fig:eigenvalues_H_and_it_mat}{{6.12}{49}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.13}{\ignorespaces Left-Panel: Let the initial error be $e_{\text  {init}} = \DOTSB \sum@ \slimits@ _{i=1}^{m} \alpha _i v_i$, where $v_i$ are the eigenvectors sorted in increasing size of their corresponding eigenvalues. Then the graph shows the index $i$ of the eigenvalue on the $x$--axis, and $\alpha _i$ on the $y$--axis. Right-Panel: Coefficients $\alpha _i$ of the error after one iteration written in the eigenbasis as on the left-panel.}}{50}}
+\newlabel{fig:coeff_analysis_init_error}{{6.13}{50}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.14}{\ignorespaces Left-Panel: Sorted eigenvalues of the Hessian of the test cases $22, 23$ and 24, using a logscale on the $y$-axis. Right-Panel: Sorted eigenvalues of the iteration matrix $M = (I - PH)$ for the same test cases, where $P$ is the preconditioner arising from the block Jacobi smoother using patches of size $2 \times 2$.}}{50}}
+\newlabel{fig:coeff_analysis}{{6.14}{50}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.15}{\ignorespaces Left-Panel: . Right-Panel: Sorted eigenvalues of the iteration matrix $M = (I - PH)$ for the same test cases, where $P$ is the preconditioner arising from the block Jacobi smoother using patches of size $2 \times 2$.}}{51}}
+\newlabel{fig:coeff_analysis}{{6.15}{51}}
 \citation{deuflhard2011adaptive}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.3}Monodomain Equation}{49}}
-\newlabel{my_monodomain}{{6.12}{49}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.12}{\ignorespaces For both graphs we have $u_0 = \qopname  \relax m{max}(1-2x, 0)$, homogeneous Neumann boundary conditions on the spatial boundaries of the domain, for 20 elements in space and 40 in time. Left-Panel: diffusion constant $d= 10^{-3}$. Right-Panel: $d=3 \cdot 10^{-3}$.}}{49}}
-\newlabel{fig:md_sol}{{6.12}{49}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.4}{\ignorespaces Last steps of the Iteration, where $\mathcal  {S} = (0, 1), \mathcal  {T} = (0, 20)$, 20 elements in space, 40 elements in time, diffusion constant $d=1 \cdot 10^{-3}$, $u_{\text  {init}} (\cdot ,t)= u_0$ for all time steps, and $\sigma _{\text  {init}} = 0$, boundary conditions as before.}}{50}}
-\newlabel{table: conv_results_small_dif}{{6.4}{50}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.5}{\ignorespaces Last steps of the Iteration, where $\mathcal  {S} = (0, 1), \mathcal  {T} = (0, 20)$, 20 elements in space, 40 elements in time, diffusion constant $d=3 \cdot 10^{-3}$, $u_{\text  {init}} (\cdot ,t)= u_0$ for all time steps, and $\sigma _{\text  {init}} = 0$, boundary conditions as before.}}{50}}
-\newlabel{table: conv_results_bigger_dif}{{6.5}{50}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.6}{\ignorespaces Testing the effect of the diffusion constant $d$ on the number of iterations until stopping criterion is met. $\mathcal  {S} = (0, 1)$, $\mathcal  {T} = (0, 20)$, 20 elements in space, 40 elements in time, $u_{\text  {init}} (\cdot ,t)= u_0$ for all time steps, and $\sigma _{\text  {init}} = 0$, boundary conditions as before.}}{51}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.7}{\ignorespaces different resolution and different domain sizes, diffusion constant $d=3 \cdot 10^{-3}$, $u_{\text  {init}} (\cdot ,t)= u_0$ for all time steps, and $\sigma _{\text  {init}} = 0$. With the same boundary conditions as before. Stopping criterion $ \delimiter "026B30D  \nabla J \delimiter "026B30D  < 10^{-9}$}}{51}}
-\newlabel{table:diff_grids_md}{{6.7}{51}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.4}Linearisation of a Monodomain Equation}{51}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.13}{\ignorespaces On the left, subsets of grid points on the constant zone, using solution for $d=1 \cdot 10^{-3}$, and on the wavefront where we set the pertubations. On the right the residual norms after each iteration for one of the random test sets.}}{52}}
-\newlabel{fig:pertubations}{{6.13}{52}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.3}Monodomain Equation}{52}}
+\newlabel{my_monodomain}{{6.12}{52}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.16}{\ignorespaces For both graphs we have $u_0 = \qopname  \relax m{max}(1-2x, 0)$, homogeneous Neumann boundary conditions on the spatial boundaries of the domain, for 20 elements in space and 40 in time. Left-Panel: diffusion constant $d= 10^{-3}$. Right-Panel: $d=3 \cdot 10^{-3}$.}}{52}}
+\newlabel{fig:md_sol}{{6.16}{52}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.4}{\ignorespaces Last steps of the Iteration, where $\mathcal  {S} = (0, 1), \mathcal  {T} = (0, 20)$, 20 elements in space, 40 elements in time, diffusion constant $d=1 \cdot 10^{-3}$, $u_{\text  {init}} (\cdot ,t)= u_0$ for all time steps, and $\sigma _{\text  {init}} = 0$, boundary conditions as before.}}{53}}
+\newlabel{table: conv_results_small_dif}{{6.4}{53}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.5}{\ignorespaces Last steps of the Iteration, where $\mathcal  {S} = (0, 1), \mathcal  {T} = (0, 20)$, 20 elements in space, 40 elements in time, diffusion constant $d=3 \cdot 10^{-3}$, $u_{\text  {init}} (\cdot ,t)= u_0$ for all time steps, and $\sigma _{\text  {init}} = 0$, boundary conditions as before.}}{53}}
+\newlabel{table: conv_results_bigger_dif}{{6.5}{53}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.6}{\ignorespaces Testing the effect of the diffusion constant $d$ on the number of iterations until stopping criterion is met. $\mathcal  {S} = (0, 1)$, $\mathcal  {T} = (0, 20)$, 20 elements in space, 40 elements in time, $u_{\text  {init}} (\cdot ,t)= u_0$ for all time steps, and $\sigma _{\text  {init}} = 0$, boundary conditions as before.}}{54}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.7}{\ignorespaces different resolution and different domain sizes, diffusion constant $d=3 \cdot 10^{-3}$, $u_{\text  {init}} (\cdot ,t)= u_0$ for all time steps, and $\sigma _{\text  {init}} = 0$. With the same boundary conditions as before. Stopping criterion $ \delimiter "026B30D  \nabla J \delimiter "026B30D  < 10^{-9}$}}{54}}
+\newlabel{table:diff_grids_md}{{6.7}{54}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.4}Linearisation of a Monodomain Equation}{54}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.17}{\ignorespaces On the left, subsets of grid points on the constant zone, using solution for $d=1 \cdot 10^{-3}$, and on the wavefront where we set the pertubations. On the right the residual norms after each iteration for one of the random test sets.}}{55}}
+\newlabel{fig:pertubations}{{6.17}{55}}
 \citation{langer2017multipatch}
-\@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusions and Outlook}{53}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusions and Outlook}{56}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {chapter}{\numberline {8}Epilogue}{55}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {8}Epilogue}{58}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {chapter}{\numberline {A}Full Computation of the Hessian}{56}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}Full Computation of the Hessian}{59}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \bibstyle{ieeetr}

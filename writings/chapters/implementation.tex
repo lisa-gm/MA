@@ -390,22 +390,36 @@ In this section we tested the multigrid implementation on our least-squares spac
 	\begin{equation}
 	\begin{aligned}
 	\label{J_heat_equation}
-	J([\sigma, u], 0) = \frac{1}{2} c_1 || u_t - div(\sigma) ||_{L^2(\Omega)}^2 + \frac{1}{2} c_2 || \sigma - D \nabla u ||_{L^2(\Omega)}^2.
+	J([\sigma, u], 0) = \frac{1}{2} c_1 || u_t - div(\sigma) ||_{L^2(\Omega)}^2 + \frac{1}{2} c_2 || \sigma - d \nabla u ||_{L^2(\Omega)}^2.
 	\end{aligned}
 	\end{equation}
 \end{ceqn}
 
-The multigrid algorithm converged for all tested input parameters. However there seem to be a lot different factors influencing the speed of convergence. The figure below shows the norm of the residual over the number of iterations for different numbers of degrees of freedom. 
+We simplified the scaling of the diffusive term to a constant $d > 0$ that is independent of $x$. The multigrid algorithm converged for all tested input parameters. However there seem to be a lot different factors influencing the speed of convergence. The figures below shows the norm of the residual over the number of iterations for different numbers of degrees of freedom. 
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[scale=0.4]{images/implementation/multigrid_scaling/norm_res_scaling_mg}
 		\includegraphics[scale=0.4]{images/implementation/multigrid_scaling/convergence_rate_scaling_mg}
-	\caption{Left-Panel: Norm of the residual over iterations. Right-Panel: Convergence rate $\mu$. Stopping criterion residual norm smaller than $10^{-9}$, $\Omega = (0,1)^2$, same number of elements in time and space, $d = 1$, $c_2 = 100$, 2 level methods, 3 pre --and post smoothing steps, block Jacobi, patch size $2 \times 2$.}
-	\label{fig:scaling_mg}
+	\caption{Left-Panel: Norm of the residual over iterations. Right-Panel: Convergence rate $\mu$. Stopping criterion residual norm smaller than $10^{-9}$, $\Omega = (0,1)^2$, same number of elements in time and space, $d = 1$, $c_2 = 100$, 2 level methods, 3 pre --and post smoothing steps, using 2-colour Gauss-Seidel line smoother.}
+	\label{fig:scaling_mg_block_Jac}
 \end{figure}
 
-In general it also seems that the required number of iterations until we reach the stopping criterion is quite large even though the tested problems are still very small. \textit{Problem sort of scales but not great. more later.} In order to find out what might be the cause, we varied different input parameters to see how it would affect the convergence results. The ones we want to mainly focus on are grid size and grid size ratio, a varying diffusion constant, and the interplay of the scaling factors of $c_1$ and $c_2$. We can find a table below that lists different parameters properties as well as the corresponding convergence results, like the number of required V-cycle and the convergence rate. This is meant to give an overview of the behavior of this solution method. Subsequently we will go into more detail concerning the affects of the individual input parameters to gain a better understanding for each of them. 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.4]{images/implementation/multigrid_scaling/norm_res_scaling_mg_line_smoother}
+	\includegraphics[scale=0.4]{images/implementation/multigrid_scaling/convergence_rate_scaling_mg_line_smoother}
+	\caption{Left-Panel: Norm of the residual over iterations. Right-Panel: Convergence rate $\mu$. Stopping criterion residual norm smaller than $10^{-9}$, $\Omega = (0,1)^2$, same number of elements in time and space, $d = 1$, $c_2 = 100$, 2 level methods, 3 pre --and post smoothing steps, using 2-colour Gauss-Seidel line smoother.}
+	\label{fig:scaling_mg_line_smoother}
+\end{figure}
+
+The values displayed in Figure (\ref{fig:scaling_mg_block_Jac}) are obtained with the Vanka--type block Jacobi smoother, whereas in Figure (\ref{fig:scaling_mg_line_smoother}) the Gauss--Seidel line smoother was used. We can see that the latter performs better, which was to be expected from the smoothing properties we have seen in the previous section. However, it seems that in both cases the required number of iterations until we reach the stopping criterion is quite large even though the number of degrees of freedom of all problems are still quite small. We can also see that the problem by far does not scale as well as we saw in the case of the Laplace equation. In order to better understand the behavior of the multigrid algorithm we varied different input parameters to see how it would affect the convergence results. The ones we want to mainly focus on are grid size and grid size ratio, a varying diffusion constant, and the interplay of the scaling factors of $c_1$ and $c_2$. We will focus our attention on the block Jacobi--smoother, as the Gauss--Seidel line smoother is computationally far more expensive, due to the fact that we require inversions for a single node in space but all degrees of freedom in time. And since we are interested in scalability for problems that allow for large numbers of timesteps, we want to focus our attention on the block Jacobi--smoother. We can find a table below that lists different parameters properties as well as the corresponding convergence results, like the number of required V-cycle and the convergence rate. This is meant to give an overview of the behavior of this solution method. Subsequently we will go into more detail concerning the affects of the individual input parameters to gain a better understanding for each of them. 
+\smallskip
+\\
+We also tested the algorithm using different initial iterates for $\sigma$ and $u$. In the cases shown above we initially set $\sigma(x_k, t_l) = 0$ for all $(k, l)$ and $u(\cdot, t_l) = u_0$ for all $l$. However this did not seem to have a big effect on the convergence speed as we also tested for other initial iterates which all lead to very similar or the same number of iterations until convergence. This is in line with the above results in the sense that the first iterations the residual reduction happens quite quickly and then slows down a lot. 
+\smallskip
+\\
+We additionally compared the usage of either a coarse grid operator constructed by a Galerkin projection through the interpolation and restriction as well as a direct assembly of the Hessian on the coarse grid. They performed similarly although the Galerkin assembly tends to lead to a slighlty better convergence rate. This is probably due to the fact that it represents the actual projection of the fine grid problem and not a separate related problem.
 
 % add column with number of elements?!
 \begin{table}[]
@@ -538,10 +552,36 @@ We can see from Table (\ref{table:cond_number_eig_val}) that there seems to be c
 In Figure (\ref{fig:eigenvalues_H_and_it_mat}) we can see the eigenvalues of the Hessians of the same test cases as well as the eigenvalues of the iteration matrix of the relaxation scheme. We can see that the larger eigenvalues of the Hessian seem to be pretty identical in all four cases. Additionally we can say that the distribution of the eigenvalues can probably not be described by a smooth function, as in the case of the Laplacian however, they seem to be distributed fairly regularly. The plateau at one is due to the enforced boundary conditions. All of the Hessians give rise to \textit{reasonable} condition numbers, as we have seen in the table. Now we also considered the eigenvalues of the iteration matrix of the relaxation scheme using the $2 \times 2$ Jacobi block-smoother, which can be seen on the left. Due to the damping factor $\omega = 0.64$ the plateau of the imposed boundary conditions is not at zero as one would expect. If we then consider test cases 22 to 24 in comparison things look entirely different. Here the condition number seems to hardly affect the number of iterations. 
 \begin{figure}
 	%\includegraphics[scale=0.4]{images/implementation/eigenvalues/some_eigenvalues_logy_c2100}
-	%\includegraphics[scale=0.4]{images/implementation/eigenvalues/plot_eigenvalues_iter_mat_block_Jac_tc_c2100}
+	\includegraphics[scale=0.4]{images/implementation/eigenvalues/plot_eigenvalues_iter_mat_block_Jac_tc_c2_100}
 	\caption{Left-Panel: Sorted eigenvalues of the Hessian of the test cases $22, 23$ and 24, using a logscale on the $y$-axis. Right-Panel: Sorted eigenvalues of the iteration matrix $M = (I - PH)$ for the same test cases, where $P$ is the preconditioner arising from the block Jacobi smoother using patches of size $2 \times 2$.}
 	\label{fig:eigenvalues_H_and_it_mat}
 \end{figure}
+
+We also performed a complete decomposition  of the overall error and the corrections into the eigenbasis of the Hessian $H \in \mathbb{R}^{m \times m}$. As $H$ is a regular symmetric matrix it is has an orthonormal basis $\{v_1, v_2, ..., v_m \}$ consisting of it eigenvectors. Therefore we can write any vector $v$ as a linear combination of the eigenbasis, that is $ v= \sum_{i = 1}^{m} \alpha_i v_i$ for a set of coefficients $\{\alpha_1, \alpha_2, ..., \alpha_m \}$. In the case of $H$ stemming from a Laplace operator we would then see that the eigenvectors associated to the large eigenvalues correspond to the high frequency eigenvectors, whereas the small eigenvalues correspond to the eigenvectors of low frequency. If one then decomposes the error $e_{\text{init}} = s - s_{\text{init}} $, where $s$ is the final solution and $ s_{\text{init}}$ the initial iterate, into a linear combination we can observe that thhe smoother, as discussed previously, damps the coefficients belonging to the high frequency eigenvectors rather quickly. And the coarse grid correction handles the coefficients more related to the low frequency error. This is what makes multigrid algorithms so efficient. In the parabolic case of using a mixed formulation the case if more complicated, as we do not have this direct decomposition into eigenvectors of higher and lower frequency anymore. However one still attempts to construct the multigrid algorithm such that the coarse grid correction and the smoother damp coefficients efficiently belonging to different parts of the spectrum. In order to understand why our multigrid algorithm is not working efficiently we will therefore consider the corrections of different iterates stemming from the smoother and the coarse grid correction. To then analyse which coefficients are not corrected efficiently. Since we also have the final solution of our iteration we also look at what the coefficients belonging to our initial error $e_{\text{init}}$ are. 
+
+\begin{figure}
+	\includegraphics[width=0.9\textwidth]{images/implementation/eigenvalues/coeff_left_init_error_right_error_1_it}
+	%\includegraphics[scale=0.4]{images/implementation/eigenvalues/plot_eigenvalues_iter_mat_block_Jac_tc_c2_100}
+	\caption{Left-Panel: Let the initial error be $e_{\text{init}} = \sum_{i=1}^{m} \alpha_i v_i$, where $v_i$ are the eigenvectors sorted in increasing size of their corresponding eigenvalues. Then the graph shows the index $i$ of the eigenvalue on the $x$--axis, and $\alpha_i$ on the $y$--axis. Right-Panel: Coefficients $\alpha_i$ of the error after one iteration written in the eigenbasis as on the left-panel.}
+	\label{fig:coeff_analysis_init_error}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.4]{images/implementation/eigenvalues/coeff_error_after_50_it}
+	%\includegraphics[scale=0.4]{images/implementation/eigenvalues/plot_eigenvalues_iter_mat_block_Jac_tc_c2_100}
+	\caption{Left-Panel: Sorted eigenvalues of the Hessian of the test cases $22, 23$ and 24, using a logscale on the $y$-axis. Right-Panel: Sorted eigenvalues of the iteration matrix $M = (I - PH)$ for the same test cases, where $P$ is the preconditioner arising from the block Jacobi smoother using patches of size $2 \times 2$.}
+	\label{fig:coeff_analysis}
+\end{figure}
+
+\begin{figure}
+	\includegraphics[width=0.9\textwidth]{images/implementation/eigenvalues/eig_val_coeff_left_c_sm_right_c_cgc_50_it}
+	%\includegraphics[scale=0.4]{images/implementation/eigenvalues/plot_eigenvalues_iter_mat_block_Jac_tc_c2_100}
+	\caption{Left-Panel: . Right-Panel: Sorted eigenvalues of the iteration matrix $M = (I - PH)$ for the same test cases, where $P$ is the preconditioner arising from the block Jacobi smoother using patches of size $2 \times 2$.}
+	\label{fig:coeff_analysis}
+\end{figure}
+
+In Figure (\ref{fig:coeff_analysis_init_error}) we chose to do this error analysis for test case 9 as the multigrid algorithm converged very slowly for this set of parameters. We can see that the initial error already only has most of its coefficients associated to the small eigenvalues which at least in the case of the Laplacian correspond to the low frequency error. It seems reasonable to also assume this here, as the initial guess $s_{\text{init}} = [\sigma_{\text{init}}, u_{\text{init}}]$ is equal to $\sigma_{\text{init}} = 0.1$ and $u(\cdot, t_l) = u_0$ for all timesteps $t_l$. Neither the initial iterate $s_{\text{init}}$ nor the solution $s$ have high frequency oscillations and therefore the initial error $e_{\text{init}}$ does not either. The corrections therefore seem reasonable. However, it seems like scaling of the coarse grid correction in later iterations not appropriate. If we compare the magnitude of the remaining error after $50$ iterations to the magnitude of the corrections after $50$ iterations it is obvious why it takes so many iterations until the algorithm converges. In potential future investigations it would therefore make sense to analyse more closely why this is not the case in the first iterations but later on, how this problem arises exactly, and if there is the possibility to fix it by some scaling strategy. 
 
 %In comparison the eigenvalues of the one-dimensional Laplace equation describe a sine function [source]. We even have that the condition number here is higher. 
 
@@ -564,13 +604,7 @@ In Figure (\ref{fig:eigenvalues_H_and_it_mat}) we can see the eigenvalues of the
 %	\end{equation}
 %\end{ceqn}
 
-We also tested the algorithm using different initial iterates for $\sigma$ and $u$. In the cases shown above we initially set $\sigma(x_k, t_l) = 0$ for all $(k, l)$ and $u(\cdot, t_l) = u_0$ for all $l$. However this did not seem to have a big effect on the convergence speed as we also tested for other initial iterates which all lead to very similar or the same number of iterations until convergence. This is in line with the above results in the sense that the first iterations the residual reduction happens quite quickly and then slows down a lot. 
- \smallskip
- \\
- We additionally compared the usage of either a coarse grid operator constructed by a Galerkin projection through the interpolation and restriction as well as a direct assembly of the Hessian on the coarse grid. They performed similarly although the Galerkin assembly tends to lead to a slighlty better convergence rate. This is probably due to the fact that it represents the actual projection of the fine grid problem and not a separate related problem.
- \smallskip
- \\
- From the analysis done so far it is yet not very clear where exactly the slow rate of convergence stems from. We have seen in Figure (\ref{fig:scaling_mg}) that the multigrid algorithm actually reduces the norm of the residual in every iteration. The interpolation operator we apply also seems to be working correctly, see Figure (\ref{fig:interpolation_op}). We have also tested the behavior of the smoother as well as the distribution of their eigenvalues. The smoother is displaying a notable smoothing property, see Figures (\ref{fig:smoother_1by1}) and (\ref{fig:smoother_3by4}). The eigenvalues of the arising iteration matrix seems \textit{normally} distributed. However it seems that depending on certain parameters some error modes are not reduced efficiently. We can remark that a larger parameter $c_2$ improved the performance for all test cases. The dependency on the other parameters we tested is not as straight forward. We will be discussing possibilities what this might be related to and how to overcome these problems in Chapter 7. 
+ Hence we can summarise the following. From the analysis done so far it is yet not very clear where exactly the highly varying but generally rather slow rate of convergence stems from. We can remark that a larger parameter $c_2$ improved the performance for all test cases. The dependency on the other parameters we tested is not as straight forward. We have seen in Figure (\ref{fig:scaling_mg}) that the multigrid algorithm actually reduces the norm of the residual in every iteration. The interpolation operator we apply also seems to be working correctly, see Figure (\ref{fig:interpolation_op}). We have also tested the behavior of the smoother as well as the distribution of their eigenvalues. The smoother is displaying a notable smoothing property, see Figures (\ref{fig:smoother_1by1}) and (\ref{fig:smoother_3by4}). The eigenvalues of the arising iteration matrix seems \textit{normally} distributed. However it seems that depending on certain parameters some error modes are not reduced efficiently, most likely by the coarse grid correction. The coarse grid interpolation seems to be reducing the low frequency error as one would like it to, however it seems like in later iterations the magnitude of the correction is notably smaller than that of the remaining error. We will be discussing further possibilities what this might be related to and how to overcome the above problems in Chapter 7. 
 
 \FloatBarrier
 \subsection{Monodomain Equation}

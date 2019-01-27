@@ -30,8 +30,8 @@
 \contentsline {section}{\numberline {6.3}Numerical Test Cases}{43}
 \contentsline {subsection}{\numberline {6.3.1}One-Dimensional Poisson Equation}{43}
 \contentsline {subsection}{\numberline {6.3.2}Heat Equation}{44}
-\contentsline {subsection}{\numberline {6.3.3}Monodomain Equation}{49}
-\contentsline {subsection}{\numberline {6.3.4}Linearisation of a Monodomain Equation}{51}
-\contentsline {chapter}{\numberline {7}Conclusions and Outlook}{53}
-\contentsline {chapter}{\numberline {8}Epilogue}{55}
-\contentsline {chapter}{\numberline {A}Full Computation of the Hessian}{56}
+\contentsline {subsection}{\numberline {6.3.3}Monodomain Equation}{52}
+\contentsline {subsection}{\numberline {6.3.4}Linearisation of a Monodomain Equation}{54}
+\contentsline {chapter}{\numberline {7}Conclusions and Outlook}{56}
+\contentsline {chapter}{\numberline {8}Epilogue}{58}
+\contentsline {chapter}{\numberline {A}Full Computation of the Hessian}{59}
